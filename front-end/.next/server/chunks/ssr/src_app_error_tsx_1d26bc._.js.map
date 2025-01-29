@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/johnmarkgatche/scaffl-ed/front-end/src/app/error.tsx"],"sourcesContent":["// 'use client'\n\nexport default function Error() {\n  return (\n    <div>ERROR!!!</div>\n  );\n}\n"],"names":[],"mappings":"AAAA,eAAe;;;;;;AAEA,SAAS;IACtB,qBACE,8OAAC;kBAAI;;;;;;AAET"}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

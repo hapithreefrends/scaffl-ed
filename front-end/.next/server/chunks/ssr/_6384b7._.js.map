@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/johnmarkgatche/scaffl-ed/front-end/src/app/page.tsx"],"sourcesContent":["// import {\n//   Center,\n//   MantineProvider\n// } from '@mantine/core'\n\nimport { notFound } from \"next/navigation\";\ntype Data = {\n  message: string;\n};\n\nexport default async function Home() {\n  // const [data, setData] = useState<Data | null>(null);\n  // const [loading, setLoading] = useState(true);\n\n  const fetchDataSim = async () => {\n    // Simulate a delay\n    await new Promise((resolve) => setTimeout(resolve, 2000));\n\n    //ERROR\n    // throw new Error(\"Error!\")\n\n    //NOT FOUND\n    // return null\n\n    //SUCCESS\n    return { message: \"HELLO WORLD\" };\n  };\n\n  const data = await fetchDataSim();\n\n  // fetchDataSim().then((result) => {\n  //   setData(result);\n  //   setLoading(false);\n  // });\n\n  if (!data) notFound();\n\n  // if (loading) Loading();\n\n  return <div>{data.message}</div>;\n}\n"],"names":[],"mappings":"AAAA,WAAW;AACX,YAAY;AACZ,oBAAoB;AACpB,yBAAyB;;;;;AAEzB;;;AAKe,eAAe;IAC5B,uDAAuD;IACvD,gDAAgD;IAEhD,MAAM,eAAe;QACnB,mBAAmB;QACnB,MAAM,IAAI,QAAQ,CAAC,UAAY,WAAW,SAAS;QAEnD,OAAO;QACP,4BAA4B;QAE5B,WAAW;QACX,cAAc;QAEd,SAAS;QACT,OAAO;YAAE,SAAS;QAAc;IAClC;IAEA,MAAM,OAAO,MAAM;IAEnB,oCAAoC;IACpC,qBAAqB;IACrB,uBAAuB;IACvB,MAAM;IAEN,uCAAW;;IAAU;IAErB,0BAA0B;IAE1B,qBAAO,8OAAC;kBAAK,KAAK,OAAO;;;;;;AAC3B"}},
+    {"offset": {"line": 50, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
+    {"offset": {"line": 61, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 61, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
