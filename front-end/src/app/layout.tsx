@@ -17,6 +17,8 @@ import '@mantine/nprogress/styles.css';
 import '@mantine/spotlight/styles.css';
 import '@mantine/carousel/styles.css';
 
+// import { IconContext } from "@phosphor-icons/react";
+
 import theme from "@/utilities/theme";
 
 export const metadata: Metadata = {
@@ -37,7 +39,12 @@ export default function RootLayout({
 
             <body>
                 <MantineProvider theme={theme}>
-                    {children}
+                    {/* <IconContext value={{
+                        size: 32,
+                        weight: 'regular'
+                    }}> */}
+                        {children}
+                    {/* </IconContext> */}
                 </MantineProvider>
             </body>
         </html>

@@ -1,5 +1,5 @@
 import { Poppins, Source_Code_Pro } from 'next/font/google';
-import { createTheme } from '@mantine/core';
+import { createTheme, virtualColor } from '@mantine/core';
 
 const poppins = Poppins({
     weight: '400',
@@ -9,6 +9,24 @@ const sourceCodePro = Source_Code_Pro({
 });
 
 const theme = createTheme({
+    // components
+    components: {},
+
+    // colors
+    colors: {
+        primary: virtualColor({
+            name: 'primary',
+            light: 'violet',
+            dark: 'grape',
+        }),
+        secondary: virtualColor({
+            name: 'secondary',
+            light: 'teal',
+            dark: 'green',
+        }),
+    },
+
+    // typography
     fontFamily: poppins.style.fontFamily,
     fontFamilyMonospace: sourceCodePro.style.fontFamily,
     headings: {
