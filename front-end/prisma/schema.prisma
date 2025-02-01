@@ -1,0 +1,244 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public", "api"]
+}
+
+//
+// 🔹 USERS & SOCIAL INTERACTIONS
+//
+
+model User {
+  id        String    @id @default(uuid()) @db.Uuid
+  email     String    @unique
+  password  String
+  name      String
+  school    String?
+  birthday  DateTime?
+  avatarUrl String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  enrollments   Enrollment[]
+  achievements  UserAchievement[]
+  friends       Friend[]          @relation("UserFriends")
+  friendsWith   Friend[]          @relation("FriendUsers")
+  notifications Notification[]
+  activityLogs  UserActivityLog[]
+  Discussion    Discussion[]
+  Leaderboard   Leaderboard[]
+
+  @@schema("api")
+}
+
+model Friend {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  friendId  String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user   User @relation("UserFriends", fields: [userId], references: [id])
+  friend User @relation("FriendUsers", fields: [friendId], references: [id])
+
+  @@schema("api")
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  content   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 COURSES & ENROLLMENTS
+//
+
+model Course {
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String
+  description   String
+  categoryId    Int
+  difficultyId  Int
+  expectedHours Int
+  totalPoints   Int
+  createdAt     DateTime @default(now())
+
+  category    CourseCategory   @relation(fields: [categoryId], references: [id])
+  difficulty  CourseDifficulty @relation(fields: [difficultyId], references: [id])
+  activities  Activity[]
+  enrollments Enrollment[]
+  discussions Discussion[]
+
+  @@schema("api")
+}
+
+model Enrollment {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  courseId    String    @db.Uuid
+  progress    Int       @default(0) // Percentage completion
+  score       Int       @default(0) // Total accumulated points
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 LECTURES & QUIZZES
+//
+
+model Activity {
+  id           String @id @default(uuid()) @db.Uuid
+  courseId     String @db.Uuid
+  typeId       Int
+  expectedTime Int
+  points       Int
+
+  course Course       @relation(fields: [courseId], references: [id])
+  type   ActivityType @relation(fields: [typeId], references: [id])
+
+  Lecture Lecture?
+  Quiz    Quiz?
+
+  @@schema("api")
+}
+
+model Lecture {
+  id         String   @id @default(uuid()) @db.Uuid
+  activityId String   @unique @db.Uuid
+  content    Json // Stores structured Markdown or rich text
+  version    Int      @default(1) // Supports lecture versioning
+  createdAt  DateTime @default(now())
+
+  activity Activity @relation(fields: [activityId], references: [id])
+
+  @@schema("api")
+}
+
+model Quiz {
+  id          String   @id @default(uuid()) @db.Uuid
+  activityId  String   @unique @db.Uuid
+  description String
+  initialCode String
+  testCases   Json // Stores structured test cases
+  solution    String
+  hints       Json? // Optional hints for debugging
+  createdAt   DateTime @default(now())
+
+  activity Activity @relation(fields: [activityId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 DISCUSSION SYSTEM (COMMENTS & FEEDBACK)
+//
+
+model Discussion {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  courseId  String   @db.Uuid
+  content   String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 ACHIEVEMENTS & LEADERBOARD
+//
+
+model Achievement {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  criteria        String // JSON defining criteria
+  UserAchievement UserAchievement[]
+
+  @@schema("api")
+}
+
+model UserAchievement {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @db.Uuid
+  achievementId Int
+  earnedAt      DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@schema("api")
+}
+
+model Leaderboard {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  score  Int
+  rank   Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 EVENT TRACKING (FOR ANALYTICS)
+//
+
+model UserActivityLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  action    String
+  metadata  Json // Stores structured log details
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@schema("api")
+}
+
+//
+// 🔹 ENUM LOOKUP TABLES
+//
+
+model CourseCategory {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+
+  @@schema("api")
+}
+
+model CourseDifficulty {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+
+  @@schema("api")
+}
+
+model ActivityType {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  Activity Activity[]
+
+  @@schema("api")
+}
