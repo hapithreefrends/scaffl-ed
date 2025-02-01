@@ -21,6 +21,8 @@ import '@mantine/carousel/styles.css';
 
 import theme from "@/utilities/theme";
 
+import './_assets/styles/global.css';
+
 export const metadata: Metadata = {
     title: "scaffl-ed",
     description: "Scaffold your learning!",
