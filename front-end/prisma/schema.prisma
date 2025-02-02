@@ -34,7 +34,7 @@ model User {
   Discussion    Discussion[]
   Leaderboard   Leaderboard[]
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Friend {
@@ -46,7 +46,7 @@ model Friend {
   user   User @relation("UserFriends", fields: [userId], references: [id])
   friend User @relation("FriendUsers", fields: [friendId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Notification {
@@ -58,7 +58,7 @@ model Notification {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -81,7 +81,7 @@ model Course {
   enrollments Enrollment[]
   discussions Discussion[]
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Enrollment {
@@ -96,7 +96,7 @@ model Enrollment {
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -116,7 +116,7 @@ model Activity {
   Lecture Lecture?
   Quiz    Quiz?
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Lecture {
@@ -128,7 +128,7 @@ model Lecture {
 
   activity Activity @relation(fields: [activityId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Quiz {
@@ -143,7 +143,7 @@ model Quiz {
 
   activity Activity @relation(fields: [activityId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -160,7 +160,7 @@ model Discussion {
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -173,7 +173,7 @@ model Achievement {
   criteria        String // JSON defining criteria
   UserAchievement UserAchievement[]
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model UserAchievement {
@@ -185,7 +185,7 @@ model UserAchievement {
   user        User        @relation(fields: [userId], references: [id])
   achievement Achievement @relation(fields: [achievementId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model Leaderboard {
@@ -196,7 +196,7 @@ model Leaderboard {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -212,7 +212,7 @@ model UserActivityLog {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@schema("api")
+  @@schema("public")
 }
 
 //
@@ -224,7 +224,7 @@ model CourseCategory {
   name   String   @unique
   Course Course[]
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model CourseDifficulty {
@@ -232,7 +232,7 @@ model CourseDifficulty {
   name   String   @unique
   Course Course[]
 
-  @@schema("api")
+  @@schema("public")
 }
 
 model ActivityType {
@@ -240,5 +240,5 @@ model ActivityType {
   name     String     @unique
   Activity Activity[]
 
-  @@schema("api")
+  @@schema("public")
 }
