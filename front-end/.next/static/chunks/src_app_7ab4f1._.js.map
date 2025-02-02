@@ -1,9 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/johnmarkgatche/scaffl-ed/front-end/src/app/ui.tsx"],"sourcesContent":["import { Center, Box } from '@mantine/core';\n\nexport default function Demo() {\n  return (\n    <Center maw={400} h={100} bg=\"var(--mantine-color-gray-light)\">\n      <Box bg=\"var(--mantine-color-blue-light)\">All elements inside Center are centered</Box>\n    </Center>\n  );\n}"],"names":[],"mappings":";;;;AAAA;AAAA;;;AAEe,SAAS;IACtB,qBACE,6LAAC,8KAAA,CAAA,SAAM;QAAC,KAAK;QAAK,GAAG;QAAK,IAAG;kBAC3B,cAAA,6LAAC,kKAAA,CAAA,MAAG;YAAC,IAAG;sBAAkC;;;;;;;;;;;AAGhD;KANwB"}},
-    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
-    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///Users/johnmarkgatche/scaffl-ed/front-end/src/app/page.tsx"],"sourcesContent":["'use client'\n\nimport { MantineProvider, Center, Box, Container } from \"@mantine/core\";\nimport Demo from \"./ui\";\n\nexport default function Home() {\n  return (\n    // get started with Mantine\n    <MantineProvider>\n      <Container>\n        <Demo />\n      </Container>\n    </MantineProvider>\n  );\n}\n"],"names":[],"mappings":";;;;AAGA;AADA;AAAA;AAFA;;;;AAKe,SAAS;IACtB,OACE,2BAA2B;kBAC3B,6LAAC,0LAAA,CAAA,kBAAe;kBACd,cAAA,6LAAC,oLAAA,CAAA,YAAS;sBACR,cAAA,6LAAC,oHAAA,CAAA,UAAI;;;;;;;;;;;;;;;AAIb;KATwB"}},
-    {"offset": {"line": 83, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}
