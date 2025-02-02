@@ -1,8 +1,11 @@
-import Link from 'next/link'
+import { Center, Box, Container } from "@mantine/core";
+import Demo from "./ui";
 
 export default function Home() {
-	return (
-    <div>HELLO</div>
-	);
-  // throw Error("ERROR!")
+  return (
+    // get started with Mantine
+      <Container fluid>
+        <Demo />
+      </Container>
+  );
 }
