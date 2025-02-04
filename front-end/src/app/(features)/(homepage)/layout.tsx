@@ -1,12 +1,13 @@
 'use client';
 import { AppShell, Image } from "@mantine/core";
+import image from './_assets/scaffled_logo.png';
 
 export default function HomePageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    // i want to implement app shell here since every feature will have the same layout
+    // implemented app shell here since every feature will have the same layout
     return (
         <AppShell
             header = {{height: 60}}
@@ -16,7 +17,7 @@ export default function HomePageLayout({
             }}
         >
             <AppShell.Header>
-                <img src="/_assets/scaffled_logo.png"></img>
+                <img src={image.src}></img>
             
             </AppShell.Header>
             
