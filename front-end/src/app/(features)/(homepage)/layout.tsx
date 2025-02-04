@@ -1,5 +1,5 @@
 'use client';
-import { AppShell } from "@mantine/core";
+import { AppShell, Image } from "@mantine/core";
 
 export default function HomePageLayout({
   children,
@@ -8,9 +8,16 @@ export default function HomePageLayout({
 }>) {
     // i want to implement app shell here since every feature will have the same layout
     return (
-        <AppShell>
+        <AppShell
+            header = {{height: 60}}
+            navbar = {{
+                width: 220,
+                breakpoint: 'sm'
+            }}
+        >
             <AppShell.Header>
-                <h1>Header</h1>
+                <img src="/_assets/scaffled_logo.png"></img>
+            
             </AppShell.Header>
             
             <AppShell.Navbar>
