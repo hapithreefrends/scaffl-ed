@@ -1,3 +1,4 @@
+'use client';
 import { AppShell } from "@mantine/core";
 
 export default function HomePageLayout({
@@ -13,7 +14,6 @@ export default function HomePageLayout({
             </AppShell.Header>
             
             <AppShell.Navbar>
-
             </AppShell.Navbar>
 
             <AppShell.Main>
