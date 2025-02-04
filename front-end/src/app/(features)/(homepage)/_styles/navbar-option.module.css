@@ -1,0 +1,14 @@
+.navbarOptionInactive{
+    color: gray;
+    cursor: pointer;
+}
+
+.navbarOptionInactive:hover{
+    background-color: gainsboro;
+    color: darkslategray;
+}
+
+.navbarOptionActive{
+    background-color: lightgreen;
+    color: darkgreen;
+}
