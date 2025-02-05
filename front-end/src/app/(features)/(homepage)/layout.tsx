@@ -5,6 +5,7 @@ import Header from "./_components/header";
 import NavbarOption from "./_components/navbar-option";
 import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
 import { useState } from "react";
+import NavbarProfile from "./_components/navbar-profile-info";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
@@ -28,7 +29,11 @@ export default function HomePageLayout({
         setActive(link.label);
       }}
     >
-      <NavbarOption label={link.label} icon={link.icon} isActive={active===link.label} />
+      <NavbarOption
+        label={link.label}
+        icon={link.icon}
+        isActive={active === link.label}
+      />
     </Link>
   ));
 
@@ -46,12 +51,21 @@ export default function HomePageLayout({
         <Header />
       </AppShell.Header>
 
-      <AppShell.Navbar>
-        <Stack gap="0">{links}</Stack>
+      <AppShell.Navbar py="md">
+        <Stack justify="space-between">
+          <Stack gap="md">
+            {/* HARDCODED DATA TO BE REPLACED */}
+            <NavbarProfile
+              name="Adrian Cruz"
+              avatar="https://upload.wikimedia.org/wikipedia/en/e/ed/Nyan_cat_250px_frame.PNG"
+              honor="Explorer"
+            />
+            <Stack gap="0">{links}</Stack>
+          </Stack>
+        </Stack>
       </AppShell.Navbar>
 
       <AppShell.Main component={ScrollArea}>{children}</AppShell.Main>
     </AppShell>
   );
-  //   return <div>{children}</div>;
 }
