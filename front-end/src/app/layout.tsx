@@ -27,6 +27,10 @@ import theme from "@/utilities/theme";
 
 import "./_assets/styles/global.css";
 
+import { Actor, Poppins } from "next/font/google";
+const bodyFont = Actor({ subsets: ["latin"], weight: "400" });
+const headerFont = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
+
 export const metadata: Metadata = {
   title: "scaffl-ed",
   description: "Scaffold your learning!",
@@ -44,7 +48,18 @@ export default function RootLayout({
       </Head>
 
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={
+          {
+            components: {
+              Text: {
+                styles: { root: { fontFamily: bodyFont.style.fontFamily } },
+              },
+              Title: {
+                styles: { root: { fontFamily: headerFont.style.fontFamily } },
+              },
+            },
+          }
+        }>
           {children}
         </MantineProvider>
       </body>

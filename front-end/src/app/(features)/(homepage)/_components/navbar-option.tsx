@@ -1,6 +1,6 @@
 'use client'
 
-import { Group } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import classes from "../_styles/navbar-option.module.css";
 
 interface navbarOptionProps {
@@ -13,7 +13,7 @@ export default function NavbarOption({label, icon: Icon, isActive}: navbarOption
     return (
         <Group className={isActive ? classes.navbarOptionActive : classes.navbarOptionInactive} px="md" py="sm" gap="xs">
             {<Icon height="20" />}
-            {label}
+            <Text>{label}</Text>
         </Group>
     )
 }
