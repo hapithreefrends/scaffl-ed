@@ -6,6 +6,8 @@ import NavbarOption from "./_components/navbar-option";
 import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
 import { useState } from "react";
 import NavbarProfile from "./_components/navbar-profile-info";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
@@ -18,7 +20,8 @@ export default function HomePageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [active, setActive] = useState("Dashboard");
+  const pathname = usePathname();
+  const [active, setActive] = useState(pathname);
 
   const links = linksList.map((link) => (
     <Link
@@ -26,13 +29,14 @@ export default function HomePageLayout({
       href={link.link}
       key={link.label}
       onClick={() => {
-        setActive(link.label);
+        setActive(link.link);
       }}
     >
       <NavbarOption
         label={link.label}
         icon={link.icon}
-        isActive={active === link.label}
+        isActive={active === link.link}
+        
       />
     </Link>
   ));
@@ -62,6 +66,8 @@ export default function HomePageLayout({
             />
             <Stack gap="0">{links}</Stack>
           </Stack>
+
+
         </Stack>
       </AppShell.Navbar>
 
