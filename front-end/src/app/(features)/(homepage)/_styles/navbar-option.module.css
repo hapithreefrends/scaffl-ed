@@ -1,14 +1,17 @@
 .navbarOptionInactive{
-    color: gray;
+    color: darkslategray;
     cursor: pointer;
 }
 
 .navbarOptionInactive:hover{
-    background-color: gainsboro;
-    color: darkslategray;
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+
 }
 
 .navbarOptionActive{
-    background-color: lightgreen;
-    color: darkgreen;
+    /* background-color: lightgreen; */
+    /* color: darkgreen; */
+    background-color: var(--mantine-color-teal-light);
+    color: var(--mantine-color-teal-light-color);
 }
