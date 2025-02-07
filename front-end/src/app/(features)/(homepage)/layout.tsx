@@ -11,7 +11,7 @@ import NavbarProfileLoader from "./_components/navbar/navbar-profile-loader";
 import NavbarLinks from "./_components/navbar/navbar-option-list";
 import { Suspense } from "react";
 
-import NavbarProfileSkeleton from "./_components/navbar/loading";
+import NavbarProfileSkeleton from "./_components/navbar/navbar-profile-skeleton";
 
 export default function HomePageLayout({
   children,
