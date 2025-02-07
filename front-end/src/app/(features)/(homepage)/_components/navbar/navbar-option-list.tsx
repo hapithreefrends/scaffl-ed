@@ -9,7 +9,6 @@ import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
-  { link: "/courses", label: "Courses", icon: IconStars },
   { link: "/playground", label: "Playground", icon: IconSourceCode },
 ];
 

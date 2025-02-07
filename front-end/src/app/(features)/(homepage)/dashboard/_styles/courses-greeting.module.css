@@ -1,0 +1,36 @@
+.greetingHeader {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+.greetingText {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+.greetingImage {
+  position: absolute;
+  right: 0;
+  width: 300px;
+  bottom: 0;
+}
+
+.spacer {
+  min-width: 30vw;
+}
+
+.greetingContainer {
+  margin-top: 6vw;
+  position: relative;
+  border-radius: 22px;
+  background: var(
+    --Gradient-Purple,
+    linear-gradient(137deg, #b69cd0 -20.62%, #683598 46.34%, #211130 104.55%)
+  );
+}
+
+.textContainer {
+  width: calc(100%-450px);
+}
