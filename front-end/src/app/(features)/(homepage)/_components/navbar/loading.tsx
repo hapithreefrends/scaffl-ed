@@ -2,11 +2,12 @@ import { Skeleton, Stack } from "@mantine/core";
 
 export default function NavbarProfileSkeleton() {
   return (
-    <Stack align="center" gap="22">
+    <Stack align="center" gap="22" px="md">
       <Skeleton height={56} circle />
-      <Stack gap="0">
-        <Skeleton height={24} radius="xl"/>
-        <Skeleton height={16} radius="xl"/>
+
+      <Stack align="center" style={{ width: "100%" }} gap="8">
+        <Skeleton height={22} radius="xl"/>
+        <Skeleton height={16} width="60%" radius="xl"/>
       </Stack>
     </Stack>
   );

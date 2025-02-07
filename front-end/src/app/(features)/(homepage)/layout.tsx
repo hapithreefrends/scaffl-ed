@@ -1,46 +1,23 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AppShell, AppShellMain, AppShellHeader, AppShellNavbar, ScrollArea, Stack } from "@mantine/core";
-import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
+import {
+  AppShell,
+  AppShellMain,
+  AppShellHeader,
+  AppShellNavbar,
+  ScrollArea,
+  Stack,
+} from "@mantine/core";
 import Header from "./_components/header/header";
-import NavbarOption from "./_components/navbar/navbar-option";
 import NavbarProfileLoader from "./_components/navbar/navbar-profile-loader";
+import NavbarLinks from "./_components/navbar/navbar-option-list";
+import { Suspense } from "react";
 
-const linksList = [
-  { link: "/dashboard", label: "Dashboard", icon: IconHome },
-  { link: "/courses", label: "Courses", icon: IconStars },
-  { link: "/playground", label: "Playground", icon: IconSourceCode },
-];
+import NavbarProfileSkeleton from "./_components/navbar/loading";
 
 export default function HomePageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const [active, setActive] = useState(pathname);
-
-  const links = linksList.map((link) => (
-    <Link
-      style={{ textDecoration: "none", color: "darkslategray" }}
-      href={link.link}
-      key={link.label}
-      onClick={() => {
-        setActive(link.link);
-      }}
-    >
-      <NavbarOption
-        label={link.label}
-        icon={link.icon}
-        isActive={active === link.link}
-        
-      />
-    </Link>
-  ));
-
   // implemented app shell here since every feature will have the same layout
   return (
     <AppShell
@@ -58,8 +35,10 @@ export default function HomePageLayout({
       <AppShellNavbar py="md">
         <Stack justify="space-between">
           <Stack gap="md">
-            <NavbarProfileLoader />
-            <Stack gap="0">{links}</Stack>
+            <Suspense fallback={<NavbarProfileSkeleton />}>
+              <NavbarProfileLoader />
+            </Suspense>
+            <Stack gap="0">{<NavbarLinks />}</Stack>
           </Stack>
         </Stack>
       </AppShellNavbar>
