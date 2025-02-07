@@ -1,5 +1,10 @@
+import Welcome from "./_components/welcome"
+import { Stack } from "@mantine/core"
+
 export default function Dashboard () {
     return (
-        <h1>DASHBOARD</h1>
+        <Stack p={"lg"}>
+        <Welcome name="Adrian" affirmation=""/>
+        </Stack>
     )
 }
