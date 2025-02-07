@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import NavbarProfile from "./navbar-profile-info";
-import NavbarProfileSkeleton from "./navbar-profile-skeleton";
+import NavbarProfileSkeleton from "./loading";
 
 export default async function NavbarProfileLoader() {
   const user = await fetchUserProfile();

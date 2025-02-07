@@ -1,8 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppShell, ScrollArea, Stack } from "@mantine/core";
+import { AppShell, AppShellMain, AppShellHeader, AppShellNavbar, ScrollArea, Stack } from "@mantine/core";
 import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
 import Header from "./_components/header/header";
 import NavbarOption from "./_components/navbar/navbar-option";
@@ -50,22 +51,20 @@ export default function HomePageLayout({
       }}
       padding="md"
     >
-      <AppShell.Header p="md">
+      <AppShellHeader p="md">
         <Header />
-      </AppShell.Header>
+      </AppShellHeader>
 
-      <AppShell.Navbar py="md">
+      <AppShellNavbar py="md">
         <Stack justify="space-between">
           <Stack gap="md">
             <NavbarProfileLoader />
             <Stack gap="0">{links}</Stack>
           </Stack>
-
-
         </Stack>
-      </AppShell.Navbar>
+      </AppShellNavbar>
 
-      <AppShell.Main component={ScrollArea}>{children}</AppShell.Main>
+      <AppShellMain component={ScrollArea}>{children}</AppShellMain>
     </AppShell>
   );
 }
