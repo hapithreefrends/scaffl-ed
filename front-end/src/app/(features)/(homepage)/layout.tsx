@@ -32,7 +32,7 @@ export default function HomePageLayout({
         <Header />
       </AppShellHeader>
 
-      <AppShellNavbar py="md">
+      <AppShellNavbar px="sm" py="md">
         <Stack justify="space-between">
           <Stack gap="md">
             <Suspense fallback={<NavbarProfileSkeleton />}>
