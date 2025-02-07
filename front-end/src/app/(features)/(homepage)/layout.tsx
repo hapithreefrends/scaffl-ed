@@ -1,13 +1,12 @@
 "use client";
-import Link from "next/link";
-import { AppShell, ScrollArea, Stack } from "@mantine/core";
-import Header from "./_components/header";
-import NavbarOption from "./_components/navbar-option";
-import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
 import { useState } from "react";
-import NavbarProfile from "./_components/navbar-profile-info";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AppShell, ScrollArea, Stack } from "@mantine/core";
+import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
+import Header from "./_components/header/header";
+import NavbarOption from "./_components/navbar/navbar-option";
+import NavbarProfileLoader from "./_components/navbar/navbar-profile-loader";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
@@ -58,12 +57,7 @@ export default function HomePageLayout({
       <AppShell.Navbar py="md">
         <Stack justify="space-between">
           <Stack gap="md">
-            {/* HARDCODED DATA TO BE REPLACED */}
-            <NavbarProfile
-              name="Adrian Cruz"
-              avatar="https://upload.wikimedia.org/wikipedia/en/e/ed/Nyan_cat_250px_frame.PNG"
-              honor="Explorer"
-            />
+            <NavbarProfileLoader />
             <Stack gap="0">{links}</Stack>
           </Stack>
 

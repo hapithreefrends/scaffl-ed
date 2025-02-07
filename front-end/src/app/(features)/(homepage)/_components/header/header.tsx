@@ -1,5 +1,5 @@
 import { Flex } from '@mantine/core';
-import scaffyLogo from '../_assets/scaffled-logo.svg';
+import scaffyLogo from '../../_assets/scaffled-logo.svg';
 
 export default function Header() {
   return (
