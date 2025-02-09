@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Stack } from "@mantine/core";
 import Link from "next/link";
 import NavbarOption from "./navbar-option";
-import { IconHome, IconStars, IconSourceCode } from "@tabler/icons-react";
+import { IconHome, IconSourceCode } from "@tabler/icons-react";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },

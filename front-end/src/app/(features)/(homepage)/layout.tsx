@@ -18,7 +18,7 @@ export default function HomePageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // implemented app shell here since every feature will have the same layout
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -43,7 +43,7 @@ export default function HomePageLayout({
         </Stack>
       </AppShellNavbar>
 
-      <AppShellMain component={ScrollArea}>{children}</AppShellMain>
+      <AppShellMain bg="gray.0" component={ScrollArea}>{children}</AppShellMain>
     </AppShell>
   );
 }
