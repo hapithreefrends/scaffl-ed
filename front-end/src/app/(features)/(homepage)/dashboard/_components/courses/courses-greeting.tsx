@@ -8,8 +8,7 @@ export default function CourseGreetings() {
   return (
     <Flex
       className={classes.greetingContainer}
-      w="100%"
-      p="lg"
+      w= {{base: "90.6vw", sm: "100%"}}
       align="center"
       justify={"space-between"}
     >

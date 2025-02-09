@@ -1,5 +1,5 @@
 import CourseGreetings from "./courses-greeting";
-import CoursesList from "./courses-list";
+import CoursesListLoader from "./courses-list-fetch";
 import { Suspense } from "react";
 import CoursesCardListSkeleton from "./courses-card-list-skeleton";
 
@@ -8,7 +8,7 @@ export default function Courses() {
     <>
       <CourseGreetings />
       <Suspense fallback={<CoursesCardListSkeleton />}>
-        <CoursesList />
+        <CoursesListLoader />
       </Suspense>
     </>
   );

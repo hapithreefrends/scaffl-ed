@@ -41,16 +41,9 @@ const LazyCoursesList = lazy(() =>
   wait(10000).then(() => import("./course-card"))
 );
 
-export default function CoursesList() {
+// in reality does the actual fetching
+export default async function CoursesListLoader() {
   return (
-    // <SimpleGrid 
-    // spacing={32}
-    // cols={{ base: 1, md: 2, lg: 3 }}
-    // >
-    //   {mockData.map((course) => (
-    //     <LazyCoursesList {...course} key={course.id} />
-    //   ))}
-    // </SimpleGrid>
     <Flex wrap="wrap" gap={32}>
       {mockData.map((course) => (
         <LazyCoursesList {...course} key={course.id} />

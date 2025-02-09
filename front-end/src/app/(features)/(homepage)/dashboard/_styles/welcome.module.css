@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-.greetingText {
+.greetingBody {
   padding: 0;
   margin: 0;
 }
@@ -11,3 +11,12 @@
 .greetingImage {
   width: 450px;
 }
+
+@media screen and (max-width: 991) {
+  .greetingText {
+    text-align: center;
+    order: 2;
+    margin-top: 22px;
+  }
+}
+

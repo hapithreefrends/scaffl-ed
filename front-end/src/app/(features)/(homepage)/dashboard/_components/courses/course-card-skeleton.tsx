@@ -10,7 +10,7 @@ export default function CourseCardSkeleton() {
     <Card
       withBorder
       radius="md"
-      w={359}
+      w={335}
       h={335}
       p={24}
     >

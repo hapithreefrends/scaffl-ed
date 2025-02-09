@@ -32,7 +32,7 @@ export default function CourseCard({
       className={classes.card}
       withBorder
       radius="md"
-      w={359}
+      w={335}
       h={335}
       component="a"
       href={href}
@@ -41,7 +41,7 @@ export default function CourseCard({
       <Group justify="flex-start" mb={12}>
         <Image fit="contain" src={picture} alt={title} h={30} maw={"100%"} />
       </Group>
-      <Title lineClamp={1} order={2} mb={12}>
+      <Title lineClamp={1} order={3} mb={12}>
         {title}
       </Title>
       <Title lineClamp={1} order={4} mb={12}>

@@ -22,6 +22,7 @@
 }
 
 .greetingContainer {
+  padding: var(--mantine-spacing-lg);
   margin-top: 6vw;
   position: relative;
   border-radius: 22px;
@@ -33,4 +34,23 @@
 
 .textContainer {
   width: calc(100%-450px);
+}
+
+@media screen and (max-width: 991px) {
+  .greetingImage {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .greetingContainer {
+    flex-direction: column;
+  }
+
+  .greetingImage {
+    display: none;
+  }
 }
