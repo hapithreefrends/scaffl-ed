@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codemirror/lang-java": "^6.0.1",
     "@mantine/carousel": "^7.16.2",
     "@mantine/charts": "^7.16.2",
     "@mantine/code-highlight": "^7.16.2",
@@ -25,10 +26,12 @@
     "@phosphor-icons/react": "^2.1.7",
     "@prisma/client": "^6.3.0",
     "@supabase/ssr": "github:supabase/ssr",
+    "@tabler/icons-react": "^3.30.0",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
+    "@uiw/react-codemirror": "^4.23.8",
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.5.2",
     "next": "15.1.4",
