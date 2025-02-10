@@ -37,8 +37,8 @@ const mockData = [
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Applies the simulated delay
-const LazyCoursesList = lazy(() =>
-  wait(10000).then(() => import("./course-card"))
+const LazyCourseCard = lazy(() =>
+  wait(20000).then(() => import("./course-card"))
 );
 
 // in reality does the actual fetching
@@ -46,7 +46,7 @@ export default async function CoursesListLoader() {
   return (
     <Flex wrap="wrap" gap={32}>
       {mockData.map((course) => (
-        <LazyCoursesList {...course} key={course.id} />
+        <LazyCourseCard {...course} key={course.id} />
       ))}
     </Flex>
   );

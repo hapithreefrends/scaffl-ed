@@ -9,7 +9,26 @@
 }
 
 .greetingImage {
-  width: 450px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+}
+
+.greetingContainer {
+  margin-top: 4vh;
+  min-height: 175px;
+  position: relative;
+  color: white;
+  border-radius: 22px;
+  background: var(
+    --Gradient-Teal-Purple,
+    linear-gradient(
+      133deg,
+      var(--Teal-teal-2, #408c8c) 8.93%,
+      var(--Purple-purple-2, #926ab8) 105.64%
+    )
+  );
 }
 
 @media screen and (max-width: 991) {
@@ -19,4 +38,3 @@
     margin-top: 22px;
   }
 }
-

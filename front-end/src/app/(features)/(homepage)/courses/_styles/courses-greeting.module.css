@@ -23,7 +23,7 @@
 
 .greetingContainer {
   padding: var(--mantine-spacing-lg);
-  margin-top: 6vw;
+  margin-top: 4vw;
   position: relative;
   border-radius: 22px;
   background: var(

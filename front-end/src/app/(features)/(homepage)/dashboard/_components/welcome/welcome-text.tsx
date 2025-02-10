@@ -8,16 +8,12 @@ interface welcomeProps {
 
 export default function WelcomeText({ name, affirmation }: welcomeProps) {
   return (
-    <Stack gap="0" pr={{ base: 0, md: 50 }} className={classes.greetingText}>
-      <Title order={1} className={classes.greetingHeader}>
-        Hi, {name}!
-      </Title>
-      <Text className={classes.greetingBody}>
-        {affirmation.length !== 0
-          ? affirmation
-          : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."}
-      </Text>
-    </Stack>
+    <Stack className={classes.textContainer} gap="0">
+    <Title order={1} className={classes.greetingHeader}>Hi {name}!</Title>
+    <Text className={classes.greetingText}>
+      {affirmation}
+    </Text>
+  </Stack>
   );
 }
 

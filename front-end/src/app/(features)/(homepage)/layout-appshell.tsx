@@ -3,7 +3,7 @@
 import Header from "./_components/header/header";
 import NavbarLinks from "./_components/navbar/navbar-option-list";
 import NavbarProfileSkeleton from "./_components/navbar/navbar-profile-skeleton";
-import { AppShell, Burger, ScrollArea, Stack } from "@mantine/core";
+import { AppShell, Flex, ScrollArea, Stack } from "@mantine/core";
 import { Suspense } from "react";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -42,7 +42,9 @@ export default function HomePageLayout({
       </AppShell.Navbar>
 
       <AppShell.Main bg="gray.0" component={ScrollArea}>
-        {children}
+        <Flex justify="center">
+            {children}
+        </Flex>
       </AppShell.Main>
     </AppShell>
   );

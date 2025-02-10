@@ -5,10 +5,11 @@ import { useState } from "react";
 import { Stack } from "@mantine/core";
 import Link from "next/link";
 import NavbarOption from "./navbar-option";
-import { IconHome, IconSourceCode } from "@tabler/icons-react";
+import { IconHome, IconSourceCode, IconSchool } from "@tabler/icons-react";
 
 const linksList = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
+  { link: "/courses", label: "Courses", icon: IconSchool},
   { link: "/playground", label: "Playground", icon: IconSourceCode },
 ];
 

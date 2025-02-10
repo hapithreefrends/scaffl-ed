@@ -4,7 +4,7 @@ import { lazy } from "react";
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Applies the simulated delay
-const LazyCoursesList = lazy(() =>
+const LazyWelcomeText = lazy(() =>
   wait(8000).then(() => import("./welcome-text"))
 );
 
@@ -16,7 +16,7 @@ const mockData = {
 // in reality does the actual fetching
 export default async function WelcomeTextLoader() {
   return (
-    <LazyCoursesList {...mockData}/>
+    <LazyWelcomeText {...mockData}/>
   );
 }
 
