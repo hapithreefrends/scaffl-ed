@@ -11,7 +11,7 @@
 .greetingImage {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 100px;
   width: 350px;
 }
 
@@ -20,7 +20,7 @@
   min-height: 175px;
   position: relative;
   color: white;
-  border-radius: 22px;
+  border-radius: 8px;
   background: var(
     --Gradient-Teal-Purple,
     linear-gradient(
@@ -31,10 +31,12 @@
   );
 }
 
+.textContainer {
+  width: 40%;
+}
+
 @media screen and (max-width: 991) {
-  .greetingText {
-    text-align: center;
-    order: 2;
-    margin-top: 22px;
+  .greetingImage {
+    display: none;
   }
 }

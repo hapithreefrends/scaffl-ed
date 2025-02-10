@@ -25,7 +25,7 @@
   padding: var(--mantine-spacing-lg);
   margin-top: 4vw;
   position: relative;
-  border-radius: 22px;
+  border-radius: 8px;
   background: var(
     --Gradient-Purple,
     linear-gradient(137deg, #b69cd0 -20.62%, #683598 46.34%, #211130 104.55%)

@@ -23,13 +23,13 @@ import "@mantine/carousel/styles.css";
 
 // import { IconContext } from "@phosphor-icons/react";
 
-// import theme from "@/utilities/theme";
+import theme from "@/utilities/theme";
 
 import "./_assets/styles/global.css";
 
-import { Actor, Poppins } from "next/font/google";
-const bodyFont = Actor({ subsets: ["latin"], weight: "400" });
-const headerFont = Actor({ subsets: ["latin"], weight: "400" });
+// import { Actor, Poppins } from "next/font/google";
+// const bodyFont = Actor({ subsets: ["latin"], weight: "400" });
+// const headerFont = Actor({ subsets: ["latin"], weight: "400" });
 // const headerFont = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
@@ -49,18 +49,7 @@ export default function RootLayout({
       </Head>
 
       <body>
-        <MantineProvider theme={
-          {
-            components: {
-              Text: {
-                styles: { root: { fontFamily: bodyFont.style.fontFamily } },
-              },
-              Title: {
-                styles: { root: { fontFamily: headerFont.style.fontFamily } },
-              },
-            },
-          }
-        }>
+        <MantineProvider theme={theme}>
           {children}
         </MantineProvider>
       </body>

@@ -9,12 +9,10 @@ interface welcomeProps {
 export default function WelcomeText({ name, affirmation }: welcomeProps) {
   return (
     <Stack className={classes.textContainer} gap="0">
-    <Title order={1} className={classes.greetingHeader}>Hi {name}!</Title>
-    <Text className={classes.greetingText}>
-      {affirmation}
-    </Text>
-  </Stack>
+      <Title order={1} className={classes.greetingHeader}>
+        Hi {name}!
+      </Title>
+      <Text className={classes.greetingText}>{affirmation}</Text>
+    </Stack>
   );
 }
-
-

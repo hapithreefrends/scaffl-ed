@@ -1,41 +1,31 @@
-'use client';
-
-import {
-  Card,
-  Divider,
-  Image,
-  Group,
-  Button,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Button, Card, Group, Image, Progress, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import classes from "../../_styles/courses-card.module.css";
 
-interface CourseCardProps {
+interface CourseCardPreviewProps {
   id: number;
   picture: string | undefined;
   title: string;
   level: string;
   description: string;
   href: string;
+  progress: number;
 }
 
-export default function CourseCard({
+export default function CourseCardPreview({
   id,
   picture,
   title,
   level,
-  description,
   href,
-}: CourseCardProps) {
+  progress,
+}: CourseCardPreviewProps) {
   return (
     <Card
       className={classes.card}
       withBorder
       radius="md"
       w={335}
-      h={335}
       component="a"
       href={href}
       p={24}
@@ -46,11 +36,13 @@ export default function CourseCard({
       <Title lineClamp={1} order={3} mb={12}>
         {title}
       </Title>
-      <Title lineClamp={1} order={4} mb={12}>
+      <Title w={"fit-content"} bg={level === "beginner" ? "green.6": level === "intermediate" ? "yellow.6" : "red.6"} lineClamp={1} order={6} mb={12}>
         {level}
       </Title>
-      <Text lineClamp={4} mb={12}>{description}</Text>
-      <Divider />
+      <Group>
+        <Progress className={classes.progressBar} color="teal.6" value={progress} />
+        <Title order={5}>{progress}%</Title>
+      </Group>
       <Group justify="flex-end" mt={12}>
         <Button radius={8} className={classes.learn}>
           {<IconArrowRight />}

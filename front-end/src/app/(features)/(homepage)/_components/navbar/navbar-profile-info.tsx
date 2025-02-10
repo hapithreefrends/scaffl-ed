@@ -1,21 +1,24 @@
-import { Stack, Image, Title, Text } from "@mantine/core";
+import { Flex, Stack, Image, Title, Text } from "@mantine/core";
+import classes from '../../_styles/navbar-profile.module.css'
 
 interface NavbarProfileProps {
   name: string;
   avatar: string;
   honor: string;
+  href: string;
 }
 
 export default function NavbarProfile({
   name,
   avatar,
   honor,
+  href,
 }: NavbarProfileProps) {
   return (
-    <Stack align="center" gap="22">
+    <Flex direction="column" className={classes.profileContainer} align="center" gap="8" component="a" href={href}>
       <Image
-        h={56}
-        w={56}
+        h={72}
+        w={72}
         radius="50%"
         src={avatar}
         alt={name}
@@ -27,6 +30,6 @@ export default function NavbarProfile({
         </Title>
         <Text ta="center">{honor}</Text>
       </Stack>
-    </Stack>
+    </Flex>
   );
 }

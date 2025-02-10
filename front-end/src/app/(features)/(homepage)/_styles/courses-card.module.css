@@ -16,3 +16,7 @@
 .card:hover .learn {
   background-color: var(--mantine-color-teal-9);
 }
+
+.progressBar {
+  flex: 1;
+}
