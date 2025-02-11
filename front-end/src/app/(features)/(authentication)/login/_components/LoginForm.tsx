@@ -1,18 +1,30 @@
+'use client';
+
+import { createClient } from '@/utilities/supabase/client';
+
 import {
   Button,
-  Checkbox,
-  Group,
   TextInput,
-  Paper,
-  Box,
   Flex,
-  PasswordInput,
+  PasswordInput
 } from "@mantine/core";
+
+import { notifications } from '@mantine/notifications';
+
 import { useForm } from "@mantine/form";
-import { IconAt, IconEye, IconLock } from "@tabler/icons-react";
+import { IconAt, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function LoginForm() {
+  const supabase = createClient();
+
+  async function signInWithEmail(email: string, password: string) {
+    return await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+  }
+
   const [visible, { toggle }] = useDisclosure(false);
 
   const form = useForm({
@@ -32,7 +44,23 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          console.log(values);
+          const { data, error } = await signInWithEmail(values.email, values.password);
+
+          if (error) {
+            notifications.show({
+              title: 'Error',
+              message: error.message,
+              color: 'red',
+            });
+
+            console.log(error);
+          } else {
+            notifications.show({
+              title: 'Success',
+              message: `Logged in successfully!`,
+              color: 'green',
+            });
+          }
         })}
       >
         <Flex direction="column" style={{ flex: 1 }}>

@@ -1,11 +1,14 @@
 'use client';
 
-import loginImage from './_assets/loginImage.png';
-import { Button, Checkbox, Group, TextInput, Paper, Box, Flex } from '@mantine/core';
-import Login  from './_components/Login';
-import logo from './_assets/logo.png';
+import { Flex } from '@mantine/core';
 
-export default function page() {
+import { Notifications } from '@mantine/notifications';
+
+import logo from './_assets/logo.png';
+import loginImage from './_assets/loginImage.png';
+import Login from './_components/Login';
+
+export default function LoginPage() {
   return (
     <div style={{ 
       backgroundColor: 'teal', 
@@ -15,6 +18,7 @@ export default function page() {
       alignItems: 'center', 
       padding: '20px' 
     }}>
+      <Notifications />
       <Flex 
         align="center" 
         justify="center" 
