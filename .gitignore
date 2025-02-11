@@ -3,4 +3,5 @@ node_modules/*
 .next
 .next/*
 .DS_Store
-
+.idx
+.idx/*

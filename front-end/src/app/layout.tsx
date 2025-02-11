@@ -3,7 +3,8 @@ import Head from "next/head";
 
 import React from "react";
 
-import {ColorSchemeScript, mantineHtmlProps, MantineProvider} from '@mantine/core';
+import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+
 import '@mantine/core/styles.css';
 // import '@mantine/form/styles.css';
 import '@mantine/dates/styles.css';
