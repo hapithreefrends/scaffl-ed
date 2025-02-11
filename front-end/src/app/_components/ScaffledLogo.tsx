@@ -1,3 +1,7 @@
+
+import { ReactSVG } from 'react-svg';
+import { rem } from '@mantine/core';
+
 import styles from './ScaffledLogo.module.css';
 
 import logoFullOriginal from '@/app/_assets/images/logos/full/logo-full-original.svg';
@@ -21,47 +25,46 @@ import logoTextWhite from '@/app/_assets/images/logos/text/logo-text-white.svg';
 type LogoVariant = 'full' | 'icon' | 'text';
 type LogoColor = 'original' | 'flat' | 'violet' | 'teal' | 'white';
 
-const getLogos = (): Record<LogoVariant, Record<LogoColor, string>> => ({
+const getLogos = () => ({
   full: {
-    original: logoFullOriginal.src,
-    flat: logoFullFlat.src,
-    violet: logoFullViolet.src,
-    teal: logoFullTeal.src,
-    white: logoFullWhite.src,
+    original: logoFullOriginal,
+    flat: logoFullFlat,
+    violet: logoFullViolet,
+    teal: logoFullTeal,
+    white: logoFullWhite,
   },
   icon: {
-    original: logoIconOriginal.src,
-    flat: logoIconFlat.src,
-    violet: logoIconViolet.src,
-    teal: logoIconTeal.src,
-    white: logoIconWhite.src,
+    original: logoIconOriginal,
+    flat: logoIconFlat,
+    violet: logoIconViolet,
+    teal: logoIconTeal,
+    white: logoIconWhite,
   },
   text: {
-    original: logoTextOriginal.src,
-    flat: logoTextOriginal.src, // No flat version, default to original
-    violet: logoTextViolet.src,
-    teal: logoTextTeal.src,
-    white: logoTextWhite.src,
+    original: logoTextOriginal,
+    flat: logoTextOriginal, // No flat version, default to original
+    violet: logoTextViolet,
+    teal: logoTextTeal,
+    white: logoTextWhite,
   },
 });
 
 export interface ScaffledLogoProps {
+  size: number;
   variant: LogoVariant;
   color: LogoColor;
 }
 
-export default function ScaffledLogo({ variant, color, ...props }: ScaffledLogoProps) {
+export default function ScaffledLogo({ size, variant, color, ...props }: ScaffledLogoProps) {
   const logos = getLogos();
-  const src = logos[variant]?.[color] ?? logos.full.original; // Fallback to "full original" if invalid
+  const image = logos[variant]?.[color] ?? logos.full.original; // Fallback to "full original" if invalid
 
   return (
-    <div className={styles.container}>
-      <img
-        className={styles.image}
-        src={src}
-        alt={`${variant} logo in ${color}`}
-        {...props}
-      />
-    </div>
+    <ReactSVG
+      style={{ height: rem(size) }}
+      className={styles.image}
+      src={image.src}
+      {...props}
+    />
   );
 }
