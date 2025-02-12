@@ -10,7 +10,7 @@ const mockData = [
     level: "intermediate",
     description:
       "Take your React skills further by diving into application development, where you’ll learn to design, build, and deploy complete React applications. ",
-    href: "",
+    href: "/courses/1",
     progress: 50
   },
   {

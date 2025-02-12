@@ -36,11 +36,11 @@ export default function CourseCardPreview({
       <Title lineClamp={1} order={3} mb={12}>
         {title}
       </Title>
-      <Title w={"fit-content"} bg={level === "beginner" ? "green.6": level === "intermediate" ? "yellow.6" : "red.6"} lineClamp={1} order={6} mb={12}>
+      <Title c={"white"} size={12} className={classes.difficulty} py={2} px={4} w={"fit-content"}  bg={level === "beginner" ? "green.6": level === "intermediate" ? "yellow.6" : "red.6"} lineClamp={1} order={6} mb={12}>
         {level}
       </Title>
       <Group>
-        <Progress className={classes.progressBar} color="teal.6" value={progress} />
+        <Progress className={classes.progressBar} color="violet.6" value={progress} />
         <Title order={5}>{progress}%</Title>
       </Group>
       <Group justify="flex-end" mt={12}>

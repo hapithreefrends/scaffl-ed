@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import Head from "next/head";
+import Providers from "./providers";
 
 import React from "react";
 
@@ -49,9 +50,9 @@ export default function RootLayout({
       </Head>
 
       <body>
-        <MantineProvider theme={theme}>
-          {children}
-        </MantineProvider>
+        <Providers>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+        </Providers>
       </body>
     </html>
   );

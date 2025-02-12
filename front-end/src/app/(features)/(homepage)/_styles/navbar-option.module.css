@@ -4,6 +4,7 @@
 }
 
 .navbarOptionInactive:hover{
+    border-radius: 8px;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 
@@ -12,6 +13,7 @@
 .navbarOptionActive{
     /* background-color: lightgreen; */
     /* color: darkgreen; */
+    border-radius: 8px;
     background-color: var(--mantine-color-teal-light);
     color: var(--mantine-color-teal-light-color);
 }
