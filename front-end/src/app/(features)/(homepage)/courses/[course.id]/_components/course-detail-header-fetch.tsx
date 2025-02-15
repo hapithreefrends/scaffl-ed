@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
 import CourseDetailHeader from "./course-detail-header";
 import { CourseDetailHeaderProps } from "./course-detail-header";
 import { useSuspenseQuery } from "@tanstack/react-query";
+
+import courseImage from "../_assets/scaffy-shrug.png"
 
 // parameter to course detail fetching
 // no real life implementation yet
@@ -18,7 +20,8 @@ const fetchCourseHeader = async (
   return {
     title: "Java for Beginners",
     description:
-      "Java is a powerful, versatile programming language known for its “write once, run anywhere” capability. It’s widely used across various industries to develop applications ranging from mobile and desktop applications to large-scale enterprise systems. Java’s object-oriented structure allows developers to create modular, reusable code, making it easier to maintain and scale applications over time. Known for its reliability, security, and cross-platform compatibility, Java is a top choice for applications that demand high performance and stability. With extensive libraries and a vibrant community, Java remains a foundational language for both beginners and experienced developers.",
+      "Java is a versatile, object-oriented language known for its “write once, run anywhere” capability. Used in mobile, desktop, and enterprise applications, it offers reliability, security, and cross-platform compatibility. Its modular structure simplifies maintenance and scaling, while extensive libraries and a strong community make it ideal for developers of all levels.",
+    image: courseImage.src,
   };
 };
 
@@ -26,10 +29,12 @@ const fetchCourseHeader = async (
 export default function CourseDetailHeaderLoader({
   id,
 }: CourseDetailHeaderFetchProps) {
-    const { data : course } = useSuspenseQuery({
-        queryKey: ["course", id],
-        queryFn: () => fetchCourseHeader(id),
-    });
+  const { data: course } = useSuspenseQuery({
+    queryKey: ["course", id],
+    queryFn: () => fetchCourseHeader(id),
+  });
 
-    return  (<CourseDetailHeader title={course.title} description={course.description}/>)
+  return (
+    <CourseDetailHeader title={course.title} description={course.description} image={course.image} />
+  );
 }

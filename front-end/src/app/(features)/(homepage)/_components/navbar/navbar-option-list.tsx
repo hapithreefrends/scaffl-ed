@@ -29,7 +29,7 @@ export default function NavbarLinks() {
           <NavbarOption
             label={link.label}
             icon={link.icon}
-            isActive={active === link.link}
+            isActive={pathname.startsWith(link.link)}
           />
         </Link>
       ))}
