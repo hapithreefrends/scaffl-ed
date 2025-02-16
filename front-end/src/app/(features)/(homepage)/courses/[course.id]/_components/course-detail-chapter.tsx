@@ -11,17 +11,17 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCaretUp, IconCaretDown } from "@tabler/icons-react";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import classes from "../_styles/course-detail-chapter.module.css";
+import { useDisclosure } from "@mantine/hooks";
 
 interface CourseChapterPreviewProps {
   id: string;
 }
 
 export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
-  const [opened, setOpen] = useState(true);
+  const [opened, {toggle}] = useDisclosure(true);
   const { data: chapter } = useChapter(id);
-  console.log(opened);
   return (
     <Paper className={classes.chapterContainer} radius="md" p="xl" shadow="sm">
       <Stack>
@@ -30,19 +30,18 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
           <Progress value={chapter.progress} />
         </Group>
         <Text>{chapter.description}</Text>
-        <Divider />
+        <Divider bg="gray.6" h="1" w="100%"/>
         <Group justify="space-between">
-          <Group component="button" onClick={() => setOpen((prev) => !prev)}>
-            <Title order={4}>Hide Chapter Details</Title>
+          <Group className={classes.toggleChapterDetails} component="button" onClick={toggle}>
+            <Title className={classes.toggleChapterDetailsText} order={4}>{opened ? "Hide" : "Show"} Chapter Details</Title>
             {opened ? <IconCaretUp /> : <IconCaretDown />}
           </Group>
         </Group>
         <Collapse in={opened}>
-          Text
           <Stack gap="md">
             <Suspense fallback={<h3>LOADING....</h3>}>
               {chapter.modules.map((module) => (
-                <ChapterContent id={module} />
+                <ChapterContent key={module} id={module} />
               ))}
             </Suspense>
           </Stack>

@@ -28,3 +28,18 @@
   font-weight: normal;
   color: var(--mantine-color-gray-6);
 }
+
+.toggleChapterDetails {
+    border: none;
+    background: transparent;
+    color: var(--mantine-color-violet-6);
+    cursor: pointer;
+}
+
+.toggleChapterDetails:hover {
+    text-decoration: underline;
+}
+
+.toggleChapterDetailsText {
+    font-weight: normal;
+}

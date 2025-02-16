@@ -13,16 +13,18 @@ interface CourseDetailParamsProps {
   id: string;
 }
 
-export default function CourseDetails({ id }: CourseDetailParamsProps) {
-  const { data: chapterList } = useChapterList(id);
-  const [opened, { toggle }] = useDisclosure();
-  // const [state, setState] = useState(0);
+export default function CourseDetailTopLevel({ id }: CourseDetailParamsProps) {
+  return (
+    <Suspense fallback={<h1>LOADING MAIN...</h1>}>
+      <CourseDetails id={id}/>
+    </Suspense>
+  );
+}
 
+function CourseDetails({ id }: CourseDetailParamsProps) {
+  const { data: chapterList } = useChapterList(id);
   return (
     <Stack p="lg">
-      {/* <Button onClick={() => setState(state + 1)}>{state}</Button>
-      <Button onClick={toggle}>CLICK ME</Button>
-      <Collapse in={opened}></Collapse> */}
       <Suspense fallback={<h1>LOADING</h1>}>
         <CourseDetailHeaderLoader id={id} />
       </Suspense>
@@ -35,7 +37,7 @@ export default function CourseDetails({ id }: CourseDetailParamsProps) {
       </Stack>
       <Suspense fallback={<h1>LOADING...</h1>}>
         {chapterList.map((chapter) => (
-          <CourseDetailChapter id={chapter.id} />
+          <CourseDetailChapter key={chapter.id} id={chapter.id} />
         ))}
       </Suspense>
     </Stack>
