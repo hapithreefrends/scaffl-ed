@@ -1,21 +1,23 @@
 "use client";
 
 import CourseDetailHeaderLoader from "./_components/course-detail-header-fetch";
-import { Button, Collapse, Group, Stack, Title } from "@mantine/core";
-import { Suspense, useEffect, useState } from "react";
-import { IconBook } from "@tabler/icons-react";
+import CourseDetailChapterSkeleton from "./_components/loading-skeletons/course-detail-chapter-skeleton";
+import CourseDetailHeaderSkeleton from "./_components/loading-skeletons/course-detail-header-skeleton";
 import CourseDetailChapter from "./_components/course-detail-chapter";
-import { useDisclosure } from "@mantine/hooks";
 import useChapterList from "./hooks/use-chapter-list";
-import { useMemo } from "react";
+import { Group, Stack, Title } from "@mantine/core";
+import { createContext, Suspense } from "react";
+import { IconBook } from "@tabler/icons-react";
 
 interface CourseDetailParamsProps {
   id: string;
 }
 
+export const CourseIdContext = createContext<string | null>(null);
+
 export default function CourseDetailTopLevel({ id }: CourseDetailParamsProps) {
   return (
-    <Suspense fallback={<h1>LOADING MAIN...</h1>}>
+    <Suspense fallback={<h1>LOADING...</h1>}>
       <CourseDetails id={id}/>
     </Suspense>
   );
@@ -24,8 +26,9 @@ export default function CourseDetailTopLevel({ id }: CourseDetailParamsProps) {
 function CourseDetails({ id }: CourseDetailParamsProps) {
   const { data: chapterList } = useChapterList(id);
   return (
-    <Stack p="lg">
-      <Suspense fallback={<h1>LOADING</h1>}>
+    <CourseIdContext.Provider value={id}>
+    <Stack w="100%" p="lg">
+      <Suspense fallback={<CourseDetailHeaderSkeleton/>}>
         <CourseDetailHeaderLoader id={id} />
       </Suspense>
 
@@ -35,11 +38,12 @@ function CourseDetails({ id }: CourseDetailParamsProps) {
           <Title order={2}>Chapters</Title>
         </Group>
       </Stack>
-      <Suspense fallback={<h1>LOADING...</h1>}>
+      <Suspense fallback={<CourseDetailChapterSkeleton/>}>
         {chapterList.map((chapter) => (
           <CourseDetailChapter key={chapter.id} id={chapter.id} />
         ))}
       </Suspense>
     </Stack>
+    </CourseIdContext.Provider>
   );
 }

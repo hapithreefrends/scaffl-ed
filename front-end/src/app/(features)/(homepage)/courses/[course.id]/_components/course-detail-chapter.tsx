@@ -10,9 +10,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import classes from "../_styles/course-detail-chapter.module.css";
+import ChapterContentSkeleton from "./loading-skeletons/chapter-content-skeleton";
 import { IconCaretUp, IconCaretDown } from "@tabler/icons-react";
 import { Suspense } from "react";
-import classes from "../_styles/course-detail-chapter.module.css";
 import { useDisclosure } from "@mantine/hooks";
 
 interface CourseChapterPreviewProps {
@@ -39,7 +40,7 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
         </Group>
         <Collapse in={opened}>
           <Stack gap="md">
-            <Suspense fallback={<h3>LOADING....</h3>}>
+            <Suspense fallback={<ChapterContentSkeleton/>}>
               {chapter.modules.map((module) => (
                 <ChapterContent key={module} id={module} />
               ))}

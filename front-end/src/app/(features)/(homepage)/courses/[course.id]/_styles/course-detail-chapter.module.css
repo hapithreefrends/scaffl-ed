@@ -43,3 +43,12 @@
 .toggleChapterDetailsText {
     font-weight: normal;
 }
+
+.container {
+    text-decoration: none;
+    color: var(--mantine-color-gray-8);
+}
+
+.container:hover {
+    color: var(--mantine-color-violet-6);
+}
