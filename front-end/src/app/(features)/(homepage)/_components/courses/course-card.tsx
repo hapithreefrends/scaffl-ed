@@ -13,7 +13,7 @@ import { IconArrowRight } from "@tabler/icons-react";
 import classes from "../../_styles/courses-card.module.css";
 
 interface CourseCardProps {
-  id: number;
+  id: string;
   picture: string | undefined;
   title: string;
   level: string;

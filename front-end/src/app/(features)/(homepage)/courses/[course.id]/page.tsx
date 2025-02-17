@@ -16,6 +16,7 @@ interface CourseDetailParamsProps {
 export const CourseIdContext = createContext<string | null>(null);
 
 export default function CourseDetailTopLevel({ id }: CourseDetailParamsProps) {
+    console.log("ID top level: " + id);
   return (
     <Suspense fallback={<h1>LOADING...</h1>}>
       <CourseDetails id={id}/>
@@ -24,6 +25,7 @@ export default function CourseDetailTopLevel({ id }: CourseDetailParamsProps) {
 }
 
 function CourseDetails({ id }: CourseDetailParamsProps) {
+    console.log("ID: " + id);
   const { data: chapterList } = useChapterList(id);
   return (
     <CourseIdContext.Provider value={id}>

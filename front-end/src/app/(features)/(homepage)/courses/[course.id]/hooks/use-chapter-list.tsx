@@ -5,13 +5,18 @@ const mockChapterList = [
     {id: "2"},
 ]
 
+const mockChapterList2 = [
+    {id: "3"},
+    {id: "4"},
+]
+
 export default function useChapterList(courseid: string) {
     return useSuspenseQuery({
         queryKey: ["courseid", courseid],
         queryFn: async () => {
             await new Promise((resolve) => setTimeout(resolve, 2000)) 
 
-            return mockChapterList
+            return courseid === "1" ? mockChapterList : mockChapterList2;
         }
     })
 }

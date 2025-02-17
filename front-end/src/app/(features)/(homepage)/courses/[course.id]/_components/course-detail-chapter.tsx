@@ -28,7 +28,7 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
       <Stack>
         <Group>
           <Title order={3}>{chapter.name}</Title>
-          <Progress value={chapter.progress} />
+          {/* <Progress w="200" value={chapter.progress} /> */}
         </Group>
         <Text>{chapter.description}</Text>
         <Divider bg="gray.6" h="1" w="100%"/>
