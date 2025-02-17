@@ -1,6 +1,6 @@
-import CoursesListPreviewLoader from "../../../_components/courses/courses-list-preview-fetch";
+import CoursesListPreviewLoader from "../../../courses/_components/courses/courses-list-preview-fetch";
 import { Suspense } from "react";
-import CoursesCardListSkeleton from "../../../_components/courses/courses-card-list-skeleton";
+import CoursesCardListSkeleton from "../../../courses/_components/courses/courses-card-list-skeleton";
 import { Stack, Title } from "@mantine/core";
 
 export default function CoursesSummary() {

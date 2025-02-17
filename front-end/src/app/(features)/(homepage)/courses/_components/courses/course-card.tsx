@@ -1,5 +1,6 @@
 'use client';
 
+import classes from "../../_styles/courses-card.module.css";
 import {
   Card,
   Divider,
@@ -10,15 +11,15 @@ import {
   Title,
 } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import classes from "../../_styles/courses-card.module.css";
+import Link from "next/link";
 
 interface CourseCardProps {
   id: string;
   picture: string | undefined;
   title: string;
   level: string;
-  description: string;
-  href: string;
+  description: string,
+  href: string
 }
 
 export default function CourseCard({
@@ -27,17 +28,18 @@ export default function CourseCard({
   title,
   level,
   description,
-  href,
+  href
 }: CourseCardProps) {
+  console.log("COURSE ID: " + id)
+
   return (
+    <Link className={classes.container} href={href}>
     <Card
       className={classes.card}
       withBorder
       radius="md"
       w={335}
       h={335}
-      component="a"
-      href={href}
       p={24}
     >
       <Group justify="flex-start" mb={12}>
@@ -58,5 +60,6 @@ export default function CourseCard({
         </Button>
       </Group>
     </Card>
+    </Link>
   );
 }

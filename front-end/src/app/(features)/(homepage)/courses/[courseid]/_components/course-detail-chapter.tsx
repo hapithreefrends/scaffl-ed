@@ -1,4 +1,4 @@
-import useChapter from "../hooks/use-chapters";
+import useChapter from "../_hooks/use-chapters";
 import ChapterContent from "./chapter-content";
 import {
   Collapse,

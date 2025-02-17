@@ -16,7 +16,7 @@ export default function useChapterList(courseid: string) {
         queryFn: async () => {
             await new Promise((resolve) => setTimeout(resolve, 2000)) 
 
-            return courseid === "1" ? mockChapterList : mockChapterList2;
+            return courseid === "1" ? mockChapterList : courseid === "2" ? mockChapterList2 : [{},{}];
         }
     })
 }

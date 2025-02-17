@@ -1,6 +1,6 @@
 import { Button, Card, Group, Image, Progress, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import classes from "../../_styles/courses-card.module.css";
+import classes from "../../_styles/courses-card-preview.module.css";
 
 interface CourseCardPreviewProps {
   id: number;

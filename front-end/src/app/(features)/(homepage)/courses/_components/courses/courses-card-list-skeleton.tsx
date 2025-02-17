@@ -1,4 +1,4 @@
-import CourseCardSkeleton from "./course-card-skeleton";
+import CourseCardSkeleton from "../../../_components/courses/course-card-skeleton";
 import { Flex } from "@mantine/core";
 
 export default function CoursesCardListSkeleton() {

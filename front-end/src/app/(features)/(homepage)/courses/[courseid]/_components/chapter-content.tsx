@@ -1,4 +1,4 @@
-import useContent from "../hooks/use-content";
+import useContent from "../_hooks/use-content";
 import classes from "../_styles/course-detail-chapter.module.css";
 import Link from "next/link";
 import { useContext } from "react";

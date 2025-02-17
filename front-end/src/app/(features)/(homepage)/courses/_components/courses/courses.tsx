@@ -1,6 +1,6 @@
 import CourseGreetings from "./courses-greeting";
-import CoursesListLoader from "../../../_components/courses/courses-list-fetch";
-import CoursesCardListSkeleton from "../../../_components/courses/courses-card-list-skeleton";
+import CoursesListLoader from "./courses-list-fetch";
+import CoursesCardListSkeleton from "./courses-card-list-skeleton";
 import { Suspense } from "react";
 import { Stack } from "@mantine/core";
 
