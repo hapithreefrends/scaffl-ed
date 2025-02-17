@@ -11,3 +11,7 @@
     );
   }
 }
+
+.container {
+  overflow: clip;
+}

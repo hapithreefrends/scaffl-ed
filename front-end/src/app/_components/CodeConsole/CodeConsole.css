@@ -1,0 +1,6 @@
+/* Needed to override terminal height and code editor height */
+
+.terminal, .cm-theme-light, .cm-theme-dark, .cm-editor {
+    height: 100%;
+}
+

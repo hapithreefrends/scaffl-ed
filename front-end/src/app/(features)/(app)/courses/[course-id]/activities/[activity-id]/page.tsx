@@ -1,47 +1,88 @@
 'use client';
 
-import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Title, Text, Paper, Group, Stack, } from '@mantine/core';
+import { CodeHighlight } from '@mantine/code-highlight';
+import { useElementSize } from '@mantine/hooks';
+
+import { Split } from '@gfazioli/mantine-split-pane';
+
+import CodeEditor from '@/app/_components/CodeEditor/CodeEditor';
+import CodeConsole from '@/app/_components/CodeConsole/CodeConsole';
+
 import classes from './page.module.css';
-import ScaffledLogo from '@/app/_components/ScaffledLogo';
 
 export default function Page() {
-    const [opened, { toggle }] = useDisclosure();
+    const { ref, height } = useElementSize();
+
+    const mockData = {
+        problemDescription: {
+            title: "Hello, Scaffy!",
+            description: `
+            Welcome to your first task on scaffl.ed! Imagine you’re building a friendly virtual assistant that will greet users with a personalized message. However, the code your friend gave you is full of tiny bugs!
+
+Your goal is to fix this code so it correctly asks for the user's name and greets them properly. By the end, your virtual assistant will be able to say hello to anyone who uses it, just as it was meant to!
+
+Help your virtual assistant come to life by fixing the errors in the code. After debugging, it should ask for the user's name and print a warm greeting like:
+            `,
+            exampleCode: `
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, Scaffy!");
+    }
+}
+            `
+        },
+        problem: {
+            initialCode: `
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, Scaffy!");
+    }
+}
+            `,
+            testCases: {
+
+            }
+        }
+    }
 
     return (
-        <AppShell
-            header={{ height: 60 }}
-            navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
-            padding="md"
-        >
-            <AppShell.Header>
-                <Group h="100%" px="md">
-                    <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                    <Group justify="space-between" style={{ flex: 1 }}>
-                        <ScaffledLogo variant='full' color='original' />
-                             
-                        <Group ml="xl" gap={0} visibleFrom="sm">
-                            <UnstyledButton className={classes.control}>Home</UnstyledButton>
-                            <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-                            <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-                            <UnstyledButton className={classes.control}>Support</UnstyledButton>
-                        </Group>
-                    </Group>
-                </Group>
-            </AppShell.Header>
+        <Group mih="100vh" mah="100vh" align='stretch'>
+            <Stack flex={1}>
+                <Paper>
+                    <Title>
+                        {mockData.problemDescription.title}
+                    </Title>
 
-            <AppShell.Navbar py="md" px={4}>
-                <UnstyledButton className={classes.control}>Home</UnstyledButton>
-                <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-                <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-                <UnstyledButton className={classes.control}>Support</UnstyledButton>
-            </AppShell.Navbar>
+                    <Text>
+                        {mockData.problemDescription.description}
+                    </Text>
 
-            <AppShell.Main>
-                Navbar is only visible on mobile, links that are rendered in the header on desktop are
-                hidden on mobile in header and rendered in navbar instead.
-                <ScaffledLogo variant='full' color='original' />
-            </AppShell.Main>
-        </AppShell>
+                    <CodeHighlight
+                        code={mockData.problemDescription.exampleCode}
+                        language="java"
+                        copyLabel="Copy button code"
+                        copiedLabel="Copied!" />;
+                </Paper>
+            </Stack>
+
+            <Group align='stretch' flex={2}>
+                <Split flex={1} orientation="horizontal" mah="100vh" spacing="md">
+                    <Split.Pane initialHeight="50%">
+                        <Paper className={classes.container} withBorder w="100%" h="100%" radius="md">
+                            <CodeEditor
+                                initialContent={mockData.problem.initialCode}
+                            />
+                        </Paper>
+                    </Split.Pane>
+
+                    <Split.Pane grow>
+                        <Paper ref={ref} className={classes.container} withBorder w="100%" h="100%" radius="md">
+                            <CodeConsole height={height} />
+                        </Paper>
+                    </Split.Pane>
+                </Split>
+            </Group>
+        </Group>
     );
 }
