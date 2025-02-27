@@ -12,19 +12,24 @@ import { useForm } from "@mantine/form";
 import { IconAt, IconEye, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
-export default function LoginForm() {
-  const [visible, { toggle }] = useDisclosure(false);
+export default function SignupForm() {
+  const [isVisiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
+  const [isVisibleConfirmPassword, { toggle: toggleVisibleConfirmPassword }] = useDisclosure(false);
+  
 
   const form = useForm({
     initialValues: {
       email: "",
       password: "",
+      confirmPassword: ""
     },
     validate: {
       email: (value) =>
         /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email format",
       password: (value) =>
         value.length >= 6 ? null : "Password must be at least 6 characters",
+      confirmPassword: (value, values) =>
+        value === values.password ? null : "Password is not the same",
     },
   });
 
@@ -53,11 +58,27 @@ export default function LoginForm() {
             required
             leftSection={<IconLock size={18} />}
             // rightSection={<IconEye size={18} />}
-            visible={visible}
-            onVisibilityChange={toggle}
+            visible={isVisiblePassword}
+            onVisibilityChange={toggleVisiblePassword}
             pb="sm"
             {...form.getInputProps("password")}
           />
+
+          { 
+            <PasswordInput
+              display={form.getDirty().password ? "block" : "none"}
+              withAsterisk
+              label="Confirm Password"
+              placeholder="***********"
+              required
+              leftSection={<IconLock size={18} />}
+              // rightSection={<IconEye size={18} />}
+              visible={isVisibleConfirmPassword}
+              onVisibilityChange={toggleVisibleConfirmPassword}
+              pb="sm"
+              {...form.getInputProps("confirmPassword")}
+            />
+          }
         </Flex>
         <Flex pt="lg">
           <Button color="purple" size="md" radius="sm" type="submit">
