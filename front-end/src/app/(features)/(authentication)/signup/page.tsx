@@ -2,6 +2,9 @@
 
 import { useMediaQuery } from '@mantine/hooks';
 import { Flex } from '@mantine/core';
+
+import { Notifications } from '@mantine/notifications';
+
 import signupImage from './_assets/loginImage.png';
 import Signup from './_components/Signup';
 import logo from './_assets/logo.png';
@@ -20,6 +23,7 @@ export default function Page() {
         padding: '20px',
       }}
     >
+      <Notifications />
       <Flex
         align="center"
         justify="center"
