@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import LoginForm from './LoginForm';
 import { Text, Button, Checkbox, Group, TextInput, Paper, Box, Flex } from '@mantine/core';
 
@@ -7,7 +8,13 @@ export default function Login() {
         <Text size="xl" style={{ fontWeight: 'bold',
 }}>Sign-Up</Text>
         <LoginForm/>
-        <Text size="xs" >Do you have an account? Log in</Text>
+        <Text size="xs" >Do you have an account?{' '}
+          <Link href="./login">
+            <Text component="a" color="blue" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+              Log in
+            </Text>
+          </Link>
+        </Text>
       </Flex>
   </>;
 }
