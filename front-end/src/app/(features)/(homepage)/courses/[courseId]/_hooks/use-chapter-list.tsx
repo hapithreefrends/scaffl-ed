@@ -1,22 +1,26 @@
-import { useSuspenseQuery } from "@tanstack/react-query"
-
-const mockChapterList = [
-    {id: "1"},
-    {id: "2"},
-]
-
-const mockChapterList2 = [
-    {id: "3"},
-    {id: "4"},
-]
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createClient } from "@/utilities/supabase/client";
 
 export default function useChapterList(courseId: string) {
-    return useSuspenseQuery({
-        queryKey: ["courseId", courseId],
-        queryFn: async () => {
-            await new Promise((resolve) => setTimeout(resolve, 2000)) 
+  return useSuspenseQuery({
+    queryKey: ["courses", courseId, "chapters"],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("Chapter")
+        .select(
+          `
+                *
+            `
+        )
+        .eq("course_id", courseId)
+        .order("chapter_number", { ascending: true });
 
-            return courseId === "1" ? mockChapterList : mockChapterList2;
-        }
-    })
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+    },
+  });
 }

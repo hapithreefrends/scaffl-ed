@@ -2,6 +2,8 @@
 
 import { createClient } from '@/utilities/supabase/client';
 
+import { useRouter } from 'next/navigation';
+
 import {
   Button,
   TextInput,
@@ -16,6 +18,7 @@ import { IconAt, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function LoginForm() {
+  const router = useRouter();  
   const supabase = createClient();
 
   async function signInWithEmail(email: string, password: string) {
@@ -60,6 +63,8 @@ export default function LoginForm() {
               message: `Logged in successfully!`,
               color: 'green',
             });
+
+            router.push('/dashboard');
           }
         })}
       >

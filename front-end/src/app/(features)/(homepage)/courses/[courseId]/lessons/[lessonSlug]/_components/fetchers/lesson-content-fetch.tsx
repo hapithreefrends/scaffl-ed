@@ -14,18 +14,22 @@ interface LessonContentLoaderProps {
 const fetchLessonContentData = async (courseId: string, lessonSlug: string) => {
   const supabase = createClient();
 
+  console.log(courseId, lessonSlug);
+
   const { data, error } = await supabase
     .from("ActivityLesson")
     .select(
       `
         *,
-        ...Chapter(course_id)
+        ...Chapter!inner(course_id)
       `
     )
     .eq("Chapter.course_id", courseId)
     .eq("slug", lessonSlug)
     .limit(1)
     .single();
+  
+    
 
   if (error) {
     throw new Error(error.message);
@@ -42,8 +46,6 @@ export default function LessonContentLoader({
     queryKey: ["lesson", courseId, lessonSlug],
     queryFn: () => fetchLessonContentData(courseId, lessonSlug),
   });
-
-  console.log(data);
 
   return <LessonContent name={data?.name} description={data?.description} htmlContent={data?.content} />;
 }

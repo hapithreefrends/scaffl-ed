@@ -5,7 +5,6 @@ import {
   Divider,
   Group,
   Paper,
-  Progress,
   Stack,
   Text,
   Title,
@@ -23,14 +22,15 @@ interface CourseChapterPreviewProps {
 export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
   const [opened, {toggle}] = useDisclosure(true);
   const { data: chapter } = useChapter(id);
+
   return (
     <Paper className={classes.chapterContainer} radius="md" p="xl" shadow="sm">
       <Stack>
         <Group>
-          <Title order={3}>{chapter.name}</Title>
+          <Title order={3}>{chapter?.name}</Title>
           {/* <Progress w="200" value={chapter.progress} /> */}
         </Group>
-        <Text>{chapter.description}</Text>
+        <Text>{chapter?.description}</Text>
         <Divider bg="gray.6" h="1" w="100%"/>
         <Group justify="space-between">
           <Group className={classes.toggleChapterDetails} component="button" onClick={toggle}>
@@ -41,8 +41,8 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
         <Collapse in={opened}>
           <Stack gap="md">
             <Suspense fallback={<ChapterContentSkeleton/>}>
-              {chapter.modules.map((module) => (
-                <ChapterContent key={module} id={module} />
+              {chapter?.modules?.map((module, index) => (
+                <ChapterContent key={index} id={module.id} />
               ))}
             </Suspense>
           </Stack>

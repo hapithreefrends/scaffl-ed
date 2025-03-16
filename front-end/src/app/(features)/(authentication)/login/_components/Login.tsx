@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import LoginForm from './LoginForm';
-import { Text, Button, Checkbox, Group, TextInput, Paper, Box, Flex } from '@mantine/core';
+import { Text, Flex } from '@mantine/core';
 
 export default function Login() {
   const router = useRouter();

@@ -5,7 +5,7 @@ import CourseDetailChapterSkeleton from "./_components/loading-skeletons/course-
 import CourseDetailHeaderSkeleton from "./_components/loading-skeletons/course-detail-header-skeleton";
 import CourseDetailChapter from "./_components/course-detail-chapter";
 import useChapterList from "./_hooks/use-chapter-list";
-import { Group, Stack, Title } from "@mantine/core";
+import { Group, Loader, Stack, Title } from "@mantine/core";
 import { createContext, Suspense } from "react";
 import { IconBook } from "@tabler/icons-react";
 import { useParams } from "next/navigation";
@@ -21,15 +21,15 @@ export default function CourseDetailTopLevel() {
   console.log("ID top level: " + courseId);
   if (!courseId) return (<Title p="xl">NO SITE FOUND</Title>)
   return (
-    <Suspense fallback={<h1>LOADING...</h1>}>
+    <Suspense fallback={<Loader color="grape" size="xl" />}>
       <CourseDetails id={String(courseId)} />
     </Suspense>
   );
 }
 
 function CourseDetails({ id }: CourseDetailParamsProps) {
-  console.log("ID: " + id);
   const { data: chapterList } = useChapterList(id);
+
   return (
     <CourseIdContext.Provider value={id}>
       <Stack w="100%" p="lg">

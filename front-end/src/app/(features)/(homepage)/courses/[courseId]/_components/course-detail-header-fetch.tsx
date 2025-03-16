@@ -3,6 +3,7 @@
 import CourseDetailHeader from "./course-detail-header";
 import { CourseDetailHeaderProps } from "./course-detail-header";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createClient } from "@/utilities/supabase/client";
 
 import courseImage from "../_assets/scaffy-shrug.png"
 
@@ -16,13 +17,27 @@ interface CourseDetailHeaderFetchProps {
 const fetchCourseHeader = async (
   course_id: string
 ): Promise<CourseDetailHeaderProps> => {
-  console.log(course_id);
-  await new Promise((res) => setTimeout(res, 2500));
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("Course")
+    .select(
+      `
+        name,
+        description
+      `
+    )
+    .eq("id", course_id)
+    .limit(1)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
   return {
-    title: "Java for Beginners",
-    description:
-      "Java is a versatile, object-oriented language known for its “write once, run anywhere” capability. Used in mobile, desktop, and enterprise applications, it offers reliability, security, and cross-platform compatibility. Its modular structure simplifies maintenance and scaling, while extensive libraries and a strong community make it ideal for developers of all levels.",
-    image: courseImage.src,
+    title: data.name,
+    description: data.description,
+    image: courseImage.src
   };
 };
 
@@ -31,7 +46,7 @@ export default function CourseDetailHeaderLoader({
   id,
 }: CourseDetailHeaderFetchProps) {
   const { data: course } = useSuspenseQuery({
-    queryKey: ["course", id],
+    queryKey: ["course", "header", id],
     queryFn: () => fetchCourseHeader(id),
   });
 

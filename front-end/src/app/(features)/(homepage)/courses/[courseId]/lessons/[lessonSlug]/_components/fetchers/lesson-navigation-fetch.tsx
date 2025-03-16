@@ -20,9 +20,11 @@ const fetchLessonNavigationData = async (courseId: string) => {
     .select(
       `
         *,
-        ...Chapter(course_id)
+        ...Chapter!inner(course_id),
+        ...Type!inner(type_name: name)
       `
     )
+    .eq("Type.name", "Lesson")
     .eq("Chapter.course_id", courseId);
 
   if (error) {
@@ -36,7 +38,7 @@ export default function LessonNavigationLoader({
   courseId,
 }: LessonNavigationLoaderProps) {
   const { data } = useSuspenseQuery({
-    queryKey: ["lesson", courseId],
+    queryKey: ["courses", courseId, "lessonsz",],
     queryFn: () => fetchLessonNavigationData(courseId),
   });
 

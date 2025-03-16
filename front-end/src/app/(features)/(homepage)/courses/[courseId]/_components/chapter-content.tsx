@@ -12,14 +12,14 @@ export default function ChapterContent({ id }: { id: string }) {
   console.log(courseId);
 
   return (
-    <Link className={classes.container} href={content.type === "lesson" ? `./${courseId}/lessons/${content.slug}` : `./${courseId}/activities/${content.slug}`}>
+    <Link className={classes.container} href={content.type.name === "Lesson" ? `./${courseId}/lessons/${content.slug}` : `./${courseId}/activities/${content.slug}`}>
       <Stack gap="0">
         <Group justify="space-between">
           <Group>
-            {content.type === "lesson" ? <IconBook /> : <IconPuzzle />}
+            {content.type.name === "Lesson" ? <IconBook /> : <IconPuzzle />}
             <Title order={4}>{content.name}</Title>
           </Group>
-          <span className={classes.xp}>{content.xp} XP</span>
+          <span className={classes.xp}>{content.experience} XP</span>
         </Group>
         <Title className={classes.description} order={5}>
           {content.description}
