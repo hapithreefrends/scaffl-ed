@@ -8,9 +8,13 @@
  */
 
 import classes from "./_styles/activity.module.css";
-import CodeEditor from "./_components/code-editor";
-import { useParams } from "next/navigation";
 import ProblemInfo from "./_components/problem-info";
+import dynamic from "next/dynamic";
+import { useParams } from "next/navigation";
+
+const MonacoEditor = dynamic(() => import('./_components/code-editor'), {
+  ssr: false, // Ensure it's only loaded on the client
+});
 
 export default function Activity() {
   const { activitySlug } = useParams();
@@ -36,7 +40,7 @@ export default function Activity() {
           xp={100}
         />
       </div>
-      <CodeEditor />
+      <MonacoEditor />
       <div className={`${classes.sideWindow} ${classes.window}`}>
         SIDE SCREEEN
       </div>

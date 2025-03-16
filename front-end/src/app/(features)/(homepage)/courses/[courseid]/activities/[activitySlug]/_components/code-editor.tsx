@@ -1,64 +1,13 @@
-// "use client";
-
-// import { useEffect, useRef, useState } from "react";
-// import { Container, Card } from "@mantine/core";
-// import Editor from "@monaco-editor/react";
-// import classes from "../_styles/code-editor.module.css";
-
-// export default function CodeEditor() {
-//   /**
-//    * Renders a Monaco-based code editor for activities.
-//    * - Uses local state for code storage (to be replaced with fetched data).
-//    * - Dynamically resizes on window resize.
-//    */
-
-//   const [language, setLanguage] = useState("javascript");
-//   const [code, setCode] = useState("// Write your code here...\n\tfdgdfgdg");
-//   const editorRef = useRef<any>(null);
-
-//   // Save Monaco instance when editor mounts
-//   function handleEditorDidMount(editor: any) {
-//     editorRef.current = editor;
-//   }
-
-//   // Resize Monaco Editor when the window resizes
-//   useEffect(() => {
-//     function handleResize() {
-//       editorRef.current?.layout();
-//     }
-//     window.addEventListener("resize", handleResize);
-//     return () => window.removeEventListener("resize", handleResize);
-//   }, []);
-
-//   return (
-//     <Container w="100%" h="100%" p="0">
-//       <Editor
-//           className={classes.codeEditor}
-//           language={language}
-//           value={code}
-//           theme="vs-dark"
-//           onMount={handleEditorDidMount}
-//           onChange={(value) => setCode(value || "")}
-//           options={{
-//             automaticLayout: true,
-//             fontSize: 14,
-//             minimap: { enabled: false },
-//             folding: false,
-//             wordWrap: "on",
-//           }}
-//         />
-//     </Container>
-//   );
-// }
-
-
-
 "use client";
 
 import classes from "../_styles/code-editor.module.css";
 import Editor from "@monaco-editor/react";
 import { useState } from "react";
-import { Container, Card } from "@mantine/core";
+import { Container } from "@mantine/core";
+
+import { useEffect, useRef } from "react";
+import { OnMount } from "@monaco-editor/react";
+import * as monaco from "monaco-editor";
 
 export default function CodeEditor() {
   /*
@@ -90,8 +39,36 @@ else:
       # update values
       n1 = n2
       n2 = nth
-      count += 1
-    `);
+      count += 1`);
+
+  const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const decorationsCollectionRef = useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
+
+  const handleEditorDidMount: OnMount = (editor, _monaco) => {
+    monacoRef.current = editor;
+
+    // Create a decorations collection
+    decorationsCollectionRef.current = editor.createDecorationsCollection([]);
+
+    // Apply decorations after a delay (simulating dynamic updates)
+    setTimeout(() => {
+      updateDecorations(editor);
+    }, 1000);
+  };
+
+  // Function to update decorations
+  const updateDecorations = (editor: monaco.editor.IStandaloneCodeEditor) => {
+    if (!decorationsCollectionRef.current) return;
+    // decorationsCollectionRef.current.set([
+    //   {
+    //     range: new monaco.Range(2, 1, 2, 10), // Highlight line 2
+    //     options: {
+    //       isWholeLine: true,
+    //       className: classes.aoi
+    //     },
+    //   },
+    // ]);
+  };
 
   return (
     <Container w="100%" h="100%" p="0">
@@ -101,6 +78,7 @@ else:
         value={code}
         theme="vs-light"
         onChange={(value) => setCode(value || "")}
+        onMount={handleEditorDidMount}
         options={{
           automaticLayout: true,
           fontSize: 16,
@@ -108,10 +86,10 @@ else:
           minimap: { enabled: false },
           folding: false,
           wordWrap: "on",
-          readOnly: true
+          readOnly: true,
+          domReadOnly: true,
         }}
       />
     </Container>
   );
 }
-
