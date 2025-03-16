@@ -10,13 +10,13 @@ const mockChapterList2 = [
     {id: "4"},
 ]
 
-export default function useChapterList(courseid: string) {
+export default function useChapterList(courseId: string) {
     return useSuspenseQuery({
-        queryKey: ["courseid", courseid],
+        queryKey: ["courseId", courseId],
         queryFn: async () => {
             await new Promise((resolve) => setTimeout(resolve, 2000)) 
 
-            return courseid === "1" ? mockChapterList : mockChapterList2;
+            return courseId === "1" ? mockChapterList : mockChapterList2;
         }
     })
 }

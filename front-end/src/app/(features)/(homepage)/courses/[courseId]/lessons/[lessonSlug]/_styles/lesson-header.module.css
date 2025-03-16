@@ -1,0 +1,42 @@
+.greetingHeader {
+  padding: 0;
+  margin: 0;
+}
+
+.greetingBody {
+  padding: 0;
+  margin: 0;
+}
+
+.greetingImage {
+  position: absolute;
+  bottom: 0;
+  right: 100px;
+  width: 350px;
+}
+
+.greetingContainer {
+  margin-top: 4vh;
+  min-height: 175px;
+  position: relative;
+  color: white;
+  border-radius: 8px;
+  background: var(
+    --Gradient-Teal-Purple,
+    linear-gradient(
+      145deg,
+      var(--Teal-teal-2, #408c8c) 8.93%,
+      var(--mantine-color-violet-9) 105.64%
+    )
+  );
+}
+
+.textContainer {
+  width: 40%;
+}
+
+@media screen and (max-width: 991) {
+  .greetingImage {
+    display: none;
+  }
+}

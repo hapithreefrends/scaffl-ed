@@ -17,12 +17,12 @@ interface CourseDetailParamsProps {
 export const CourseIdContext = createContext<string | null>(null);
 
 export default function CourseDetailTopLevel() {
-  const { courseid } = useParams();
-  console.log("ID top level: " + courseid);
-  if (!courseid) return (<Title p="xl">NO SITE FOUND</Title>)
+  const { courseId } = useParams();
+  console.log("ID top level: " + courseId);
+  if (!courseId) return (<Title p="xl">NO SITE FOUND</Title>)
   return (
     <Suspense fallback={<h1>LOADING...</h1>}>
-      <CourseDetails id={String(courseid)} />
+      <CourseDetails id={String(courseId)} />
     </Suspense>
   );
 }

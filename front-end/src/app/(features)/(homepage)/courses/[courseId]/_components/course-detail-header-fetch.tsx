@@ -16,6 +16,7 @@ interface CourseDetailHeaderFetchProps {
 const fetchCourseHeader = async (
   course_id: string
 ): Promise<CourseDetailHeaderProps> => {
+  console.log(course_id);
   await new Promise((res) => setTimeout(res, 2500));
   return {
     title: "Java for Beginners",
