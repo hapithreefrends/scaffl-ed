@@ -69,8 +69,29 @@ export default function CodeEditor() {
    * Actual implementation will be done in the future.
    */
 
-  const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState("// Write your code here...\n\tfdgdfgdg");
+  const [language, setLanguage] = useState("python");
+  const [code, setCode] = useState(`nterms = int(input("How many terms? "))
+
+n1, n2 = 0, 1
+count = 0
+
+if nterms <= 0:
+  print("Please enter a positive integer")
+
+elif nterms == 1:
+  print("Fibonacci sequence upto",nterms,":")
+  print(n1)
+
+else:
+  print("Fibonacci sequence:")
+  while count < nterms:
+      print(n1)
+      nth = n1 + n2
+      # update values
+      n1 = n2
+      n2 = nth
+      count += 1
+    `);
 
   return (
     <Container w="100%" h="100%" p="0">
@@ -78,14 +99,16 @@ export default function CodeEditor() {
         className={classes.codeEditor}
         language={language}
         value={code}
-        theme="vs-dark"
+        theme="vs-light"
         onChange={(value) => setCode(value || "")}
         options={{
           automaticLayout: true,
-          fontSize: 14,
+          fontSize: 16,
+          lineHeight: 24,
           minimap: { enabled: false },
           folding: false,
           wordWrap: "on",
+          readOnly: true
         }}
       />
     </Container>

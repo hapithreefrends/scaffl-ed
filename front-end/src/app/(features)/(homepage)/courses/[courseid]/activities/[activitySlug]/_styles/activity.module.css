@@ -1,16 +1,21 @@
 .sideWindow {
-    background-color: blue;
+    padding: 20px;
 }
 
 .middleWindow {
-    background-color: red;
     height: 100%;
+}
+
+.window {
+    background: white;
 }
 
 .activityContainer {
     display: grid;
     grid-template-columns: 25% minmax(0px, auto) 25%;
     height: 100vh;
+    max-height: 100vh;
     padding: 10px;
     gap: 10px;
+    background-color: var(--mantine-color-gray-0);
 }
