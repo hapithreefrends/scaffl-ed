@@ -6,6 +6,7 @@ import NavbarProfileSkeleton from "./_components/navbar/navbar-profile-skeleton"
 import { AppShell, Flex, ScrollArea, Stack } from "@mantine/core";
 import { Suspense } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import { usePathname } from "next/navigation";
 
 export default function HomePageLayout({
   children,
@@ -15,7 +16,13 @@ export default function HomePageLayout({
   navbarProfileLoader: React.ReactNode;
 }) {
   const [opened, { toggle }] = useDisclosure();
+  const pathname = usePathname();
+  const isInActivityPage = /^\/courses\/[^/]+\/activities\/[^/]+$/.test(pathname);
 
+  if (isInActivityPage) {
+    return <>{children}</>;
+  }
+  
   return (
     <AppShell
       header={{ height: 60 }}
@@ -36,7 +43,7 @@ export default function HomePageLayout({
             <Suspense fallback={<NavbarProfileSkeleton />}>
               {navbarProfileLoader}
             </Suspense>
-            <Stack gap="0">{<NavbarLinks />}</Stack>
+            <Stack gap="0">{<NavbarLinks pathname={pathname}/>}</Stack>
           </Stack>
         </Stack>
       </AppShell.Navbar>

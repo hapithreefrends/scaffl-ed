@@ -13,8 +13,8 @@ const linksList = [
   { link: "/playground", label: "Playground", icon: IconSourceCode },
 ];
 
-export default function NavbarLinks() {
-  const pathname = usePathname();
+export default function NavbarLinks({pathname} : {pathname: string}) {
+  // const pathname = usePathname();
   const [active, setActive] = useState(pathname);
 
   return (
