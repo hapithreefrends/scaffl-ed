@@ -90,7 +90,7 @@ export default function Page() {
     return (
         <Stack w="100%">
             <Title order={2}>
-                Create New Course
+                View Course
             </Title>
             <form>
                 <Stack gap='20px'>

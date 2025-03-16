@@ -12,7 +12,7 @@ export default function Header({navbarOpened, navbarOnClick}:headerProps) {
   return (
     <Group h="100%" align="center">
         <Burger opened={navbarOpened} onClick={navbarOnClick} hiddenFrom="sm" size="sm"/>
-        <ScaffledLogo variant="icon" color="original" />
+        <ScaffledLogo variant="full" color="original" />
     </Group>
   )
 }
