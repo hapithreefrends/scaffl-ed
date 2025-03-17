@@ -8,10 +8,21 @@
  */
 
 import classes from "./_styles/activity.module.css";
-import ProblemInfo from "./_components/problem-info";
 import dynamic from "next/dynamic";
+import ProblemInfo from "./_components/problem-info";
+import ScaffyFeedbackWindow from "./_components/scaffy-feedback-window";
+import TestCaseWindow from "./_components/test-cases-window";
 import { useParams } from "next/navigation";
-import { Group, Flex, Anchor, Breadcrumbs, Text } from "@mantine/core";
+import {
+  Group,
+  Flex,
+  Anchor,
+  Breadcrumbs,
+  Text,
+  Stack,
+  Center,
+  Code,
+} from "@mantine/core";
 
 import useContent from "../../_hooks/use-content";
 
@@ -21,18 +32,24 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
 
 export default function Activity() {
   const { activitySlug, courseid } = useParams();
-  const {data: activityData} = useContent(courseid as string);
+  const { data: activityData } = useContent(courseid as string);
 
   // EXTREMELY HARDCODED
   const items = [
-    {title: 'Courses', href: '/courses'},
-    {title: `Java for Beginners`, href: `/courses/${courseid}`},
-    {title: `${activityData.name}`, href: null},
-  ].map(
-    (item, index) => (
-        item.href ? (<Anchor href={item.href} key={index}>{item.title}</Anchor>) :
-        (<Text className={classes.breadcrumbsCurrentLink} key={index}>{item.title}</Text>)
-    ))
+    { title: "Courses", href: "/courses" },
+    { title: `Java for Beginners`, href: `/courses/${courseid}` },
+    { title: `${activityData.name}`, href: null },
+  ].map((item, index) =>
+    item.href ? (
+      <Anchor href={item.href} key={index}>
+        {item.title}
+      </Anchor>
+    ) : (
+      <Text className={classes.breadcrumbsCurrentLink} key={index}>
+        {item.title}
+      </Text>
+    )
+  );
 
   const hardCodedTitle = "Primitive Data Types";
   const hardCodedDescriptionHTML = `
@@ -58,9 +75,10 @@ export default function Activity() {
 
       {/* IDE ACTIVITY AREA */}
       <div className={classes.activityContainer}>
-
         {/* PROBLEM INFO */}
-        <div className={`${classes.sideWindow} ${classes.window}`}>
+        <div
+          className={`${classes.sideWindow} ${classes.problemWindow} ${classes.window}`}
+        >
           <ProblemInfo
             title={hardCodedTitle}
             description={hardCodedDescriptionHTML}
@@ -69,13 +87,19 @@ export default function Activity() {
         </div>
 
         {/* MAIN IDE */}
-        <div>
+        <Stack className={classes.window}>
+          <Flex className={classes.windowHeader}>
+            <Center className={classes.headerTextContainer} p="md">
+              <Code className={classes.headerText}>helloWorld.java</Code>
+            </Center>
+          </Flex>
           <MonacoEditor />
-        </div>
+        </Stack>
 
         {/* OUTPUT AND FEEDBACK */}
-        <div className={`${classes.sideWindow} ${classes.window}`}>
-          SIDE SCREEEN
+        <div className={`${classes.sideWindow} ${classes.window} ${classes.multiWindow}`}>
+          <ScaffyFeedbackWindow />
+          <TestCaseWindow />
         </div>
       </div>
     </Flex>
