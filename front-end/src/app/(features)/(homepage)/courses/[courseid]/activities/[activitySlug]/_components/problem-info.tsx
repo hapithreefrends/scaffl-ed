@@ -20,8 +20,12 @@ export default function ProblemInfo({
           return <Text>{domToReact(domNode.children as DOMNode[])}</Text>;
         }
 
+        if (domNode.name === "h4") {
+          return <Title className={classes.spacer} order={4}>{domToReact(domNode.children as DOMNode[])}</Title>;
+        }
+
         if (domNode.name === "code") {
-          return <Code>{domToReact(domNode.children as DOMNode[])}</Code>;
+          return <Code className={classes.code}>{domToReact(domNode.children as DOMNode[])}</Code>;
         }
       }
     },

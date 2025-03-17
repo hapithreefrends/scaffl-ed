@@ -1,3 +1,9 @@
 .aoi {
+    background-color: lightblue;
+    cursor: pointer; 
+}
+
+.aoiHover {
+    cursor: pointer;
     background: violet;
 }

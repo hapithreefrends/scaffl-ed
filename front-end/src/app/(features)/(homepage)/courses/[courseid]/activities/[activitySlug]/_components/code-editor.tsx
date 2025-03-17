@@ -74,14 +74,14 @@
 
 //   // Function to update decorations
 //   const updateDecorations = (editor: monaco.editor.IStandaloneCodeEditor) => {
-//     const range = new monaco.Range(1, 1, 1, 10); 
+//     const range = new monaco.Range(1, 1, 1, 10);
 //     if (!decorationsCollectionRef.current) return;
 
 //     decorationsCollectionRef.current.set([
 //       {
 //         range: range, // Highlight line 2
 //         options: {
-       
+
 //         },
 //       },
 //     ]);
@@ -112,17 +112,25 @@
 //   );
 // }
 
+/*
+ * This component is used to render the code editor for the activities.
+ * It uses the Monaco Editor to provide a code editor with syntax highlighting.
+ * The language are passed from fetched data and the code is stored in the local state.
+ * Everything at this point will be hardcoded.
+ * Actual implementation will be done in the future.
+ */
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Editor, { OnMount } from "@monaco-editor/react";
-import { Container } from "@mantine/core";
 import * as monaco from "monaco-editor";
 import classes from "../_styles/code-editor.module.css";
+import Editor, { OnMount } from "@monaco-editor/react";
+import { Container } from "@mantine/core";
+import { useState, useRef } from "react";
 
 export default function CodeEditor() {
-  const [code, setCode] = useState<string>(`nterms = int(input("How many terms? "))
+  const [code, setCode] =
+    useState<string>(`nterms = int(input("How many terms? "))
 
 n1, n2 = 0, 1
 count = 0
@@ -145,13 +153,17 @@ else:
       count += 1`);
 
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const decorationsCollectionRef = useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
+  const decorationsCollectionRef =
+    useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
 
   // Handle editor mount
   const handleEditorDidMount: OnMount = (editor, monacoInstance) => {
     monacoRef.current = editor;
     decorationsCollectionRef.current = editor.createDecorationsCollection([]);
     applyDecorations();
+
+    // Add mouse event listener for clicks
+    editor.onMouseDown((event) => handleAOIClick(event, editor));
   };
 
   // Apply decorations only after the editor is mounted
@@ -159,18 +171,75 @@ else:
     if (!monacoRef.current || !decorationsCollectionRef.current) return;
 
     const editor = monacoRef.current;
-    const range = new monaco.Range(1, 1, 2, 100); // Highlight full line 2
 
     decorationsCollectionRef.current.set([
+
       {
-        range,
+        range: new monaco.Range(1, 1, 1, 9), // Entire first line
         options: {
           isWholeLine: false,
           inlineClassName: classes.aoi,
-          className: classes.aoi, // Custom class for styling
+          className: classes.aoi 
         },
       },
+
+      {
+        range: new monaco.Range(1, 10, 1, 14), // Entire first line
+        options: {
+          isWholeLine: false,
+          inlineClassName: classes.aoi, 
+        },
+      },
+
+      // {
+      //   range: new monaco.Range(3, 1, 4, 100),
+      //   options: {
+      //     isWholeLine: true,
+      //     inlineClassName: classes.aoi,
+      //     className: classes.aoi, // Custom class for styling
+      //   },
+      // },
+
+      // {
+      //   range: new monaco.Range(6, 1, 7, 100),
+      //   options: {
+      //     isWholeLine: true,
+      //     inlineClassName: classes.aoi,
+      //     className: classes.aoi, // Custom class for styling
+      //   },
+      // },
+
+      // {
+      //   range: new monaco.Range(9, 1, 11, 100),
+      //   options: {
+      //     isWholeLine: true,
+      //     inlineClassName: classes.aoi,
+      //     className: classes.aoi, // Custom class for styling
+      //   },
+      // },
+
+      // {
+      //   range: new monaco.Range(13, 1, 21, 100),
+      //   options: {
+      //     isWholeLine: true,
+      //     inlineClassName: classes.aoi,
+      //     className: classes.aoi, // Custom class for styling
+      //   },
+      // },
+
     ]);
+  };
+
+  // Handle AOI Clicks
+  const handleAOIClick = (event: monaco.editor.IEditorMouseEvent, editor: monaco.editor.IStandaloneCodeEditor) => {
+    const position = event.target.position; // Get clicked position
+    if (!position) return;
+
+    // Check if click happened inside an AOI
+    const aois = decorationsCollectionRef.current?.getRanges();
+    if (aois?.some((range) => range.containsPosition(position))) {
+      alert(`Clicked on AOI at line ${position.lineNumber}!`);
+    }
   };
 
   return (

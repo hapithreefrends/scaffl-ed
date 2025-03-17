@@ -11,13 +11,29 @@ import classes from "./_styles/activity.module.css";
 import ProblemInfo from "./_components/problem-info";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+import { Group, Flex, Anchor, Breadcrumbs, Text } from "@mantine/core";
 
-const MonacoEditor = dynamic(() => import('./_components/code-editor'), {
+import useContent from "../../_hooks/use-content";
+
+const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false, // Ensure it's only loaded on the client
 });
 
 export default function Activity() {
-  const { activitySlug } = useParams();
+  const { activitySlug, courseid } = useParams();
+  const {data: activityData} = useContent(courseid as string);
+
+  // EXTREMELY HARDCODED
+  const items = [
+    {title: 'Courses', href: '/courses'},
+    {title: `Java for Beginners`, href: `/courses/${courseid}`},
+    {title: `${activityData.name}`, href: null},
+  ].map(
+    (item, index) => (
+        item.href ? (<Anchor href={item.href} key={index}>{item.title}</Anchor>) :
+        (<Text className={classes.breadcrumbsCurrentLink} key={index}>{item.title}</Text>)
+    ))
+
   const hardCodedTitle = "Primitive Data Types";
   const hardCodedDescriptionHTML = `
   <p>Welcome to your first task on scaffl.ed! Imagine you’re building a friendly
@@ -28,22 +44,40 @@ export default function Activity() {
   just as it was meant to! Help your virtual assistant come to life by fixing
   the errors in the code. After debugging, it should ask for the user's name and
   print a warm greeting like:</p>
+
+  <h4>Sample Output: </h4>
   <code>Hello, [name]! Welcome to scaffl.ed.</code>
   `;
 
   return (
-    <div className={classes.activityContainer}>
-      <div className={`${classes.sideWindow} ${classes.window}`}>
-        <ProblemInfo
-          title={hardCodedTitle}
-          description={hardCodedDescriptionHTML}
-          xp={100}
-        />
+    <Flex direction="column" h="100vh">
+      {/* HEADER */}
+      <Group p="md" w="100vw" h="50" className={classes.header}>
+        <Breadcrumbs>{items}</Breadcrumbs>
+      </Group>
+
+      {/* IDE ACTIVITY AREA */}
+      <div className={classes.activityContainer}>
+
+        {/* PROBLEM INFO */}
+        <div className={`${classes.sideWindow} ${classes.window}`}>
+          <ProblemInfo
+            title={hardCodedTitle}
+            description={hardCodedDescriptionHTML}
+            xp={100}
+          />
+        </div>
+
+        {/* MAIN IDE */}
+        <div>
+          <MonacoEditor />
+        </div>
+
+        {/* OUTPUT AND FEEDBACK */}
+        <div className={`${classes.sideWindow} ${classes.window}`}>
+          SIDE SCREEEN
+        </div>
       </div>
-      <MonacoEditor />
-      <div className={`${classes.sideWindow} ${classes.window}`}>
-        SIDE SCREEEN
-      </div>
-    </div>
+    </Flex>
   );
 }
