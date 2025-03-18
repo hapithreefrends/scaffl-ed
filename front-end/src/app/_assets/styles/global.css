@@ -1,0 +1,4 @@
+/* DISABLED MONACO CARET */
+.monaco-editor .cursors-layer .cursor {
+    display: none !important;
+  }

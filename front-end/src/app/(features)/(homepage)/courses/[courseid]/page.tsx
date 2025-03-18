@@ -16,6 +16,11 @@ interface CourseDetailParamsProps {
 
 export const CourseIdContext = createContext<string | null>(null);
 
+/* 
+* This component ensures that the top level component is enclosed in a Suspense component
+* otherwise, other Suspense components beneath will fail to work properly
+* and things like collapsible drawers won't work
+*/
 export default function CourseDetailTopLevel() {
   const { courseid } = useParams();
   console.log("ID top level: " + courseid);
@@ -27,6 +32,13 @@ export default function CourseDetailTopLevel() {
   );
 }
 
+/**
+ * This component fetches and displays the details of a course, including its chapters.
+ * It uses the course ID to fetch the relevant data and provides it to the child components.
+ *
+ * @param {CourseDetailParamsProps} props - The props containing the course ID.
+ * @returns {JSX.Element} The component displaying the course details and chapters.
+ */
 function CourseDetails({ id }: CourseDetailParamsProps) {
   console.log("ID: " + id);
   const { data: chapterList } = useChapterList(id);
