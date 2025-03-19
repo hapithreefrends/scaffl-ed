@@ -1,0 +1,37 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 744" width="392" height="744">
+	<title>-e-Folder 5</title>
+	<defs>
+		<radialGradient id="g1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(117.457,137.165,-137.165,117.457,213.126,287.443)">
+			<stop offset="0" stop-color="#0c4d4d"/>
+			<stop offset="1" stop-color="#189281"/>
+		</radialGradient>
+		<radialGradient id="g2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(235.961,-161.697,161.697,235.961,179.491,254.641)">
+			<stop offset="0" stop-color="#189281"/>
+			<stop offset=".888" stop-color="#0c4d4d"/>
+		</radialGradient>
+		<radialGradient id="g3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-117.458,137.166,-137.166,-117.458,178.36,543.141)">
+			<stop offset="0" stop-color="#542e84"/>
+			<stop offset="1" stop-color="#9b76b4"/>
+		</radialGradient>
+		<radialGradient id="g4" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-280.232,-192.035,192.035,-280.232,211.994,510.338)">
+			<stop offset=".014" stop-color="#9b76b4"/>
+			<stop offset=".873" stop-color="#542e84"/>
+		</radialGradient>
+	</defs>
+	<style>
+		.s0 { fill: #0c4d4d } 
+		.s1 { fill: url(#g1) } 
+		.s2 { fill: url(#g2) } 
+		.s3 { fill: #542e84 } 
+		.s4 { fill: url(#g3) } 
+		.s5 { fill: url(#g4) } 
+	</style>
+	<g id="-e-Folder 5">
+		<path id="&lt;Path&gt;" class="s0" d="m389.7 0.5l-388.3 224v37.2 0.3h0.5l387.8 224.4v-149.8l-129.5-74.9 129.5-74.7v-37.2z"/>
+		<path id="&lt;Path&gt;" class="s1" d="m131.1 299.1l259.5 150.1v-149.8l-129.5-74.9"/>
+		<path id="&lt;Path&gt;" class="s2" d="m260.2 224.5l129.5-74.7v-149.3l-388.3 224 128.8 74.6"/>
+		<path id="&lt;Path&gt;" class="s3" d="m1.8 256.2l388.3 224v37.2 0.3h-0.5l-387.8 224.4v-149.8l129.5-74.9-129.5-74.7v-37.2z"/>
+		<path id="&lt;Path&gt;" class="s4" d="m260.4 554.8l-259.5 150.1v-149.8l129.5-74.9"/>
+		<path id="&lt;Path&gt;" class="s5" d="m131.3 480.2l-129.5-74.7v-149.3l388.3 224-128.8 74.6"/>
+	</g>
+</svg>
