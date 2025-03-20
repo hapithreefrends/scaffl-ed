@@ -1,73 +1,86 @@
-'use client';
+"use client";
 
-import { Text, Button, Checkbox, Group, TextInput, Stack, Title, Combobox, Textarea, Input, InputBase, useCombobox } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useRouter } from "next/navigation";
 
-import { zodResolver } from 'mantine-form-zod-resolver';
+import { Text, Badge, Button, Group, TextInput, Stack, Title, Combobox, Textarea, Input, InputBase, useCombobox } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 
-import { courseDataSchema } from '@/app/_models/course';
+import { zodResolver } from "mantine-form-zod-resolver";
 
-import { useState } from 'react';
+import { courseCreateDataSchema } from "@/app/_models/course";
 
-const languages = [
-    'Java',
-    'Python',
-    'Javascript',
-    'React',
-    'Rust',
-    'HTML',
-];
-
-const difficulty = [
-    'Easy',
-    'Medium',
-    'Difficult'
-];
+import { useState } from "react";
+import { useFindAllDifficulties, useFindAllProgrammingLanguages } from "@/app/(features)/_hooks/use-constants";
+import { useCreateCourse } from "../_hooks/use-courses";
 
 export default function Page() {
-    // const [search, setSearch] = useState('');
+    const router = useRouter();
 
-    const [languageSearch, setLanguageSearch] = useState('');
-    const [difficultySearch, setDifficultySearch] = useState('');
+    const createCourse = useCreateCourse();
+    const { data: programmingLanguagesList } = useFindAllProgrammingLanguages();
+    const { data: difficultiesList } = useFindAllDifficulties();
 
-    const languageCombobox = useCombobox({
+    const form = useForm({
+        mode: "uncontrolled",
+        initialValues: {
+            name: "",
+            description: "",
+            difficulty_id: 0,
+            programming_language_id: ""
+        },
+        validate: zodResolver(courseCreateDataSchema)
+    });
+
+    const programmingLanguageProps = form.getInputProps("programming_language_id");
+    const difficultyProps = form.getInputProps("difficulty_id");
+
+    const [programmingLanguageSearch, setProgrammingLanguageSearch] = useState("");
+    const [difficultySearch, setDifficultySearch] = useState("");
+    
+    const programmingLanguageOptions = programmingLanguagesList
+        ?.filter((item) => item.name.toLowerCase().includes(programmingLanguageSearch.toLowerCase().trim()))
+        .map((item) => (
+            <Combobox.Option value={item.id} key={item.id}>
+                {item.name}
+            </Combobox.Option>
+        ));
+
+    const difficultyOptions = difficultiesList
+        ?.filter((item) => item.name.toLowerCase().includes(difficultySearch.toLowerCase().trim()))
+        .map((item) => {
+            const color: Record<string, string> = {
+                "Easy": "green",
+                "Medium": "yellow",
+                "Hard": "red",
+            };
+
+            return (
+                <Combobox.Option value={`${item.id}`} key={item.id}>
+                    <Badge color={color[item.name]}>
+                        {item.name}
+                    </Badge>
+                </Combobox.Option>
+            );
+        });
+
+    const programmingLanguageCombobox = useCombobox({
         onDropdownClose: () => {
-            languageCombobox.resetSelectedOption();
-            languageCombobox.focusTarget();
-            setLanguageSearch('');
+            programmingLanguageCombobox.resetSelectedOption();
+            programmingLanguageCombobox.focusTarget();
+            setProgrammingLanguageSearch("");
         },
 
         onDropdownOpen: () => {
-            languageCombobox.focusSearchInput();
+            programmingLanguageCombobox.focusSearchInput();
         },
     });
-
-    // const [value, setValue] = useState<string | null>(null);
-
-    const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
-    const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
-
-    const options = languages
-        .filter((item) => item.toLowerCase().includes(languageSearch.toLowerCase().trim()))
-        .map((item) => (
-            <Combobox.Option value={item} key={item}>
-                {item}
-            </Combobox.Option>
-        ));
-
-    const options1 = difficulty
-        .filter((item) => item.toLowerCase().includes(difficultySearch.toLowerCase().trim()))
-        .map((item) => (
-            <Combobox.Option value={item} key={item}>
-                {item}
-            </Combobox.Option>
-        ));
 
     const difficultyCombobox = useCombobox({
         onDropdownClose: () => {
             difficultyCombobox.resetSelectedOption();
             difficultyCombobox.focusTarget();
-            setDifficultySearch('');
+            setDifficultySearch("");
         },
 
         onDropdownOpen: () => {
@@ -75,53 +88,66 @@ export default function Page() {
         },
     });
 
-
-    const form = useForm({
-        mode: 'uncontrolled',
-        initialValues: {
-            name: '',
-            description: '',
-            difficultyId: 0,
-            programmingLanguageId: 0
-        },
-        validate: zodResolver(courseDataSchema)
-    });
-
     return (
         <Stack w="100%">
             <Title order={2}>
                 Create New Course
             </Title>
-            <form>
-                <Stack gap='20px'>
+
+            <Text component="pre">
+                {JSON.stringify(form.getValues(), null, 2)}
+                {JSON.stringify(form.errors, null, 2)}
+            </Text>
+
+            <form onSubmit={form.onSubmit(
+                (values) => {
+                    createCourse.mutate(values);
+
+                    notifications.show({
+                        title: "Success",
+                        message: "Course created successfully",
+                        color: "green",
+                    });
+
+                    router.push("/admin/courses");
+                },
+                (error) => {
+                    notifications.show({
+                        title: "Error",
+                        message: error.message,
+                        color: "red",
+                    });
+                }
+            )}>
+                <Stack gap="20px">
                     <TextInput
                         withAsterisk
                         label="Course Name"
                         placeholder="Course Name"
                         required
-                    // leftSection={<IconAt size={18} />}
-                    // pb="sm"
-                    // {...form.getInputProps("email")}
+                        error={form.errors.name}
+                        withErrorStyles={false}
+                        {...form.getInputProps("name")}
                     />
+
                     <Textarea
                         withAsterisk
                         label="Course Description"
-                        // description="Course Description"
                         placeholder="Course Description"
                         required
-
-                    // leftSection={<IconAt size={18} />}
-                    // pb="sm"
-                    // {...form.getInputProps("email")}
+                        error={form.errors.description}
+                        withErrorStyles={false}
+                        {...form.getInputProps("description")}
                     />
-                    <Combobox
-                        store={languageCombobox}
-                        withinPortal={false}
-                        onOptionSubmit={(val) => {
-                            setSelectedLanguage(val);
-                            languageCombobox.closeDropdown();
-                        }}
 
+                    <Combobox
+                        store={programmingLanguageCombobox}
+                        withinPortal={false}
+                        onOptionSubmit={(value) => {
+                            form.setFieldValue("programming_language_id", value);
+
+                            programmingLanguageCombobox.closeDropdown();
+                        }}
                     >
                         <Combobox.Target>
                             <InputBase
@@ -129,35 +155,34 @@ export default function Page() {
                                 type="button"
                                 pointer
                                 rightSection={<Combobox.Chevron />}
-                                onClick={() => languageCombobox.toggleDropdown()}
+                                onClick={() => programmingLanguageCombobox.toggleDropdown()}
                                 rightSectionPointerEvents="none"
                                 withAsterisk
                                 label="Language"
                                 required
                             >
-                                {selectedLanguage || <Input.Placeholder>Pick a Language</Input.Placeholder>}
+                                {programmingLanguagesList?.find((pl) => pl.id == programmingLanguageProps.defaultValue)?.name || <Input.Placeholder>Pick a Language</Input.Placeholder>}
                             </InputBase>
-
                         </Combobox.Target>
 
                         <Combobox.Dropdown>
                             <Combobox.Search
-                                value={languageSearch}
-                                onChange={(event) => setLanguageSearch(event.currentTarget.value)}
+                                value={programmingLanguageSearch}
+                                onChange={(event) => setProgrammingLanguageSearch(event.currentTarget.value)}
                                 placeholder="Search languages"
                             />
                             <Combobox.Options>
-                                {options.length > 0 ? options : <Combobox.Empty>Nothing found</Combobox.Empty>}
+                                {programmingLanguageOptions && programmingLanguageOptions.length > 0 ? programmingLanguageOptions : <Combobox.Empty>Nothing found</Combobox.Empty>}
                             </Combobox.Options>
                         </Combobox.Dropdown>
                     </Combobox>
 
-
                     <Combobox
                         store={difficultyCombobox}
                         withinPortal={false}
-                        onOptionSubmit={(val) => {
-                            setSelectedDifficulty(val);
+                        onOptionSubmit={(value) => {
+                            form.setFieldValue("difficulty_id", parseInt(value));
+
                             difficultyCombobox.closeDropdown();
                         }}
                     >
@@ -173,7 +198,7 @@ export default function Page() {
                                 label="Difficulty"
                                 required
                             >
-                                {selectedDifficulty || <Input.Placeholder>Pick its difficulty</Input.Placeholder>}
+                                {difficultiesList?.find((d) => d.id == difficultyProps.defaultValue)?.name || <Input.Placeholder>Pick difficulty</Input.Placeholder>}
                             </InputBase>
                         </Combobox.Target>
 
@@ -184,14 +209,16 @@ export default function Page() {
                                 placeholder="Search difficulty"
                             />
                             <Combobox.Options>
-                                {options1.length > 0 ? options1 : <Combobox.Empty>Nothing found</Combobox.Empty>}
+                                {difficultyOptions && difficultyOptions.length > 0 ? difficultyOptions : <Combobox.Empty>Nothing found</Combobox.Empty>}
                             </Combobox.Options>
                         </Combobox.Dropdown>
                     </Combobox>
-                    <Group style={{ flexDirection: 'row' }} gap="md">
-                        <Button color="gray" size="md" radius="sm" maw="150px">
+                        
+                    <Group style={{ flexDirection: "row" }} gap="md">
+                        <Button size="md" radius="sm" maw="150px" onClick={() => router.push("/admin/courses")}>
                             <Text>Back</Text>
                         </Button>
+
                         <Button color="purple" size="md" radius="sm" type="submit" maw="150px">
                             <Text>Submit</Text>
                         </Button>

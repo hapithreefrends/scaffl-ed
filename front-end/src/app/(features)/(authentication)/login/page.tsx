@@ -2,8 +2,6 @@
 
 import { Flex } from '@mantine/core';
 
-import { Notifications } from '@mantine/notifications';
-
 import logo from './_assets/logo.png';
 import loginImage from './_assets/loginImage.png';
 import Login from './_components/Login';
@@ -18,7 +16,6 @@ export default function LoginPage() {
       alignItems: 'center', 
       padding: '20px' 
     }}>
-      <Notifications />
       <Flex 
         align="center" 
         justify="center" 
