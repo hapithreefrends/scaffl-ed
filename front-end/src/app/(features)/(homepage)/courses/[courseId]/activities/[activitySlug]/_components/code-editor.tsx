@@ -10,7 +10,6 @@ import { Space_Mono } from "next/font/google";
 
 import { shikiToMonaco } from "@shikijs/monaco";
 import { createHighlighter } from "shiki";
-// import * as monaco from 'monaco-editor-core' \
 
 interface CodeEditorProps {
   code: string;
@@ -41,15 +40,14 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
 
   const handleEditorDidMount: OnMount = (editor, monacoInstance) => {
     const apply = async () => {
+
       const highlighter = await createHighlighter({
         themes: [
-          'vitesse-dark',
-          'vitesse-light',
+          "slack-ochin",
+          "catppuccin-latte",
         ],
         langs: [
-          'javascript',
-          'typescript',
-          'vue'
+          "java",
         ],
       })
 
@@ -110,13 +108,14 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
       <Editor
         language={language}
         value={code}
-        theme="vitesse-light"
+        theme="catppuccin-latte"
         // onChange={(value) => setCode(value || "")}
         onMount={handleEditorDidMount}
         options={{
           fontSize: 16,
           lineHeight: 24,
           fontFamily: `${spaceMono.style.fontFamily}, roboto`,
+          fontWeight: "700",
           automaticLayout: true,
           minimap: { enabled: false },
           folding: false,
