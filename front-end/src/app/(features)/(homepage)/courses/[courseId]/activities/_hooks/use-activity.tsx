@@ -1,3 +1,4 @@
+"use client";
 import { createClient } from "@/utilities/supabase/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 

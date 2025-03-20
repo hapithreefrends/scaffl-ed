@@ -26,22 +26,23 @@ import {
 
 import useActivity from "../_hooks/use-activity";
 import useAoi from "../_hooks/use-aoi";
+import useCourseHeader from "../../_hooks/use-course-header";
 
 // Ensure it's only loaded on the client
 const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
-});
+})
 
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
+  
   const { data: activityData } = useActivity(activitySlug as string);
   const { data: aoiData } = useAoi(activityData.id)
-
-
+  const { data: courseData } = useCourseHeader(courseId as string);
 
   const items = [
     { title: "Courses", href: "/courses" },
-    { title: `Java for Beginners`, href: `/courses/${courseId}` },
+    { title: `${courseData.name}`, href: `/courses/${courseId}` },
     { title: `${activityData.name}`, href: null },
   ].map((item, index) =>
     item.href ? (
@@ -70,7 +71,7 @@ export default function ActivityEnvironment() {
         >
           <ProblemInfo
             title={activityData.name}
-            description={activityData.description}
+            description={activityData.content}
             xp={100}
           />
         </div>

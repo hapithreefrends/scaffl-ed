@@ -1,3 +1,5 @@
+// 'use client';
+
 import { Suspense } from "react";
 import ActivityEnvironment from "./activity-environment";
 import ActivityLoading from "./_components/activity-loading";

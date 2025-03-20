@@ -31,10 +31,6 @@ const spaceMono = Space_Mono({
 
 export default function CodeEditor({code, language, aois}:CodeEditorProps) {
 
-  aois.map((aoi: AOIProps) => {
-    console.log(aoi);
-  })
-
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const decorationsCollectionRef =
     useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
@@ -59,15 +55,16 @@ export default function CodeEditor({code, language, aois}:CodeEditorProps) {
     if (!monacoRef.current || !decorationsCollectionRef.current) return;
     const editor = monacoRef.current;
 
-    decorationsCollectionRef.current.set([
-      ...aois.map((aoi: AOIProps) => ({
-        range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
-        options: {
-          isWholeLine: true,
-          inlineClassName: classes.aoi, 
-        },
-      }))   
-    ]);
+    // decorationsCollectionRef.current.set([
+    //   ...aois.map((aoi: AOIProps) => ({
+    //     range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
+    //     options: {
+    //       isWholeLine: true,
+    //       inlineClassName: classes.aoi, 
+    //     },
+    //   }))   
+    // ]);
+    
   };
 
   // Handle AOI Clicks

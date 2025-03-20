@@ -7,9 +7,7 @@ async function fetchAoi(activityId: string) {
   const { data, error } = await supabase
     .from("AreaOfInterests")
     .select("*")
-
-  console.log("DATA: " + data);
-  console.log("ERROR: " + error);
+    .eq("activity_lesson_id", activityId)
 
   if (error) {
     throw new Error(error.message);
