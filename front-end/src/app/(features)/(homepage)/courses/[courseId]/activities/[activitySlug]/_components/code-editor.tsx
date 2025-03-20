@@ -2,26 +2,30 @@
 
 import * as monaco from "monaco-editor";
 import classes from "../_styles/code-editor.module.css";
-import defineCustomMonacoLightTheme from "./custom-monaco-theme";
+// import defineCustomMonacoLightTheme from "./custom-monaco-theme";
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Container } from "@mantine/core";
 import { useState, useRef, useEffect } from "react";
 import { Space_Mono } from "next/font/google";
 
+import { shikiToMonaco } from "@shikijs/monaco";
+import { createHighlighter } from "shiki";
+// import * as monaco from 'monaco-editor-core' \
+
 interface CodeEditorProps {
-  code: string,
-  language: string,
-  aois: AOIProps[]
+  code: string;
+  language: string;
+  aois: AOIProps[];
 }
 
 interface AOIProps {
-  id: string,
-  activity_id: string,
-  name: string,
-  start_line: number,
-  start_column: number,
-  end_line: number,
-  end_column: number
+  id: string;
+  activity_id: string;
+  name: string;
+  start_line: number;
+  start_column: number;
+  end_line: number;
+  end_column: number;
 }
 
 const spaceMono = Space_Mono({
@@ -29,13 +33,33 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
 });
 
-export default function CodeEditor({code, language, aois}:CodeEditorProps) {
-
+export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const decorationsCollectionRef =
     useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
 
   const handleEditorDidMount: OnMount = (editor, monacoInstance) => {
+    const apply = async () => {
+      const highlighter = await createHighlighter({
+        themes: [
+          'vitesse-dark',
+          'vitesse-light',
+        ],
+        langs: [
+          'javascript',
+          'typescript',
+          'vue'
+        ],
+      })
+
+      monaco.languages.register({id: "java"})
+      shikiToMonaco(highlighter, monacoInstance)
+    }
+
+    apply()
+
+    // focus upon click on editor area
     editor.focus();
 
     // Decorations
@@ -47,7 +71,7 @@ export default function CodeEditor({code, language, aois}:CodeEditorProps) {
     editor.onMouseDown((event) => handleAOIClick(event, editor));
 
     // Apply theme
-    defineCustomMonacoLightTheme(monacoInstance);
+    // defineCustomMonacoLightTheme(monacoInstance);
   };
 
   // Apply decorations only after the editor is mounted
@@ -60,11 +84,10 @@ export default function CodeEditor({code, language, aois}:CodeEditorProps) {
     //     range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
     //     options: {
     //       isWholeLine: true,
-    //       inlineClassName: classes.aoi, 
+    //       inlineClassName: classes.aoi,
     //     },
-    //   }))   
+    //   }))
     // ]);
-    
   };
 
   // Handle AOI Clicks
@@ -82,13 +105,12 @@ export default function CodeEditor({code, language, aois}:CodeEditorProps) {
     }
   };
 
-  
   return (
     <Container w="100%" h="100%" p="0">
       <Editor
         language={language}
         value={code}
-        theme="scaffyTheme"
+        theme="vitesse-light"
         // onChange={(value) => setCode(value || "")}
         onMount={handleEditorDidMount}
         options={{
