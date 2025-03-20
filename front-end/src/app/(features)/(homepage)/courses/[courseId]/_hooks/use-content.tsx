@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createClient } from "@/utilities/supabase/client";
 
 export default function useContent(id: string) {
+    // console.log("USE CONTENT ID: " + id);
     return (
         useSuspenseQuery({
             queryKey: ["content", id],

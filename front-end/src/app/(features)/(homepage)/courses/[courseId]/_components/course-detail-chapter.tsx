@@ -20,7 +20,7 @@ interface CourseChapterPreviewProps {
 }
 
 export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
-  const [opened, {toggle}] = useDisclosure(true);
+  const [opened, { toggle }] = useDisclosure(true);
   const { data: chapter } = useChapter(id);
 
   return (
@@ -31,19 +31,30 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
           {/* <Progress w="200" value={chapter.progress} /> */}
         </Group>
         <Text>{chapter?.description}</Text>
-        <Divider bg="gray.6" h="1" w="100%"/>
+        <Divider bg="gray.6" h="1" w="100%" />
         <Group justify="space-between">
-          <Group className={classes.toggleChapterDetails} component="button" onClick={toggle}>
-            <Title className={classes.toggleChapterDetailsText} order={4}>{opened ? "Hide" : "Show"} Chapter Details</Title>
+          <Group
+            className={classes.toggleChapterDetails}
+            component="button"
+            onClick={toggle}
+          >
+            <Title className={classes.toggleChapterDetailsText} order={4}>
+              {opened ? "Hide" : "Show"} Chapter Details
+            </Title>
             {opened ? <IconCaretUp /> : <IconCaretDown />}
           </Group>
         </Group>
         <Collapse in={opened}>
           <Stack gap="md">
-            <Suspense fallback={<ChapterContentSkeleton/>}>
+            <Suspense fallback={<ChapterContentSkeleton />}>
               {chapter?.modules?.map((module, index) => (
                 <ChapterContent key={index} id={module.id} />
               ))}
+
+              {/* {chapter?.modules?.map((module, index) => {
+                console.log("Module Data:", module); 
+                return <ChapterContent key={index} id={module.id} />;
+              })} */}
             </Suspense>
           </Stack>
         </Collapse>

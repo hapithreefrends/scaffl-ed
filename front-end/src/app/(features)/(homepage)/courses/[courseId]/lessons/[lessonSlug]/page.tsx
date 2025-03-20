@@ -12,7 +12,6 @@ import LessonNavigationSkeleton from "./_components/loading-skeletons/lesson-nav
 
 export default function Page() {
   const { courseId, lessonSlug } = useParams();
-
   return (
     <Group w="100%">
       <Stack flex={1} h="100%" align="flex-start">

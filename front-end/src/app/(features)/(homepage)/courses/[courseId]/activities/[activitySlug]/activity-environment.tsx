@@ -24,20 +24,24 @@ import {
   Code,
 } from "@mantine/core";
 
-import useContent from "../../_hooks/use-content";
+import useActivity from "../_hooks/use-activity";
+import useAoi from "../_hooks/use-aoi";
 
+// Ensure it's only loaded on the client
 const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
-  ssr: false, // Ensure it's only loaded on the client
+  ssr: false
 });
 
 export default function ActivityEnvironment() {
-  const { activitySlug, courseid } = useParams();
-  const { data: activityData } = useContent(courseid as string);
+  const { activitySlug, courseId } = useParams();
+  const { data: activityData } = useActivity(activitySlug as string);
+  const { data: aoiData } = useAoi(activityData.id)
 
-  // EXTREMELY HARDCODED
+
+
   const items = [
     { title: "Courses", href: "/courses" },
-    { title: `Java for Beginners`, href: `/courses/${courseid}` },
+    { title: `Java for Beginners`, href: `/courses/${courseId}` },
     { title: `${activityData.name}`, href: null },
   ].map((item, index) =>
     item.href ? (
@@ -50,21 +54,6 @@ export default function ActivityEnvironment() {
       </Text>
     )
   );
-
-  const hardCodedTitle = "Primitive Data Types";
-  const hardCodedDescriptionHTML = `
-  <p>Welcome to your first task on scaffl.ed! Imagine you’re building a friendly
-  virtual assistant that will greet users with a personalized message. However,
-  the code your friend gave you is full of tiny bugs! Your goal is to fix this
-  code so it correctly asks for the user's name and greets them properly. By the
-  end, your virtual assistant will be able to say hello to anyone who uses it,
-  just as it was meant to! Help your virtual assistant come to life by fixing
-  the errors in the code. After debugging, it should ask for the user's name and
-  print a warm greeting like:</p>
-
-  <h4>Sample Output: </h4>
-  <code>Hello, [name]! Welcome to scaffl.ed.</code>
-  `;
 
   return (
     <Flex direction="column" h="100vh">
@@ -80,8 +69,8 @@ export default function ActivityEnvironment() {
           className={`${classes.sideWindow} ${classes.problemWindow} ${classes.window}`}
         >
           <ProblemInfo
-            title={hardCodedTitle}
-            description={hardCodedDescriptionHTML}
+            title={activityData.name}
+            description={activityData.description}
             xp={100}
           />
         </div>
@@ -93,7 +82,7 @@ export default function ActivityEnvironment() {
               <Code className={classes.headerText}>helloWorld.java</Code>
             </Center>
           </Flex>
-          <MonacoEditor />
+          <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]}/>
         </Stack>
 
         {/* OUTPUT AND FEEDBACK */}

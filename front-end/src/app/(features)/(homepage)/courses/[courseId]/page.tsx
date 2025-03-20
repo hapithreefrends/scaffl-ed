@@ -39,6 +39,7 @@ export default function CourseDetailTopLevel() {
  * @param {CourseDetailParamsProps} props - The props containing the course ID.
  * @returns {JSX.Element} The component displaying the course details and chapters.
  */
+
 function CourseDetails({ id }: CourseDetailParamsProps) {
   const { data: chapterList } = useChapterList(id);
 
