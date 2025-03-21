@@ -2,10 +2,9 @@
 
 import * as monaco from "monaco-editor";
 import classes from "../_styles/code-editor.module.css";
-// import defineCustomMonacoLightTheme from "./custom-monaco-theme";
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Container } from "@mantine/core";
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 import { Space_Mono } from "next/font/google";
 
 import { shikiToMonaco } from "@shikijs/monaco";
@@ -77,15 +76,15 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
     if (!monacoRef.current || !decorationsCollectionRef.current) return;
     const editor = monacoRef.current;
 
-    // decorationsCollectionRef.current.set([
-    //   ...aois.map((aoi: AOIProps) => ({
-    //     range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
-    //     options: {
-    //       isWholeLine: true,
-    //       inlineClassName: classes.aoi,
-    //     },
-    //   }))
-    // ]);
+    decorationsCollectionRef.current.set([
+      ...aois.map((aoi: AOIProps) => ({
+        range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
+        options: {
+          isWholeLine: true,
+          inlineClassName: classes.aoi,
+        },
+      }))
+    ]);
   };
 
   // Handle AOI Clicks
