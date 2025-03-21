@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import Head from "next/head";
+import Providers from "./providers";
 
 import React from "react";
 
@@ -28,9 +29,13 @@ import "mantine-datatable/styles.layer.css";
 // import { IconContext } from "@phosphor-icons/react";
 
 import theme from "@/utilities/theme";
-import Providers from "./providers";
 
 import "./_assets/styles/global.css";
+
+// import { Actor, Poppins } from "next/font/google";
+// const bodyFont = Actor({ subsets: ["latin"], weight: "400" });
+// const headerFont = Actor({ subsets: ["latin"], weight: "400" });
+// const headerFont = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "scaffl-ed",

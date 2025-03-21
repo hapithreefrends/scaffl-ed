@@ -1,0 +1,26 @@
+.card {
+  transition: box-shadow 0.3s ease;
+  box-shadow: none;
+  /* aspect-ratio: 359/335; */
+}
+
+.card:hover {
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.learn {
+    background-color: var(--mantine-color-violet-6);
+  transition: background-color 0.3s ease;
+}
+
+.card:hover .learn {
+  background-color: var(--mantine-color-violet-9);
+}
+
+.progressBar {
+  flex: 1;
+}
+
+.difficulty {
+  border-radius: 4px;
+}

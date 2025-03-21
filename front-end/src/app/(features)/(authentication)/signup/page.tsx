@@ -2,8 +2,11 @@
 
 import { useMediaQuery } from '@mantine/hooks';
 import { Flex } from '@mantine/core';
-import loginImage from './_assets/loginImage.png';
-import Login from './_components/Login';
+
+import { Notifications } from '@mantine/notifications';
+
+import signupImage from './_assets/loginImage.png';
+import Signup from './_components/Signup';
 import logo from './_assets/logo.png';
 
 export default function Page() {
@@ -20,6 +23,7 @@ export default function Page() {
         padding: '20px',
       }}
     >
+      <Notifications />
       <Flex
         align="center"
         justify="center"
@@ -46,7 +50,7 @@ export default function Page() {
             }}
           />
           <img
-            src={loginImage.src}
+            src={signupImage.src}
             alt="loginImage"
             style={{
               width: '100%',
@@ -58,7 +62,7 @@ export default function Page() {
         </Flex>
 
         <Flex style={{ flex: 1, minWidth: isMobile ? '100%' : '50%', width: '100%',  }}>
-          <Login />
+          <Signup />
         </Flex>
       </Flex>
     </div>

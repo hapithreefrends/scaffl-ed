@@ -1,0 +1,56 @@
+.greetingHeader {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+.greetingText {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+
+.greetingImage {
+  position: absolute;
+  right: 0;
+  width: 300px;
+  bottom: 0;
+}
+
+.spacer {
+  min-width: 30vw;
+}
+
+.greetingContainer {
+  padding: var(--mantine-spacing-lg);
+  margin-top: 4vw;
+  position: relative;
+  border-radius: 8px;
+  background: var(
+    --Gradient-Purple,
+    linear-gradient(137deg, #b69cd0 -20.62%, #683598 46.34%, #211130 104.55%)
+  );
+}
+
+.textContainer {
+  width: calc(100%-450px);
+}
+
+@media screen and (max-width: 991px) {
+  .greetingImage {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .greetingContainer {
+    flex-direction: column;
+  }
+
+  .greetingImage {
+    display: none;
+  }
+}

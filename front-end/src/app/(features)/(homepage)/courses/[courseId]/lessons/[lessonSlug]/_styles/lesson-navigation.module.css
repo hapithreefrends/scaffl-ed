@@ -1,0 +1,4 @@
+.tocItem:hover {
+    background-color: var(--mantine-color-teal-light);
+    cursor: pointer;
+}

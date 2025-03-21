@@ -1,0 +1,10 @@
+.courseChapterContainer {
+    background: var(
+        --Gradient-Teal-Very-Light,
+        linear-gradient(
+          0deg,
+          var(--Neutral-neutral-1, rgba(242, 242, 242, 0.29)) 0%,
+          var(--Teal-teal-1, rgba(128, 179, 179, 0.29)) 78%
+        )
+      );
+}
