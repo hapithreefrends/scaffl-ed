@@ -47,14 +47,10 @@ export default function CourseDetailChapter({ id }: CourseChapterPreviewProps) {
         <Collapse in={opened}>
           <Stack gap="md">
             <Suspense fallback={<ChapterContentSkeleton />}>
-              {chapter?.modules?.map((module, index) => (
+              {/* Any data type will be replaced with a proper model later */}
+              {chapter?.modules?.map((module: any, index: number) => (
                 <ChapterContent key={index} id={module.id} />
               ))}
-
-              {/* {chapter?.modules?.map((module, index) => {
-                console.log("Module Data:", module); 
-                return <ChapterContent key={index} id={module.id} />;
-              })} */}
             </Suspense>
           </Stack>
         </Collapse>
