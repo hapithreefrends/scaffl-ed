@@ -33,6 +33,8 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
 })
 
+const MonacoEditorModifyCode = dynamic(() => import ("./_components/code-editor-modify-code"))
+
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
   
@@ -84,6 +86,13 @@ export default function ActivityEnvironment() {
             </Center>
           </Flex>
           <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]}/>
+          
+          {/* <Flex className={classes.windowHeader}>
+            <Center className={classes.headerTextContainer} p="md">
+              <Code className={classes.headerText}>helloWorld.java</Code>
+            </Center>
+          </Flex>
+          <MonacoEditorModifyCode code={activityData.code} language={activityData.language} aois={[...aoiData]}/> */}
         </Stack>
 
         {/* OUTPUT AND FEEDBACK */}

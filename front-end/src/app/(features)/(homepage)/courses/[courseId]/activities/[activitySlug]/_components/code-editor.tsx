@@ -1,8 +1,14 @@
 "use client";
 
+/*
+ * HOUSES THE MAIN CODE EDITOR WINDOW FOR EYE TRACKING
+ * CONTAINS CLICKABLE AOIs
+ * CODE EDITOR ITSELF IS NOT EDITABLE
+ * IRONIC, HUH? 
+ */ 
+
 import * as monaco from "monaco-editor";
 import classes from "../_styles/code-editor.module.css";
-// import defineCustomMonacoLightTheme from "./custom-monaco-theme";
 import Editor, { OnMount } from "@monaco-editor/react";
 import { Container } from "@mantine/core";
 import { useState, useRef, useEffect } from "react";
@@ -67,9 +73,6 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
 
     // Add mouse event listener for clicks
     editor.onMouseDown((event) => handleAOIClick(event, editor));
-
-    // Apply theme
-    // defineCustomMonacoLightTheme(monacoInstance);
   };
 
   // Apply decorations only after the editor is mounted
@@ -77,15 +80,15 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
     if (!monacoRef.current || !decorationsCollectionRef.current) return;
     const editor = monacoRef.current;
 
-    // decorationsCollectionRef.current.set([
-    //   ...aois.map((aoi: AOIProps) => ({
-    //     range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
-    //     options: {
-    //       isWholeLine: true,
-    //       inlineClassName: classes.aoi,
-    //     },
-    //   }))
-    // ]);
+    decorationsCollectionRef.current.set([
+      ...aois.map((aoi: AOIProps) => ({
+        range: new monaco.Range(aoi.start_line, aoi.start_column, aoi.end_line, aoi.end_column),
+        options: {
+          isWholeLine: true,
+          inlineClassName: classes.aoi,
+        },
+      }))
+    ]);
   };
 
   // Handle AOI Clicks
@@ -128,6 +131,7 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
           renderLineHighlight: "none", // hindi lumalabas ng gray highlight pag nagselect ng line
           selectionHighlight: false, // parang occurrencesHighlight pero pag nakaselect
           matchBrackets: "never", // disable bracket matching highlight
+          stickyScroll: { enabled : false }
         }}
       />
     </Container>
