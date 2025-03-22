@@ -1,10 +1,10 @@
-"use client";
-
-/*
- * This page contains the home page for the course activity
- * It contains problem title, problem description, and the prewritten buggy code in the code editor
- * Prewritten code are segmented in AOI (Area of Interest) and the buggy code is in the AOI
- * The user can edit the code in the AOI on a window below and run the code to see the output
+/**
+ * @fileoverview This file contains the main component for the course activity environment page.
+ * It includes the problem title, problem description, and the prewritten buggy code in the code editor.
+ * The prewritten code is segmented into Areas of Interest (AOI), and the buggy code is in the AOI.
+ * Users can edit the code in the AOI in a window below and run the code to see the output.
+ * 
+ * @module ActivityEnvironment
  */
 
 import classes from "./_styles/activity.module.css";
@@ -33,6 +33,12 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
 })
 
+/**
+ * The main component for the course activity environment page.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
   

@@ -10,12 +10,31 @@ import { Space_Mono } from "next/font/google";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { createHighlighter } from "shiki";
 
+/**
+ * CodeEditor component props interface.
+ * @interface CodeEditorProps
+ * @property {string} code - The code to be displayed in the editor.
+ * @property {string} language - The programming language of the code.
+ * @property {AOIProps[]} aois - Array of AOI (Area of Interest) objects.
+ */
+
 interface CodeEditorProps {
   code: string;
   language: string;
   aois: AOIProps[];
 }
 
+/**
+ * AOI (Area of Interest) props interface.
+ * @interface AOIProps
+ * @property {string} id - Unique identifier for the AOI.
+ * @property {string} activity_id - Identifier for the associated activity.
+ * @property {string} name - Name of the AOI.
+ * @property {number} start_line - Starting line number of the AOI.
+ * @property {number} start_column - Starting column number of the AOI.
+ * @property {number} end_line - Ending line number of the AOI.
+ * @property {number} end_column - Ending column number of the AOI.
+ */
 interface AOIProps {
   id: string;
   activity_id: string;
@@ -26,11 +45,36 @@ interface AOIProps {
   end_column: number;
 }
 
+/**
+ * Initializes the Space Mono font with specified weight and subsets.
+ *
+ * @constant
+ * @type {Object}
+ * @property {string} weight - The font weight to be used. Default is "400".
+ * @property {string[]} subsets - The subsets of the font to be included. Default is ["latin"].
+ */
 const spaceMono = Space_Mono({
   weight: "400", // Adjust weight if needed
   subsets: ["latin"],
 });
 
+/**
+ * CodeEditor component.
+ * @component
+ * @param {CodeEditorProps} props - Props for the CodeEditor component.
+ * @returns {JSX.Element} The rendered CodeEditor component.
+ * 
+ * @example
+ * <CodeEditor code="console.log('Hello, world!');" language="javascript" aois={[]} />
+ * 
+ * @remarks
+ * This component uses the Monaco Editor to display code with syntax highlighting and read-only mode.
+ * It also highlights specific areas of interest (AOIs) and handles click events on these AOIs.
+ * 
+ * @param {string} code - The code to be displayed in the editor.
+ * @param {string} language - The programming language of the code.
+ * @param {AOIProps[]} aois - Array of AOI (Area of Interest) objects.
+ */
 export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
