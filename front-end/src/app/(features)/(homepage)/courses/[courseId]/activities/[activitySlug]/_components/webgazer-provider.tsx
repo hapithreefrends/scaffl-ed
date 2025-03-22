@@ -58,17 +58,19 @@ export default function WebGazerProvider({
         script.async = true;
         script.onload = () => {
           console.log("WebGazer script loaded");
-
+          
           window.webgazer
-            .setRegression("ridge")
-            .setTracker("TFFacemesh")
-            .setGazeListener((data: any, timestamp: any) => {
-              if (data) {
-                console.log(data);
-                console.log("TIME STAMP: " + timestamp);
-              }
-            })
-            .begin();
+              .setRegression("ridge")
+              .setTracker("TFFacemesh")
+              // .applyKalmanFilter(true)
+              // .showVideoPreview(true)
+              .setGazeListener((data: any, timestamp: any) => {
+                // if (data) {
+                //   console.log(data);
+                //   console.log("TIME STAMP: " + timestamp);
+                // }
+              })
+              .begin();
         };
         document.body.appendChild(script);
       }
