@@ -43,7 +43,7 @@ export default function HomePageLayout({
             <Suspense fallback={<NavbarProfileSkeleton />}>
               {navbarProfileLoader}
             </Suspense>
-            <Stack gap="0">{<NavbarLinks pathname={pathname}/>}</Stack>
+            <Stack gap="0">{<NavbarLinks/>}</Stack>
           </Stack>
         </Stack>
       </AppShell.Navbar>

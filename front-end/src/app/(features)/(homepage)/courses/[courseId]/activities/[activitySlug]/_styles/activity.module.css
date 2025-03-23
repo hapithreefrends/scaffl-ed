@@ -53,4 +53,5 @@
     flex-direction: column;
     gap: 10px;
     background-color: transparent !important;
+    overflow: hidden !important;
 }

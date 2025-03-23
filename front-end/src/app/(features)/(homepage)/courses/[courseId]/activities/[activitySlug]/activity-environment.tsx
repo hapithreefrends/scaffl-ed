@@ -1,10 +1,10 @@
-"use client";
-
-/*
- * This page contains the home page for the course activity
- * It contains problem title, problem description, and the prewritten buggy code in the code editor
- * Prewritten code are segmented in AOI (Area of Interest) and the buggy code is in the AOI
- * The user can edit the code in the AOI on a window below and run the code to see the output
+/**
+ * @fileoverview This file contains the main component for the course activity environment page.
+ * It includes the problem title, problem description, and the prewritten buggy code in the code editor.
+ * The prewritten code is segmented into Areas of Interest (AOI), and the buggy code is in the AOI.
+ * Users can edit the code in the AOI in a window below and run the code to see the output.
+ * 
+ * @module ActivityEnvironment
  */
 
 import classes from "./_styles/activity.module.css";
@@ -13,6 +13,8 @@ import ProblemInfo from "./_components/problem-info";
 import ScaffyFeedbackWindow from "./_components/scaffy-feedback-window";
 import TestCaseWindow from "./_components/test-cases-window";
 import { useParams } from "next/navigation";
+import { useState } from "react";
+import { GazedAOIRangeProps } from "./_components/gazed-aoi-log-item";
 import {
   Group,
   Flex,
@@ -33,14 +35,24 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
 })
 
+<<<<<<< HEAD
 const MonacoEditorModifyCode = dynamic(() => import ("./_components/code-editor-modify-code"))
 
+=======
+/**
+ * The main component for the course activity environment page.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
+>>>>>>> activityLessonIntegrated
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
-  
   const { data: activityData } = useActivity(activitySlug as string);
   const { data: aoiData } = useAoi(activityData.id)
   const { data: courseData } = useCourseHeader(courseId as string);
+
+  const [gazeRange, setGazeRange] = useState<GazedAOIRangeProps[]>([])
 
   const items = [
     { title: "Courses", href: "/courses" },
@@ -85,6 +97,7 @@ export default function ActivityEnvironment() {
               <Code className={classes.headerText}>helloWorld.java</Code>
             </Center>
           </Flex>
+<<<<<<< HEAD
           <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]}/>
           
           {/* <Flex className={classes.windowHeader}>
@@ -93,11 +106,14 @@ export default function ActivityEnvironment() {
             </Center>
           </Flex>
           <MonacoEditorModifyCode code={activityData.code} language={activityData.language} aois={[...aoiData]}/> */}
+=======
+          <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]} onGazeDetected={(range) => setGazeRange((prev) => [...prev, range])}/>
+>>>>>>> activityLessonIntegrated
         </Stack>
 
         {/* OUTPUT AND FEEDBACK */}
         <div className={`${classes.sideWindow} ${classes.window} ${classes.multiWindow}`}>
-          <ScaffyFeedbackWindow />
+          <ScaffyFeedbackWindow gazedAOIRangeList={gazeRange}/>
           <TestCaseWindow />
         </div>
       </div>
