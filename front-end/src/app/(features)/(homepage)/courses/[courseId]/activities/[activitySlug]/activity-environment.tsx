@@ -35,17 +35,12 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
 })
 
-<<<<<<< HEAD
-const MonacoEditorModifyCode = dynamic(() => import ("./_components/code-editor-modify-code"))
-
-=======
 /**
  * The main component for the course activity environment page.
  * 
  * @component
  * @returns {JSX.Element} The rendered component.
  */
->>>>>>> activityLessonIntegrated
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
   const { data: activityData } = useActivity(activitySlug as string);
@@ -97,18 +92,7 @@ export default function ActivityEnvironment() {
               <Code className={classes.headerText}>helloWorld.java</Code>
             </Center>
           </Flex>
-<<<<<<< HEAD
-          <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]}/>
-          
-          {/* <Flex className={classes.windowHeader}>
-            <Center className={classes.headerTextContainer} p="md">
-              <Code className={classes.headerText}>helloWorld.java</Code>
-            </Center>
-          </Flex>
-          <MonacoEditorModifyCode code={activityData.code} language={activityData.language} aois={[...aoiData]}/> */}
-=======
           <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]} onGazeDetected={(range) => setGazeRange((prev) => [...prev, range])}/>
->>>>>>> activityLessonIntegrated
         </Stack>
 
         {/* OUTPUT AND FEEDBACK */}
