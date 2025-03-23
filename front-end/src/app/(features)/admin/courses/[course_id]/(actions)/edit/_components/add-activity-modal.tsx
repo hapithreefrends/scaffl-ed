@@ -2,44 +2,43 @@
 
 import {
   Button,
-  InputBase,
   TextInput,
   Stack,
-  Input,
   Modal,
   Textarea,
   NumberInput,
   Combobox,
+  InputBase,
+  Input,
 } from "@mantine/core";
 
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";
 import StarterKit from "@tiptap/starter-kit";
+import { useFindAllProgrammingLanguages } from "@/app/(features)/_hooks/use-constants";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Superscript from "@tiptap/extension-superscript";
 import SubScript from "@tiptap/extension-subscript";
 
+import { useEffect } from "react";
 import { useUpdateCourseFormContext } from "./update-course-form-context";
 import useProgrammingLanguagesCombobox from "../_hooks/use-programming-languages-combobox";
 
-import { useEffect } from "react";
-import { useFindAllProgrammingLanguages } from "@/app/(features)/_hooks/use-constants";
-
-interface AddLessonModalProps {
+interface AddActivityModalProps {
   chapterIndex: number;
   activityLessonIndex: number;
   isModalOpen: boolean;
   closeModal: () => void;
 }
 
-export default function AddLessonModal({
+export default function AddActivityModal({
   chapterIndex,
   activityLessonIndex,
   isModalOpen,
   closeModal,
-}: AddLessonModalProps) {
+}: AddActivityModalProps) {
   const form = useUpdateCourseFormContext();
 
   const { data: programmingLanguagesList } = useFindAllProgrammingLanguages();
@@ -55,31 +54,30 @@ export default function AddLessonModal({
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content: `
-      <h1>Lesson Content</h1>
-      <p>Start writing your lesson content here...</p>
+      <h1>Activity Content</h1>
+      <p>Start writing your activity content here...</p>
     `,
-    immediatelyRender: true
+    immediatelyRender: true,
   });
 
-  useEffect(
-    () => {
-      editor.commands.setContent(
-        <>
-          {form?.getValues()?.chapters?.[chapterIndex]?.activity_lessons?.[activityLessonIndex]?.content}
-        </>
-      )
-    },
-    [chapterIndex, activityLessonIndex]
-  );
+  useEffect(() => {
+    editor.commands.setContent(
+      <>
+        {
+          form?.getValues()?.chapters?.[chapterIndex]?.activity_lessons?.[
+            activityLessonIndex
+          ]?.content
+        }
+      </>
+    );
+  }, [chapterIndex, activityLessonIndex]);
 
-  useEffect(
-    () => {
-      form.setFieldValue(
-        `chapters.${chapterIndex}.activity_lessons.${activityLessonIndex}.content`,
-        editor.getHTML()
-      );
-    }, [editor.getHTML()]
-  );
+  useEffect(() => {
+    form.setFieldValue(
+      `chapters.${chapterIndex}.activity_lessons.${activityLessonIndex}.content`,
+      editor.getHTML()
+    );
+  }, [editor.getHTML()]);
 
   const programmingLanguageProps = form.getInputProps(
     `chapters.${chapterIndex}.activity_lessons.${activityLessonIndex}.programming_language_id`
@@ -96,7 +94,7 @@ export default function AddLessonModal({
     <Modal
       opened={isModalOpen}
       onClose={() => closeModal()}
-      title="Add Lesson"
+      title="Add Activity"
       size="xl"
     >
       <Stack>
@@ -115,8 +113,8 @@ export default function AddLessonModal({
 
         <TextInput
           withAsterisk
-          label="Lesson Title"
-          placeholder="Lesson Title"
+          label="Activity Title"
+          placeholder="Activity Title"
           required
           key={form.key(
             `chapters.${chapterIndex}.activity_lessons.${activityLessonIndex}.name`
@@ -128,8 +126,8 @@ export default function AddLessonModal({
 
         <Textarea
           withAsterisk
-          label="Lesson Description"
-          placeholder="Lesson Description"
+          label="Activity Description"
+          placeholder="Activity Description"
           required
           key={form.key(
             `chapters.${chapterIndex}.activity_lessons.${activityLessonIndex}.description`

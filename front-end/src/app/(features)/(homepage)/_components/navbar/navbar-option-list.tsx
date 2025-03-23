@@ -43,6 +43,14 @@ export default function NavbarLinks() {
         ))}
       </Stack>
       <Stack>
+        <Button
+          onClick={() => {
+            router.push("/admin/dashboard");
+          }}
+        >
+          Admin
+        </Button>
+
         <Button onClick={async () => {
           await supabase.auth.signOut();
           router.push("/login");

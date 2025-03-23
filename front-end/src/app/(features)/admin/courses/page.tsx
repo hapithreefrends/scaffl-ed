@@ -10,7 +10,7 @@ import { IconClick, IconPlus, IconEye, IconEdit, IconTrash } from "@tabler/icons
 import { DataTable, DataTableColumn } from "mantine-datatable";
 
 import { ICourseFull } from "@/app/_models/course";
-import { useFindAllCourses } from "./_hooks/use-courses";
+import { useDeleteCourseById, useFindAllCourses } from "./_hooks/use-courses";
 
 import classes from "./_styles/page.module.css";
 
@@ -21,6 +21,7 @@ export default function Page() {
   const pathname = usePathname();
 
   const { data, isLoading } = useFindAllCourses();
+  const deleteCourse = useDeleteCourseById();
 
   const [page, setPage] = useState<number>(1);
   const [records, setRecords] = useState<ICourseFull[] | undefined>(data?.slice(0, PAGE_SIZE));
@@ -118,7 +119,7 @@ export default function Page() {
                   children: (
                     <>
                       <p>Are you sure you want to delete this item?</p>
-                      <Button color="red" onClick={() => router.push(`${pathname}/${record.id}/delete`)}>
+                      <Button color="red" onClick={() => deleteCourse.mutate(record.id)}>
                         Delete
                       </Button>
                     </>

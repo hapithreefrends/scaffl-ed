@@ -5,12 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import { Text, Button, Group, TextInput, Stack, Title, Combobox, Textarea, Input, InputBase, useCombobox } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
-import { zodResolver } from "mantine-form-zod-resolver";
-
-import { courseCreateDataSchema } from "@/app/_models/course";
-
 import { useFindAllDifficulties, useFindAllProgrammingLanguages } from "@/app/(features)/_hooks/use-constants";
-import { useFindCourseById } from "../_hooks/use-courses";
+
+import { useEffect } from "react";
+import { useFindCourseById } from "../../../_hooks/use-courses";
 
 export default function Page() {
     const { course_id } = useParams();
@@ -23,13 +21,24 @@ export default function Page() {
     const form = useForm({
         mode: "uncontrolled",
         initialValues: {
-            name: data?.name || "",
-            description: data?.description || "",
-            difficulty_id: data?.difficulty_id || 0,
-            programming_language_id: data?.programming_language_id || ""
-        },
-        validate: zodResolver(courseCreateDataSchema)
+            name: "",
+            description: "",
+            difficulty_id: 0,
+            programming_language_id: ""
+        }
     });
+
+    useEffect(() => {
+        if (data) {
+            form.setValues({
+                name: data.name,
+                description: data.description,
+                difficulty_id: data.difficulty_id,
+                programming_language_id: data.programming_language_id
+            });
+        }
+    }
+    , [data]);
 
     const programmingLanguageProps = form.getInputProps("programming_language_id");
     const difficultyProps = form.getInputProps("difficulty_id");
@@ -43,6 +52,10 @@ export default function Page() {
             <Title order={2}>
                 View Course
             </Title>
+
+            <Text component="pre">
+                {JSON.stringify(form.getValues(), null, 2)}
+            </Text>
 
             <form>
                 <Stack gap="20px">
