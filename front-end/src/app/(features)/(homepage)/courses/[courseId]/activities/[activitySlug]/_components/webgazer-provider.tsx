@@ -1,5 +1,9 @@
 "use client";
 
+import { createContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import localforage from 'localforage';
+
 /**
  * @file WebGazerProvider.tsx
  * @description This file contains the WebGazerProvider component which loads the WebGazer library and provides context for gaze tracking calibration state.
@@ -10,9 +14,6 @@ declare global {
     webgazer: any;
   }
 }
-
-import { createContext, useEffect, useState } from "react";
-import { Dispatch, SetStateAction } from "react";
 
 /**
  * @typedef WebGazerContextType
@@ -58,18 +59,12 @@ export default function WebGazerProvider({
         script.async = true;
         script.onload = () => {
           console.log("WebGazer script loaded");
-          
+
           window.webgazer
               .setRegression("ridge")
               .setTracker("TFFacemesh")
-              // .applyKalmanFilter(true)
-              // .showVideoPreview(true)
-              .setGazeListener((data: any, timestamp: any) => {
-                // if (data) {
-                //   console.log(data);
-                //   console.log("TIME STAMP: " + timestamp);
-                // }
-              })
+              .applyKalmanFilter(false)
+              .showVideoPreview(true)
               .begin();
         };
         document.body.appendChild(script);
@@ -80,10 +75,24 @@ export default function WebGazerProvider({
 
     return () => {
       if (window.webgazer) {
+        // FOR PERFORMANCE GAINS PARA DI NAGKUKUMPOL YUNG MGA DATA OVER TIME
+        // LAHAT NG MAKITA KO SA NET PARA MATANGAL YUNG DATA SA STORAGE NANDYAN HAHAHA
         window.webgazer.end();
+        indexedDB.deleteDatabase("webgazer");
+        localStorage.removeItem("webgazerGlobalData");
+        localforage.clear();
+        indexedDB.deleteDatabase("localforage");
+        console.log("DELETED!!!")
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (window.webgazer) {
+      window.webgazer.showVideoPreview(!calibrated); // Webcam ON when not calibrated, OFF when calibrated
+      window.webgazer.applyKalmanFilter(calibrated); // Kalman ON after calibration
+    }
+  }, [calibrated]);
 
   return (
     <WebGazerContext.Provider value={{ calibrated, setCalibrated }}>

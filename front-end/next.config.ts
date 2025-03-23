@@ -1,12 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
+  reactStrictMode: false,
+  // DISABLES RENDERING COMPONENTS TWICE, 
+  // CAPTURE UNINTNDED SIDE EFFECTS WHEN IT'S ON,
+  // BUT MAKES WEBGAZER INITIALIZE TWICE, RENDERING TWO DOTS AND SEVERLY AFFECTING PERFORMANCE
 };
 
 export default nextConfig;

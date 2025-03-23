@@ -9,7 +9,7 @@ import { IconBook, IconPuzzle } from "@tabler/icons-react";
 export default function ChapterContent({ id }: { id: string }) {
   const { data: content } = useContent(id);
   const courseId = useContext(CourseIdContext);
-  console.log(content.type.name === "Lesson" ? `./${courseId}/lessons/${content.slug}` : `./${courseId}/activities/${content.slug}`);
+  // console.log(content.type.name === "Lesson" ? `./${courseId}/lessons/${content.slug}` : `./${courseId}/activities/${content.slug}`);
 
   return (
     <Link className={classes.container} href={content.type.name === "Lesson" ? `./${courseId}/lessons/${content.slug}` : `./${courseId}/activities/${content.slug}`}>
