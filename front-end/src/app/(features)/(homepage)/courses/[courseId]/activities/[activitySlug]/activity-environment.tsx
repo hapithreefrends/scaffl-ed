@@ -13,6 +13,8 @@ import ProblemInfo from "./_components/problem-info";
 import ScaffyFeedbackWindow from "./_components/scaffy-feedback-window";
 import TestCaseWindow from "./_components/test-cases-window";
 import { useParams } from "next/navigation";
+import { useState } from "react";
+import { GazedAOIRangeProps } from "./_components/gazed-aoi-log-item";
 import {
   Group,
   Flex,
@@ -41,10 +43,11 @@ const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
  */
 export default function ActivityEnvironment() {
   const { activitySlug, courseId } = useParams();
-  
   const { data: activityData } = useActivity(activitySlug as string);
   const { data: aoiData } = useAoi(activityData.id)
   const { data: courseData } = useCourseHeader(courseId as string);
+
+  const [gazeRange, setGazeRange] = useState<GazedAOIRangeProps[]>([])
 
   const items = [
     { title: "Courses", href: "/courses" },
@@ -89,12 +92,12 @@ export default function ActivityEnvironment() {
               <Code className={classes.headerText}>helloWorld.java</Code>
             </Center>
           </Flex>
-          <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]}/>
+          <MonacoEditor code={activityData.code} language={activityData.language} aois={[...aoiData]} onGazeDetected={(range) => setGazeRange((prev) => [...prev, range])}/>
         </Stack>
 
         {/* OUTPUT AND FEEDBACK */}
         <div className={`${classes.sideWindow} ${classes.window} ${classes.multiWindow}`}>
-          <ScaffyFeedbackWindow />
+          <ScaffyFeedbackWindow gazedAOIRangeList={gazeRange}/>
           <TestCaseWindow />
         </div>
       </div>

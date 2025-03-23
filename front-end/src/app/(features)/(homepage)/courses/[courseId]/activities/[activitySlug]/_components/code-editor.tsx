@@ -10,6 +10,8 @@ import { Space_Mono } from "next/font/google";
 import { shikiToMonaco } from "@shikijs/monaco";
 import { createHighlighter } from "shiki";
 
+import { GazedAOIRangeProps } from "./gazed-aoi-log-item";
+
 /**
  * CodeEditor component props interface.
  * @interface CodeEditorProps
@@ -22,6 +24,7 @@ interface CodeEditorProps {
   code: string;
   language: string;
   aois: AOIProps[];
+  onGazeDetected: (gazedRange: GazedAOIRangeProps) => void;
 }
 
 /**
@@ -75,8 +78,12 @@ const spaceMono = Space_Mono({
  * @param {string} language - The programming language of the code.
  * @param {AOIProps[]} aois - Array of AOI (Area of Interest) objects.
  */
-export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
-  const editorRef = useRef<HTMLDivElement | null>(null);
+export default function CodeEditor({
+  code,
+  language,
+  aois,
+  onGazeDetected,
+}: CodeEditorProps) {
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const decorationsCollectionRef =
     useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
@@ -84,6 +91,7 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
   const handleEditorDidMount: OnMount = (editor, monacoInstance) => {
     if (!window.webgazer) return;
 
+    // Apply Shiki Theme
     const applyShiki = async () => {
       const highlighter = await createHighlighter({
         themes: ["slack-ochin", "catppuccin-latte"],
@@ -105,93 +113,138 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
     applyDecorations();
 
     // AOI related stuff
-    // getAOIBoundingBoxes(editor);
+    // Retrieve all the current decorations (ranges) in the editor.
+    const decorations = editor.getModel()?.getAllDecorations();
+    console.log("DECORATIONS LENGTH:", decorations?.length)
+    if (!decorations) return; // Exit if there are no decorations available.
 
-    // console.log(editor?.getModel()?.getAllDecorations())
-    const aoiBoxes = getAOIBoundingBoxes(editor);
-    // const aoiBoxes = [{ x1: 0, y1: 0, x2: 1000, y2: 1000, id: "DEEZ NUTZ" }];
-    let lastAOIViewed: any = null;
-
-    console.log("AOI BOXES: ", aoiBoxes);
-
+    // ANG KULIT ANY NA NGA LANG
     window.webgazer.setGazeListener((data: any, timestamp: any) => {
-      // ANG KULIT ANY NA NGA LANG
       if (!data) return;
-      if (!aoiBoxes) return;
-
-      // const gazeAOI = isGazeInsideAOI(data.x, data.y, aoiBoxes);
-      // if (gazeAOI && lastAOIViewed !== gazeAOI.id) {
-      //   console.log(`Gaze entered AOI: ${gazeAOI.id}`);
-      //   lastAOIViewed = gazeAOI.id;
-      // }
-      // console.log("AOI BOXES: ", aoiBoxes);
 
       const { x, y } = data; // Gaze coordinates
-      aoiBoxes.forEach((aoi, index) => {
-        if (isGazeInsideAOI(x, y, aoi)) {
-          console.log(
-            `Gaze entered AOI ${index + 1} at timestamp ${timestamp}`
-          );
-          // Do something with the gaze detection
-        }
-      });
+
+      const position = getPositionFromCoordinates(x, y, editor);
+
+      // If a valid position (line and column) is obtained from the gaze coordinates,
+      if (position) {
+        // Loop through each decoration to check if the gaze position falls within it.
+        decorations.forEach((decoration) => {
+          // Check if the current decoration's range contains the gaze-detected position.
+          if (decoration.range.containsPosition(position)) {
+            // If the gaze falls within the range, pass the range to the provided onGazeDetected callback.
+            onGazeDetected({
+              startLineNumber: decoration.range.startLineNumber,
+              startColumn: decoration.range.startColumn,
+              endLineNumber: decoration.range.endLineNumber,
+              endColumn: decoration.range.endColumn,
+              text: editor.getModel()?.getValueInRange(decoration.range) || "NaN",
+              timestamp: timestamp
+            });
+          }
+        });
+      }
     });
-
-    // Add mouse event listener for clicks
-    // editor.onMouseDown((event) => handleAOIClick(event, editor));
   };
 
-  // gathers AOI bounding boxes
-  const getAOIBoundingBoxes = (editor: monaco.editor.IStandaloneCodeEditor) => {
+  /**
+   * Maps a vertical `y` coordinate to a line number within the Monaco Editor.
+   *
+   * @param {number} y - The vertical coordinate (absolute on the screen).
+   * @param {monaco.editor.IStandaloneCodeEditor} editor - The Monaco Editor instance.
+   * @returns {number | null} - The line number at the specified vertical coordinate, or null if not valid.
+   *
+   * This function considers the editor's scroll position and adjusts the `y` coordinate relative to the editor.
+   */
+  const getLineNumberFromOffset = (
+    y: number,
+    editor: monaco.editor.IStandaloneCodeEditor
+  ) => {
+    const editorRect = editor.getDomNode()?.getBoundingClientRect();
+    const editorScrollTop = editor.getScrollTop();
+
+    if (!editorRect) return;
+
+    // Adjust y relative to the editor's top and current scroll position
+    const adjustedY = y - editorRect.top + editorScrollTop;
+
     const model = editor.getModel();
-    if (!model) return;
+    if (!model) return null;
 
-    const decorations = model.getAllDecorations();
+    const lineCount = model.getLineCount();
+    for (let lineNumber = 1; lineNumber <= lineCount; lineNumber++) {
+      const lineTop = editor.getTopForLineNumber(lineNumber);
+      const nextLineTop = editor.getTopForLineNumber(lineNumber + 1);
 
-    return decorations
-      ?.map((decoration) => {
-        const range = decoration?.range;
-        console.log(model?.getValueInRange(range));
-        console.log("Start column:", range.startColumn);
-        console.log("End column:", range.endColumn);
-        if (!range) return null;
+      if (adjustedY >= lineTop && adjustedY < nextLineTop) {
+        return lineNumber;
+      }
+    }
 
-        const start = editor.getScrolledVisiblePosition({ column: range.startColumn, lineNumber: range.startLineNumber });
-        const end = editor.getScrolledVisiblePosition({ column: range.endColumn, lineNumber: range.endLineNumber });
-
-        console.log("START:",start);
-        console.log("END:",end);
-        console.log(editor.getOffsetForColumn(range.startLineNumber,range.startColumn))
-        console.log(editor.getOffsetForColumn(range.endLineNumber,range.endColumn))
-
-        if (!start || !end) return null;
-
-        return {
-          x1: start.left, // Top-left corner X
-          x2: end.left, // Bottom-right corner X
-          y1: start.top, // Top-left corner Y
-          y2: end.top,
-          // x: start.left,
-          // y: start.top,
-          // width: end.left - start.left,
-          // height: end.top - start.top + 24, // 24 is the set line height, could be coded better of course
-          id: decoration?.id,
-        };
-      })
-      .filter(Boolean);
+    // If y matches the very last line
+    return lineCount;
   };
 
-  const isGazeInsideAOI = (x: number, y: number, aoi: any) => {
-    return x >= aoi.x1 && x <= aoi.x2 && y >= aoi.y1 && y <= aoi.y2;
+  /**
+   * Maps a horizontal `x` coordinate to a column within a specific line in the Monaco Editor.
+   *
+   * @param {number} x - The horizontal coordinate (absolute on the screen).
+   * @param {number} lineNumber - The line number to check.
+   * @param {monaco.editor.IStandaloneCodeEditor} editor - The Monaco Editor instance.
+   * @returns {number | null} - The column number at the specified horizontal coordinate, or null if not valid.
+   *
+   * This function adjusts the `x` coordinate relative to the editor's position and scroll state.
+   */
+  const getColumnFromOffset = (
+    x: number,
+    lineNumber: number,
+    editor: monaco.editor.IStandaloneCodeEditor
+  ) => {
+    const editorRect = editor.getDomNode()?.getBoundingClientRect();
+    const editorScrollLeft = editor.getScrollLeft();
+
+    if (!editorRect) return;
+
+    // Adjust x relative to the editor's left and current scroll position
+    const adjustedX = x - editorRect.left + editorScrollLeft;
+
+    const model = editor.getModel();
+    if (!model) return null;
+
+    const lineContent = model.getLineContent(lineNumber);
+    for (let column = 1; column <= lineContent.length + 1; column++) {
+      const columnOffset = editor.getOffsetForColumn(lineNumber, column);
+
+      if (adjustedX < columnOffset) {
+        return column - 1;
+      }
+    }
+
+    return lineContent.length + 1; // Fallback to the end of the line
   };
 
-  const decorationElement = document.querySelectorAll('.view-line');
-  console.log("DECORATION ELEMENTS",decorationElement)
-  // const isGazeInsideAOI = (x: number, y: number, aois: any[]) => {
-  //   return aois.find(aoi =>
-  //     x >= aoi.x1 && x <= aoi.x2 && y >= aoi.y1 && y <= aoi.y2
-  //   );
-  // }
+  /**
+   * Converts screen coordinates (`x`, `y`) to a Monaco `Position` object (line number and column).
+   *
+   * @param {number} x - The horizontal coordinate (absolute on the screen).
+   * @param {number} y - The vertical coordinate (absolute on the screen).
+   * @param {monaco.editor.IStandaloneCodeEditor} editor - The Monaco Editor instance.
+   * @returns {monaco.Position | null} - A Monaco `Position` object representing the line and column, or null if not valid.
+   *
+   * This function checks if the coordinates are within the editor bounds and then calculates the corresponding position.
+   */
+  const getPositionFromCoordinates = (
+    x: number,
+    y: number,
+    editor: monaco.editor.IStandaloneCodeEditor
+  ) => {
+    const lineNumber = getLineNumberFromOffset(y, editor);
+    if (!lineNumber) return null;
+
+    const column = getColumnFromOffset(x, lineNumber, editor);
+    if (!column) return;
+    return new monaco.Position(lineNumber, column);
+  };
 
   // Apply decorations only after the editor is mounted
   const applyDecorations = () => {
@@ -212,19 +265,6 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
     ]);
   };
 
-  // Handle AOI Clicks
-  // const handleAOIClick = (event: monaco.editor.IEditorMouseEvent) => {
-  //   const position = event.target.position; // Get clicked position
-  //   if (!position) return;
-
-  //   // Check if click happened inside an AOI
-  //   const aois = decorationsCollectionRef.current?.getRanges();
-  //   if (aois?.some((range) => range.containsPosition(position))) {
-
-  //     console.log(position);
-  //   }
-  // };
-
   return (
     <Container w="100%" h="100%" p="0">
       <Editor
@@ -244,7 +284,7 @@ export default function CodeEditor({ code, language, aois }: CodeEditorProps) {
           readOnly: true,
           domReadOnly: true, // di lumabas yung read-only message pagnagtytype
           scrollBeyondLastLine: false, // disable scrolling pag di kailangan
-          // wordWrap: "on", // para di sya magscroll pahiga
+          wordWrap: "on", // para di sya magscroll pahiga
           cursorBlinking: "solid", // di kailangan, us2 ko lang
           occurrencesHighlight: "off", // lahat ng occurences ng variables di nakahighlight
           renderLineHighlight: "none", // hindi lumalabas ng gray highlight pag nagselect ng line

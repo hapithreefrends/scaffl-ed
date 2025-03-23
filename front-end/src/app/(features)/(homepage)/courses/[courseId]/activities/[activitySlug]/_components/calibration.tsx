@@ -12,7 +12,7 @@ import {
 export default function Calibration() {
   const { setCalibrated } = useWebGazer();
   const [pointsClicked, setPointsClicked] = useState(1);
-  const cols = 3;
+  const cols = 4;
   const totalPoints = cols * cols;
 
   const incrementPointsClicked = () => {
@@ -25,7 +25,7 @@ export default function Calibration() {
 
 //   console.log("GRIDDDDD");
   return (
-    <SimpleGrid className={classes.calibrationContainer} cols={cols} h="100vh" w="100vw" p="md">
+    <SimpleGrid className={classes.calibrationContainer} cols={cols} h="100vh" w="100vw" p="sm">
         {Array.from(Array(totalPoints)).map((_, index) => (
             <CalibrationPoint key={index} onPointClick={incrementPointsClicked}/>
         ))}

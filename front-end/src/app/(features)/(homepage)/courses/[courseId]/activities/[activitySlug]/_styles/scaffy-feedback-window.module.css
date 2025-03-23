@@ -1,6 +1,7 @@
 .container {
     flex: 1;
     gap: 0;
+    overflow: hidden;
 }
 
 .header {
@@ -23,5 +24,5 @@
 .windowArea {
     padding: 20px;
     background-color: white;
-    flex: 1;
+    overflow: auto;
 }

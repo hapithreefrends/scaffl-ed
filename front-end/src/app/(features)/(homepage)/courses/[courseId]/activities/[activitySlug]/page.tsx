@@ -13,8 +13,8 @@ export default function ActivityTopLevel() {
 
   return (
     <Suspense fallback={<ActivityLoading/>}>
-      {/* { calibrated ? <ActivityEnvironment/> : <Calibration/> } */}
-      <ActivityEnvironment/>
+      { calibrated ? <ActivityEnvironment/> : <Calibration/> }
+      {/* <ActivityEnvironment/> */}
     </Suspense>
   );
 }
