@@ -2,19 +2,21 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Stack, Text } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import Link from "next/link";
 import NavbarOption from "./navbar-option";
-import { IconHome, IconSourceCode, IconSchool } from "@tabler/icons-react";
+import { IconUser, IconBook, IconHome, IconSchool } from "@tabler/icons-react";
+import { createClient } from "@/utilities/supabase/client";
 
 const linksList = [
   { link: "dashboard", label: "Dashboard", icon: IconHome },
   { link: "courses", label: "Courses", icon: IconSchool },
-  { link: "teachers", label: "Teachers", icon: IconSourceCode },
-  { link: "students", label: "Students", icon: IconSourceCode },
+  { link: "teachers", label: "Teachers", icon: IconBook },
+  { link: "students", label: "Students", icon: IconUser },
 ];
 
 export default function NavbarLinks() {
+  const supabase = createClient();
   const router = useRouter();
   const pathname = usePathname();
   const [, setActive] = useState(pathname);
@@ -29,7 +31,7 @@ export default function NavbarLinks() {
           onClick={(e) => {
             e.preventDefault();
             router.push(`/admin/${link.link}`);
-            setActive(link.link)
+            setActive(link.link);
           }}
         >
           <NavbarOption
@@ -39,6 +41,25 @@ export default function NavbarLinks() {
           />
         </Link>
       ))}
+      <Stack>
+        <Button
+          onClick={() => {
+            router.push("/dashboard");
+          }}
+        >
+          Student
+        </Button>
+
+        <Button
+          onClick={async () => {
+            await supabase.auth.signOut();
+            router.push("/login");
+          }}
+          color="red"
+        >
+          Logout
+        </Button>
+      </Stack>
     </Stack>
   );
 }
