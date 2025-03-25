@@ -45,7 +45,7 @@
     "mantine-contextmenu": "^7.17.1",
     "mantine-datatable": "^7.17.1",
     "mantine-form-zod-resolver": "^1.1.0",
-    "next": "15.1.4",
+    "next": "^15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-svg": "^16.3.0",
