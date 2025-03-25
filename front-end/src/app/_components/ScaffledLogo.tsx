@@ -1,6 +1,5 @@
-
-import { ReactSVG } from 'react-svg';
-import { rem } from '@mantine/core';
+import { Image } from '@mantine/core';
+// import { ReactSVG } from 'react-svg';
 
 import styles from './ScaffledLogo.module.css';
 
@@ -50,21 +49,26 @@ const getLogos = () => ({
 });
 
 export interface ScaffledLogoProps {
-  size: number;
   variant: LogoVariant;
   color: LogoColor;
 }
 
-export default function ScaffledLogo({ size, variant, color, ...props }: ScaffledLogoProps) {
+export default function ScaffledLogo({ variant, color, ...props }: ScaffledLogoProps) {
   const logos = getLogos();
   const image = logos[variant]?.[color] ?? logos.full.original; // Fallback to "full original" if invalid
 
   return (
-    <ReactSVG
-      style={{ height: rem(size) }}
+    <Image
       className={styles.image}
       src={image.src}
+      alt="Scaffled Logo"
       {...props}
     />
+
+    // <ReactSVG
+    //   className={styles.image}
+    //   src={image.src}
+    //   {...props}
+    // />
   );
 }

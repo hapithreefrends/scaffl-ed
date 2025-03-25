@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { createClient } from '@/utilities/supabase/client';
+import { createClient } from "@/utilities/supabase/client";
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 import {
   Button,
@@ -11,7 +11,7 @@ import {
   PasswordInput
 } from "@mantine/core";
 
-import { notifications } from '@mantine/notifications';
+import { notifications } from "@mantine/notifications";
 
 import { useForm } from "@mantine/form";
 import { IconAt, IconLock } from "@tabler/icons-react";
@@ -47,24 +47,24 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const { data, error } = await signInWithEmail(values.email, values.password);
+          const { error } = await signInWithEmail(values.email, values.password);
 
           if (error) {
             notifications.show({
-              title: 'Error',
+              title: "Error",
               message: error.message,
-              color: 'red',
+              color: "red",
             });
 
             console.log(error);
           } else {
             notifications.show({
-              title: 'Success',
+              title: "Success",
               message: `Logged in successfully!`,
-              color: 'green',
+              color: "green",
             });
 
-            router.push('/dashboard');
+            router.push("/dashboard");
           }
         })}
       >
