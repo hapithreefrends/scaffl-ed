@@ -28,8 +28,13 @@ const Tiles = () => {
     const heatmapData = generateRandomData();
 
     return (
-        <div>
-            <h2>Activity Heatmap</h2>
+        <div
+            style={{
+                border: "2px solid #ccc",
+                borderRadius: "8px",
+                padding: "16px",
+            }}>
+            <h4>Activity Heatmap</h4>
             <CalendarHeatmap
                 startDate={new Date(today.getFullYear(), today.getMonth() - 3, today.getDate())}
                 endDate={today}
