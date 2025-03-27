@@ -60,11 +60,8 @@
     "react": "^19.0.0",
     "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.0.0",
-<<<<<<< HEAD
     "react-svg": "^16.3.0",
-=======
     "react-tooltip": "^5.28.0",
->>>>>>> separateCourseDashboard-ui
     "recharts": "^2.15.1",
     "shiki": "^3.2.1",
     "supabase": "^2.12.0",
