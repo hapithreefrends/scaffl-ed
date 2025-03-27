@@ -58,8 +58,13 @@
     "monaco-themes": "^0.4.4",
     "next": "^15.2.4",
     "react": "^19.0.0",
+    "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
     "react-svg": "^16.3.0",
+=======
+    "react-tooltip": "^5.28.0",
+>>>>>>> separateCourseDashboard-ui
     "recharts": "^2.15.1",
     "shiki": "^3.2.1",
     "supabase": "^2.12.0",
@@ -73,6 +78,7 @@
     "@shikijs/monaco": "^3.2.1",
     "@types/node": "^20",
     "@types/react": "^19",
+    "@types/react-calendar-heatmap": "^1.9.0",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
