@@ -1,5 +1,5 @@
-import { Burger, Group } from '@mantine/core';
-import scaffyLogo from '../../_assets/scaffled-logo.svg';
+import { Burger, Group, Image } from '@mantine/core';
+import scaffyLogo from '../../../../_assets/images/logos/full/logo-full-flat.svg';
 
 
 interface headerProps {
@@ -9,9 +9,9 @@ interface headerProps {
 
 export default function Header({navbarOpened, navbarOnClick}:headerProps) {
   return (
-    <Group h="100%" align="center">
+    <Group p="sm" h="100%" align="center">
         <Burger opened={navbarOpened} onClick={navbarOnClick} hiddenFrom="sm" size="sm"/>
-        <img src={scaffyLogo.src}/>
+        <Image h="100%" src={scaffyLogo.src}/>
     </Group>
   )
 }

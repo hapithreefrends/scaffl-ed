@@ -13,6 +13,22 @@
 .window {
     /* border-radius: 8px; */
     background: white;
+    box-sizing: border-box;
+    border: solid 1px var(--mantine-color-gray-3);
+    border-radius: 8px;
+}
+
+.codeWindowContainer {
+    overflow: hidden;
+}
+
+.codeWindow {
+    overflow: hidden; /* IMPORTANTE! PAG WALA ITO, KINAKAIN NG TOP IDE WINDOW ANG ESPASYO NG BOTTOM HALF */
+}
+
+.editorContainer {
+    flex: 1;
+    overflow: hidden; /* IMPORTANTE! PAG WALA ITO, HINDI GUMAGANA NG MAAYOS ANG SCROLLING SA IDE */
 }
 
 .activityContainer {
@@ -32,26 +48,39 @@
 }
 
 .windowHeader {
-    background: var(--mantine-color-teal-4);
+    background: var(--mantine-color-teal-6);
     width: 100%;
     height: 40px;
-
+    padding-top: 4px;
+    padding-left: 8px;
 }
 
 .headerTextContainer {
-    background-color: var(--mantine-color-teal-6);
+    /* background-color: var(--mantine-color-teal-6); */
+    background: white;
+    border-radius: 8px 8px 0 0;
 }
 
 .headerText {
     background-color: transparent;
-    font-size: 1rem;
-    color: white
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
 }
 
 .multiWindow {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     background-color: transparent !important;
     overflow: hidden !important;
+}
+
+.activityContainer {
+    flex: 1;
+    overflow: hidden;
+}
+
+.modifyCodeText {
+    font-size: 14px;
+    font-weight: bold;
 }

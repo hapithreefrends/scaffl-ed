@@ -18,17 +18,16 @@ export default function ScaffyFeedbackWindow({
     if (stackRef.current) {
       stackRef.current.scrollTop = stackRef.current.scrollHeight 
     }
-
-    console.log("SCROLLL!!")
   }, [gazedAOIRangeList]);
 
   return (
     <Stack className={classes.container}>
-      <Flex className={classes.header}>
+      {/* <Flex className={classes.header}>
         <Center className={classes.headerTextContainer} p="md">
           <Code className={classes.headerText}>Scaffy's Corner</Code>
         </Center>
-      </Flex>
+      </Flex> */}
+      <Center bg="violet.5" c="white" w="100%"><Code className={classes.headerText} bg="transparent" c="white">Scaffy's Corner</Code></Center>
       <Stack ref={stackRef} className={classes.windowArea}>
         {/* NAKAWRAP SANA AS CHILDREN PROP KUNG SA BACKEND YUNG FETCHING NG gazedAOIRangeList
          * SO MAWAWALA RIN UNG gazedAOIRangeList PROP DITO SA ScaffyFeedbackWindow

@@ -58,14 +58,14 @@ export default function WebGazerProvider({
         script.src = "https://webgazer.cs.brown.edu/webgazer.js";
         script.async = true;
         script.onload = () => {
-          console.log("WebGazer script loaded");
+          // console.log("WebGazer script loaded");
 
           window.webgazer
               .setRegression("ridge")
               .setTracker("TFFacemesh")
               .applyKalmanFilter(false)
               .showVideoPreview(true)
-              .begin();
+              // .begin();
         };
         document.body.appendChild(script);
       }

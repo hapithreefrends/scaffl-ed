@@ -25,7 +25,7 @@ export default function HomePageLayout({
   
   return (
     <AppShell
-      header={{ height: 60 }}
+      header={{ height: 50 }}
       navbar={{
         width: 220,
         breakpoint: "sm",
@@ -33,7 +33,7 @@ export default function HomePageLayout({
       }}
         padding={{base:0, sm: "md"}}
     >
-      <AppShell.Header p="md">
+      <AppShell.Header>
         <Header navbarOpened={opened} navbarOnClick={toggle} />
       </AppShell.Header>
 

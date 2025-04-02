@@ -4,13 +4,12 @@
  * HOUSES THE MAIN CODE EDITOR WINDOW FOR EYE TRACKING
  * CONTAINS CLICKABLE AOIs
  * CODE EDITOR ITSELF IS NOT EDITABLE
- * IRONIC, HUH? 
- */ 
+ * IRONIC, HUH?
+ */
 
 import * as monaco from "monaco-editor";
-import classes from "../_styles/code-editor.module.css";
+import classes from "../_styles/code-editor-read-only.module.css";
 import Editor, { OnMount } from "@monaco-editor/react";
-import { Container } from "@mantine/core";
 import { useRef } from "react";
 import { Space_Mono } from "next/font/google";
 
@@ -18,6 +17,7 @@ import { shikiToMonaco } from "@shikijs/monaco";
 import { createHighlighter } from "shiki";
 
 import { GazedAOIRangeProps } from "./gazed-aoi-log-item";
+import { ActiveAOIProps } from "./modify-code-window";
 
 /**
  * CodeEditor component props interface.
@@ -25,6 +25,8 @@ import { GazedAOIRangeProps } from "./gazed-aoi-log-item";
  * @property {string} code - The code to be displayed in the editor.
  * @property {string} language - The programming language of the code.
  * @property {AOIProps[]} aois - Array of AOI (Area of Interest) objects.
+ * @property {(gazedRange: GazedAOIRangeProps) => void} onGazeDetected - Callback triggered when a gaze is detected within an AOI.
+ * @property {(aoi: ActiveAOIProps) => void} onAOIClick - Callback triggered when an AOI is clicked.
  */
 
 interface CodeEditorProps {
@@ -32,6 +34,7 @@ interface CodeEditorProps {
   language: string;
   aois: AOIProps[];
   onGazeDetected: (gazedRange: GazedAOIRangeProps) => void;
+  onAOIClick: (aoi: ActiveAOIProps) => void;
 }
 
 /**
@@ -90,7 +93,9 @@ export default function CodeEditor({
   language,
   aois,
   onGazeDetected,
+  onAOIClick,
 }: CodeEditorProps) {
+  [];
   const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const decorationsCollectionRef =
     useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
@@ -122,37 +127,191 @@ export default function CodeEditor({
     // AOI related stuff
     // Retrieve all the current decorations (ranges) in the editor.
     const decorations = editor.getModel()?.getAllDecorations();
-    console.log("DECORATIONS LENGTH:", decorations?.length)
+
     if (!decorations) return; // Exit if there are no decorations available.
 
-    // ANG KULIT ANY NA NGA LANG
-    window.webgazer.setGazeListener((data: any, timestamp: any) => {
-      if (!data) return;
+    editor.onMouseDown((event) => {
+      handleAOIClick(event, editor);
+    });
 
-      const { x, y } = data; // Gaze coordinates
+    // COMMENT MUNA, TANGGALIN KO ULI MAMAYA
 
-      const position = getPositionFromCoordinates(x, y, editor);
+    // // ANG KULIT ANY NA NGA LANG
+    // window.webgazer.setGazeListener((data: any, timestamp: any) => {
+    //   if (!data) return;
 
-      // If a valid position (line and column) is obtained from the gaze coordinates,
-      if (position) {
-        // Loop through each decoration to check if the gaze position falls within it.
-        decorations.forEach((decoration) => {
-          // Check if the current decoration's range contains the gaze-detected position.
-          if (decoration.range.containsPosition(position)) {
-            // If the gaze falls within the range, pass the range to the provided onGazeDetected callback.
-            onGazeDetected({
-              startLineNumber: decoration.range.startLineNumber,
-              startColumn: decoration.range.startColumn,
-              endLineNumber: decoration.range.endLineNumber,
-              endColumn: decoration.range.endColumn,
-              text: editor.getModel()?.getValueInRange(decoration.range) || "NaN",
-              timestamp: timestamp
-            });
-          }
-        });
+    //   const { x, y } = data; // Gaze coordinates
+
+    //   const position = getPositionFromCoordinates(x, y, editor);
+
+    //   // If a valid position (line and column) is obtained from the gaze coordinates,
+    //   if (position) {
+    //     // Loop through each decoration to check if the gaze position falls within it.
+    //     decorations.forEach((decoration) => {
+    //       // Check if the current decoration's range contains the gaze-detected position.
+    //       if (decoration.range.containsPosition(position)) {
+    //         // If the gaze falls within the range, pass the range to the provided onGazeDetected callback.
+    //         onGazeDetected({
+    //           startLineNumber: decoration.range.startLineNumber,
+    //           startColumn: decoration.range.startColumn,
+    //           endLineNumber: decoration.range.endLineNumber,
+    //           endColumn: decoration.range.endColumn,
+    //           text: editor.getModel()?.getValueInRange(decoration.range) || "NaN",
+    //           timestamp: timestamp
+    //         });
+    //       }
+    //     });
+    //   }
+    // });
+  };
+
+  const activeAOIRef = useRef<string | null>(null); // Store the ID of the last active AOI
+
+  const handleAOIClick = (
+    event: monaco.editor.IEditorMouseEvent,
+    editor: monaco.editor.IStandaloneCodeEditor
+  ) => {
+    const position = event.target.position;
+    const aoiDecorations = editor
+      .getModel()
+      ?.getAllDecorations()
+      .filter(
+        (decoration) => decoration.options.inlineClassName === classes.aoi
+      );
+
+    if (!position || !aoiDecorations) return;
+
+    let selectedAOI: string | null = null;
+
+    aoiDecorations.forEach((decoration) => {
+      const decorationRange = decoration.range;
+
+      if (decorationRange.containsPosition(position)) {
+        editor.setSelection(decorationRange);
+
+        const code = editor.getModel()?.getValueInRange(decorationRange);
+        if (!code) return;
+
+        // Store the selected AOI ID for state tracking
+        selectedAOI = decoration.id;
+
+        onAOIClick({ id: decoration.id, code: code });
       }
     });
+
+    // Only update decorations if we found a selected AOI
+    if (selectedAOI) {
+      activeAOIRef.current = selectedAOI; // Set the active AOI before calling updateDecorations
+      updateDecorations(editor);
+    }
   };
+
+  const updateDecorations = (editor: monaco.editor.IStandaloneCodeEditor) => {
+    if (!monacoRef.current || !decorationsCollectionRef.current) return;
+
+    // Debugging: Log the active AOI and aois array
+    // console.log("Active AOI:", activeAOIRef.current);
+    // console.log("AOIs:", aois);
+
+    const updatedDecorations = aois.map((aoi: AOIProps, index) => {
+      const range = new monaco.Range(
+        aoi.start_line,
+        aoi.start_column,
+        aoi.end_line,
+        aoi.end_column
+      );
+
+      const aoiId = editor.getModel()?.getAllDecorations()?.[index]?.id;
+      const inlineClassName =
+        activeAOIRef.current === aoiId ? classes.aoiSelected : classes.aoi;
+
+      console.log(activeAOIRef.current);
+      console.log(aoi.id);
+
+      return {
+        range,
+        options: {
+          isWholeLine: true,
+          inlineClassName,
+        },
+      };
+    });
+
+    // Apply new decorations, setting styles based on whether the AOI is selected
+    decorationsCollectionRef.current.set(updatedDecorations);
+
+    // Debugging: Log the new decorations applied
+    // console.log("Updated Decorations:", updatedDecorations);
+  };
+
+  // const activeAOIRef = useRef<string | null>(null); // Store the ID of the last active AOI
+
+  // const handleAOIClick = (
+  //   event: monaco.editor.IEditorMouseEvent,
+  //   editor: monaco.editor.IStandaloneCodeEditor
+  // ) => {
+  //   const position = event.target.position;
+  //   const aoiDecorations = editor
+  //     .getModel()
+  //     ?.getAllDecorations()
+  //     .filter(
+  //       (decoration) => decoration.options.inlineClassName === classes.aoi
+  //     );
+
+  //   if (!position || !aoiDecorations) return;
+
+  //   let selectedAOI = null;
+
+  //   aoiDecorations.forEach((decoration) => {
+  //     const decorationRange = decoration.range;
+
+  //     if (decorationRange.containsPosition(position)) {
+  //       editor.setSelection(decorationRange);
+
+  //       const code = editor.getModel()?.getValueInRange(decorationRange);
+  //       if (!code) return;
+
+  //       // Store the selected AOI ID for state tracking
+  //       selectedAOI = decoration.id;
+
+  //       onAOIClick({ id: decoration.id, code: code });
+  //     }
+  //   });
+
+  //   if (selectedAOI) {
+  //     updateDecorations(selectedAOI);
+  //   }
+  // };
+
+  // const updateDecorations = (selectedAOI: string) => {
+  //   if (!monacoRef.current || !decorationsCollectionRef.current) return;
+
+  //   const updatedDecorations = aois.map((aoi: AOIProps) => {
+  //     const range = new monaco.Range(
+  //       aoi.start_line,
+  //       aoi.start_column,
+  //       aoi.end_line,
+  //       aoi.end_column
+  //     );
+
+  //     const inlineClassName =
+  //       activeAOIRef.current === aoi.id ? classes.aoiSelected : classes.aoi;
+
+  //     return {
+  //       range,
+  //       options: {
+  //         isWholeLine: true,
+  //         inlineClassName,
+  //       },
+  //     };
+  //   });
+
+  //   // Apply new decorations, setting styles based on whether the AOI is selected
+  //   decorationsCollectionRef.current.set(updatedDecorations);
+
+  //   // Update the active AOI reference
+  //   activeAOIRef.current = selectedAOI;
+  // };
 
   /**
    * Maps a vertical `y` coordinate to a line number within the Monaco Editor.
@@ -273,33 +432,34 @@ export default function CodeEditor({
   };
 
   return (
-    <Container w="100%" h="100%" p="0">
-      <Editor
-        language={language}
-        value={code}
-        theme="catppuccin-latte"
-        // onChange={(value) => setCode(value || "")}
-        onMount={handleEditorDidMount}
-        options={{
-          fontSize: 16,
-          lineHeight: 24,
-          fontFamily: `${spaceMono.style.fontFamily}, roboto`,
-          fontWeight: "700",
-          automaticLayout: true,
-          minimap: { enabled: false },
-          folding: false,
-          readOnly: true,
-          domReadOnly: true, // di lumabas yung read-only message pagnagtytype
-          scrollBeyondLastLine: false, // disable scrolling pag di kailangan
-          wordWrap: "on", // para di sya magscroll pahiga
-          cursorBlinking: "solid", // di kailangan, us2 ko lang
-          occurrencesHighlight: "off", // lahat ng occurences ng variables di nakahighlight
-          renderLineHighlight: "none", // hindi lumalabas ng gray highlight pag nagselect ng line
-          selectionHighlight: false, // parang occurrencesHighlight pero pag nakaselect
-          matchBrackets: "never", // disable bracket matching highlight
-          stickyScroll: { enabled : false }
-        }}
-      />
-    </Container>
+    <Editor
+      width="100%"
+      height="100%"
+      className="readOnlyEditor"
+      language={language}
+      value={code}
+      theme="catppuccin-latte"
+      // onChange={(value) => setCode(value || "")}
+      onMount={handleEditorDidMount}
+      options={{
+        fontSize: 16,
+        lineHeight: 28,
+        fontFamily: `${spaceMono.style.fontFamily}, courier`,
+        fontWeight: "bold",
+        automaticLayout: true,
+        minimap: { enabled: false },
+        folding: false,
+        readOnly: true,
+        domReadOnly: true, // di lumabas yung read-only message pagnagtytype
+        scrollBeyondLastLine: false, // disable scrolling pag di kailangan
+        wordWrap: "on", // para di sya magscroll pahiga
+        cursorBlinking: "solid", // di kailangan, us2 ko lang
+        occurrencesHighlight: "off", // lahat ng occurences ng variables di nakahighlight
+        renderLineHighlight: "none", // hindi lumalabas ng gray highlight pag nagselect ng line
+        selectionHighlight: false, // parang occurrencesHighlight pero pag nakaselect
+        matchBrackets: "never", // disable bracket matching highlight
+        stickyScroll: { enabled: false },
+      }}
+    />
   );
 }
