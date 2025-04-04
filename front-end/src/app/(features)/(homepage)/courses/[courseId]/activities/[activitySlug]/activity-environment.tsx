@@ -63,6 +63,8 @@ export default function ActivityEnvironment() {
   const [activeAOI, setActiveAOI] = useState<ActiveAOIProps | undefined>(
     undefined
   );
+  
+  // console.log("AOI DATA", aoiData);
 
   const items = [
     { title: "Courses", href: "/courses" },
@@ -155,10 +157,9 @@ export default function ActivityEnvironment() {
               <ModifyCodeWindow
                 language={activityData.language}
                 activeAOI={activeAOI || undefined}
-                onResetClick={() => console.log("CLICKED RESET")}
                 onCheckTestCasesClick={() =>
                   console.log("CLICKED CHECK TEST CASES")
-                }
+                }       
               />
             </Box>
           </Stack>

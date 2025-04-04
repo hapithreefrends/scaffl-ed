@@ -165,7 +165,7 @@ export default function CodeEditor({
     // });
   };
 
-  const activeAOIRef = useRef<string | null>(null); // Store the ID of the last active AOI
+  const activeAOIRef = useRef<monaco.Range | null>(null); // Store the ID of the last active AOI
 
   const handleAOIClick = (
     event: monaco.editor.IEditorMouseEvent,
@@ -181,7 +181,7 @@ export default function CodeEditor({
 
     if (!position || !aoiDecorations) return;
 
-    let selectedAOI: string | null = null;
+    let selectedAOI: monaco.Range | null = null;
 
     aoiDecorations.forEach((decoration) => {
       const decorationRange = decoration.range;
@@ -193,7 +193,7 @@ export default function CodeEditor({
         if (!code) return;
 
         // Store the selected AOI ID for state tracking
-        selectedAOI = decoration.id;
+        selectedAOI = decoration.range;
 
         onAOIClick({ id: decoration.id, code: code });
       }
@@ -209,10 +209,6 @@ export default function CodeEditor({
   const updateDecorations = (editor: monaco.editor.IStandaloneCodeEditor) => {
     if (!monacoRef.current || !decorationsCollectionRef.current) return;
 
-    // Debugging: Log the active AOI and aois array
-    // console.log("Active AOI:", activeAOIRef.current);
-    // console.log("AOIs:", aois);
-
     const updatedDecorations = aois.map((aoi: AOIProps, index) => {
       const range = new monaco.Range(
         aoi.start_line,
@@ -221,17 +217,18 @@ export default function CodeEditor({
         aoi.end_column
       );
 
-      const aoiId = editor.getModel()?.getAllDecorations()?.[index]?.id;
       const inlineClassName =
-        activeAOIRef.current === aoiId ? classes.aoiSelected : classes.aoi;
-
-      console.log(activeAOIRef.current);
-      console.log(aoi.id);
+        activeAOIRef.current?.startColumn === range.startColumn &&
+        activeAOIRef.current?.startLineNumber === range.startLineNumber &&
+        activeAOIRef.current?.endColumn === range.endColumn &&
+        activeAOIRef.current?.endLineNumber === range.endLineNumber
+          ? classes.aoiSelected
+          : classes.aoi;
 
       return {
         range,
         options: {
-          isWholeLine: true,
+          // isWholeLine: false,
           inlineClassName,
         },
       };
@@ -239,79 +236,7 @@ export default function CodeEditor({
 
     // Apply new decorations, setting styles based on whether the AOI is selected
     decorationsCollectionRef.current.set(updatedDecorations);
-
-    // Debugging: Log the new decorations applied
-    // console.log("Updated Decorations:", updatedDecorations);
   };
-
-  // const activeAOIRef = useRef<string | null>(null); // Store the ID of the last active AOI
-
-  // const handleAOIClick = (
-  //   event: monaco.editor.IEditorMouseEvent,
-  //   editor: monaco.editor.IStandaloneCodeEditor
-  // ) => {
-  //   const position = event.target.position;
-  //   const aoiDecorations = editor
-  //     .getModel()
-  //     ?.getAllDecorations()
-  //     .filter(
-  //       (decoration) => decoration.options.inlineClassName === classes.aoi
-  //     );
-
-  //   if (!position || !aoiDecorations) return;
-
-  //   let selectedAOI = null;
-
-  //   aoiDecorations.forEach((decoration) => {
-  //     const decorationRange = decoration.range;
-
-  //     if (decorationRange.containsPosition(position)) {
-  //       editor.setSelection(decorationRange);
-
-  //       const code = editor.getModel()?.getValueInRange(decorationRange);
-  //       if (!code) return;
-
-  //       // Store the selected AOI ID for state tracking
-  //       selectedAOI = decoration.id;
-
-  //       onAOIClick({ id: decoration.id, code: code });
-  //     }
-  //   });
-
-  //   if (selectedAOI) {
-  //     updateDecorations(selectedAOI);
-  //   }
-  // };
-
-  // const updateDecorations = (selectedAOI: string) => {
-  //   if (!monacoRef.current || !decorationsCollectionRef.current) return;
-
-  //   const updatedDecorations = aois.map((aoi: AOIProps) => {
-  //     const range = new monaco.Range(
-  //       aoi.start_line,
-  //       aoi.start_column,
-  //       aoi.end_line,
-  //       aoi.end_column
-  //     );
-
-  //     const inlineClassName =
-  //       activeAOIRef.current === aoi.id ? classes.aoiSelected : classes.aoi;
-
-  //     return {
-  //       range,
-  //       options: {
-  //         isWholeLine: true,
-  //         inlineClassName,
-  //       },
-  //     };
-  //   });
-
-  //   // Apply new decorations, setting styles based on whether the AOI is selected
-  //   decorationsCollectionRef.current.set(updatedDecorations);
-
-  //   // Update the active AOI reference
-  //   activeAOIRef.current = selectedAOI;
-  // };
 
   /**
    * Maps a vertical `y` coordinate to a line number within the Monaco Editor.
@@ -424,7 +349,7 @@ export default function CodeEditor({
           aoi.end_column
         ),
         options: {
-          isWholeLine: true,
+          // isWholeLine: true,
           inlineClassName: classes.aoi,
         },
       })),

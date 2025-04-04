@@ -52,17 +52,15 @@ export interface ActiveAOIProps {
  * @interface ModifyCodeWindowProps
  * @property {string} language - The programming language used in the code editor.
  * @property {ActiveAOIProps | undefined} activeAOI - The currently active Area of Interest (AOI), or undefined if none is active.
- * @property {() => void} onResetClick - Callback function triggered when the reset button is clicked.
  * @property {() => void} onCheckTestCasesClick - Callback function triggered when the "Check Test Cases" button is clicked.
  */
 interface ModifyCodeWindowProps {
     language: string;
     activeAOI: ActiveAOIProps | undefined;
-    onResetClick: () => void;
     onCheckTestCasesClick: () => void;
 }
 
-export default function ModifyCodeWindow({language, activeAOI, onResetClick, onCheckTestCasesClick}:ModifyCodeWindowProps) {
+export default function ModifyCodeWindow({language, activeAOI, onCheckTestCasesClick}:ModifyCodeWindowProps) {
   const [AOIText, setAOIText] = useState<string>(activeAOI?.code || "");
 
   const handleEditorDidMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
@@ -99,7 +97,7 @@ export default function ModifyCodeWindow({language, activeAOI, onResetClick, onC
 
       <Flex justify="flex-end" align="center">
         <Group p="md">
-          <Button onClick={onResetClick} variant="outline" color="gray.7">
+          <Button onClick={(e) => setAOIText(activeAOI?.code || "")} variant="outline" color="gray.7">
             <IconRestore />
           </Button>
           <Button onClick={onCheckTestCasesClick} color="violet.5">
