@@ -5,12 +5,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const supabase = createClient();
 
-export function useLogin() {
+export function useSignup() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
-      return await supabase.auth.signInWithPassword({
+      return await supabase.auth.signUp({
         email: data.email,
         password: data.password,
       });

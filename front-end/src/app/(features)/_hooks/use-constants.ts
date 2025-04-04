@@ -35,3 +35,48 @@ export function useFindAllProgrammingLanguages() {
         },
     });
 }
+
+export function useFindAllSexes() {
+    return useQuery<IProgrammingLanguage[]>({
+        queryKey: ["enumerations", "sexes"],
+        queryFn: async () => {
+            const { data, error } = await supabase.from("Sex").select("*");
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        },
+    });
+}
+
+export function useFindAllDegreePrograms() {
+    return useQuery<IProgrammingLanguage[]>({
+        queryKey: ["enumerations", "degree_programs"],
+        queryFn: async () => {
+            const { data, error } = await supabase.from("DegreeProgram").select("*");
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        },
+    });
+}
+
+export function useFindAllSchools() {
+    return useQuery<IProgrammingLanguage[]>({
+        queryKey: ["enumerations", "schools"],
+        queryFn: async () => {
+            const { data, error } = await supabase.from("School").select("*");
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        },
+    });
+}

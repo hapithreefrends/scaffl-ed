@@ -1,7 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@mantine/hooks";
-import { Flex } from "@mantine/core";
+import { Flex, Image } from "@mantine/core";
 
 import { Notifications } from "@mantine/notifications";
 
@@ -39,7 +39,7 @@ export default function Page() {
         }}
       >
         <Flex direction="column" align="flex-start" style={{ flex: 1, minWidth: isMobile ? "100%" : "50%" }}>
-          <img
+          <Image
             src={logo.src}
             alt="logo"
             style={{            
@@ -49,7 +49,8 @@ export default function Page() {
               marginLeft: isMobile ? "0" : "20px",
             }}
           />
-          <img
+          
+          <Image
             src={signupImage.src}
             alt="loginImage"
             style={{

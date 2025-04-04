@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex } from "@mantine/core";
+import { Flex, Image } from "@mantine/core";
 
 import logo from "./_assets/logo.png";
 import loginImage from "./_assets/loginImage.png";
@@ -32,12 +32,12 @@ export default function LoginPage() {
         }}
       >
         <Flex direction="column" align="center" style={{ flex: 1 }}>
-          <img src={logo.src} alt="logo" style={{ 
+          <Image src={logo.src} alt="logo" style={{ 
             width: 100, 
             height: "auto",
             marginRight: "60%" 
             }} />
-          <img src={loginImage.src} alt="loginImage" style={{ width: "100%", maxWidth: 400, height: "auto" }} />
+          <Image src={loginImage.src} alt="loginImage" style={{ width: "100%", maxWidth: 400, height: "auto" }} />
         </Flex>
         <Login />
       </Flex>

@@ -1,34 +1,24 @@
 "use client";
 
-import { createClient } from "@/utilities/supabase/client";
+import { useRouter } from "next/navigation";
 
 import {
   Button,
-  Checkbox,
-  Group,
   TextInput,
-  Paper,
-  Box,
   Flex,
   PasswordInput,
 } from "@mantine/core";
 
-
 import { notifications } from "@mantine/notifications";
 
 import { useForm } from "@mantine/form";
-import { IconAt, IconEye, IconLock } from "@tabler/icons-react";
+import { IconAt, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { useSignup } from "@/app/(features)/_hooks/use-signup";
 
 export default function SignupForm() {
-  const supabase = createClient();
-
-  async function signUpWithEmail(email: string, password: string) {
-    return await supabase.auth.signUp({
-      email: email,
-      password: password,
-    })
-  }
+  const router = useRouter();
+  const signup = useSignup();
 
   const [isVisiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
   const [isVisibleConfirmPassword, { toggle: toggleVisibleConfirmPassword }] = useDisclosure(false);
@@ -53,7 +43,7 @@ export default function SignupForm() {
     <>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const { data, error } = await signUpWithEmail(values.email, values.password);
+          const { error } = await signup.mutateAsync({ email: values.email, password: values.password });
 
           if (error) {
             notifications.show({
@@ -69,10 +59,12 @@ export default function SignupForm() {
               message: `Signed up successfully!`,
               color: "green",
             });
+
+            router.push(`verify-email?email=${values.email}`);
           }
         })}
       >
-        <Flex direction="column" style={{ flex: 1, marginRight: "50px",}}>
+        <Flex direction="column" style={{ flex: 1, marginRight: "50px", }}>
           <TextInput
             withAsterisk
             label="E-mail"
@@ -89,14 +81,13 @@ export default function SignupForm() {
             placeholder="***********"
             required
             leftSection={<IconLock size={18} />}
-            // rightSection={<IconEye size={18} />}
             visible={isVisiblePassword}
             onVisibilityChange={toggleVisiblePassword}
             pb="sm"
             {...form.getInputProps("password")}
           />
 
-          { 
+          {
             <PasswordInput
               display={form.getDirty().password ? "block" : "none"}
               withAsterisk
@@ -104,7 +95,6 @@ export default function SignupForm() {
               placeholder="***********"
               required
               leftSection={<IconLock size={18} />}
-              // rightSection={<IconEye size={18} />}
               visible={isVisibleConfirmPassword}
               onVisibilityChange={toggleVisibleConfirmPassword}
               pb="sm"
@@ -117,7 +107,7 @@ export default function SignupForm() {
             Sign-Up
           </Button>
         </Flex>
-      </form>
+      </form >
     </>
   );
 }

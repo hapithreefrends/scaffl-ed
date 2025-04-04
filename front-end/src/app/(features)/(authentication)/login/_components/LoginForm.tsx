@@ -1,7 +1,5 @@
 "use client";
 
-import { createClient } from "@/utilities/supabase/client";
-
 import { useRouter } from "next/navigation";
 
 import {
@@ -16,17 +14,12 @@ import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { useLogin } from "@/app/(features)/_hooks/use-login";
 
 export default function LoginForm() {
   const router = useRouter();
-  const supabase = createClient();
 
-  async function signInWithEmail(email: string, password: string) {
-    return await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-  }
+  const login = useLogin();
 
   const [visible, { toggle }] = useDisclosure(false);
 
@@ -47,16 +40,26 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const { error } = await signInWithEmail(values.email, values.password);
+          const { error } = await login.mutateAsync({ email: values.email, password: values.password });
 
           if (error) {
-            notifications.show({
-              title: "Error",
-              message: error.message,
-              color: "red",
-            });
+            if (error.code === "email_not_confirmed") {
+              notifications.show({
+                title: "Email not confirmed",
+                message: "Please confirm your email address to log in.",
+                color: "yellow",
+              });
 
-            console.log(error);
+              router.push(`verify-email?email=${values.email}`);
+            } else {
+              notifications.show({
+                title: "Error",
+                message: error.message,
+                color: "red",
+              });
+
+            } 
+            console.error("Login error:", error);
           } else {
             notifications.show({
               title: "Success",

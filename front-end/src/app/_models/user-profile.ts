@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { sexSchema } from './_enums/sex';
 import { schoolSchema } from './_enums/school';
-import { collegeProgramSchema } from './_enums/college-program';
+import { degreeProgramSchema } from './_enums/degree-program';
 
 export const userProfileSchema = z.object ({
     id: z.string()
@@ -10,8 +10,7 @@ export const userProfileSchema = z.object ({
     first_name: z.string(),
     last_name: z.string(),
 
-    birthday: z.string()
-        .date(),
+    birthday: z.date(),
     
     avatar: z.string(),
 
@@ -24,20 +23,20 @@ export const userProfileSchema = z.object ({
     last_active: z.string()
         .date(),
 
-    sex_id: z.string()
-        .uuid(),
+    sex_id: z.number()
+        .int(),
 
     school_id: z.string()
         .uuid(),
     
-    college_program_id: z.string()
+    degree_program_id: z.string()
         .uuid(),    
 });
 
 export const userProfileFullSchema = userProfileSchema.extend( {
     sex: sexSchema,
     school: schoolSchema,
-    college_program: collegeProgramSchema
+    degree_program: degreeProgramSchema
 });
 
 export const userProfileCreateDataSchema = userProfileSchema.omit({
@@ -48,6 +47,9 @@ export const userProfileCreateDataSchema = userProfileSchema.omit({
 })
 
 export const userProfileUpdateDataSchema = userProfileSchema.omit({
+    total_experience_points: true,
+    streak_counter: true,
+    last_active: true  
 })
 
 export type IUserProfile = z.infer<typeof userProfileSchema>;

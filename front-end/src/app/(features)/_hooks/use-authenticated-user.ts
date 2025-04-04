@@ -8,6 +8,8 @@ export function useAuthenticatedUser() {
   return useQuery<IUserFull>({
     queryKey: ["authenticated-user"],
     queryFn: async () => {
+        const { data: sessionData } = await supabase.auth.getUser();
+
         const { data, error } = await supabase
           .from("User")
           .select(
@@ -19,10 +21,12 @@ export function useAuthenticatedUser() {
                   *,
                   sex: Sex (*),
                   school: School (*),
-                  college_program: CollegeProgram (*)
+                  college_program: DegreeProgram (*)
               )
           `
           )
+          .eq("auth_user_id", sessionData?.user?.id)
+          .order("id")
           .limit(1)
           .single();
   

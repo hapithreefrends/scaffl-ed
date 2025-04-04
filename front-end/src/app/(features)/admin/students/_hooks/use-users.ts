@@ -21,7 +21,7 @@ export function useFindAllUsers() {
               *,
               sex: Sex (*),
               school: School (*),
-              college_program: CollegeProgram (*)
+              college_program: DegreeProgram (*)
           )
         `);
 
@@ -49,7 +49,7 @@ export function useFindUserById(id: string) {
                 *,
                 sex: Sex (*),
                 school: School (*),
-                college_program: CollegeProgram (*)
+                college_program: DegreeProgram (*)
             )
       `
         )
@@ -111,11 +111,6 @@ export function useUpdateUserById() {
           last_name: updatedUserData.profile.last_name,
           birthday: updatedUserData.profile.birthday,
           avatar: updatedUserData.profile.avatar,
-          total_experience_points:
-            updatedUserData.profile?.total_experience_points ?? 0,
-          streak_counter: updatedUserData.profile?.streak_counter ?? 0,
-          last_active:
-            updatedUserData.profile?.last_active ?? new Date().toISOString(),
           sex_id: updatedUserData.profile,
         })
         .eq("id", updatedUserData.profile.id)
