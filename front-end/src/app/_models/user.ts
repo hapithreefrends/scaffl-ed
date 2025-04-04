@@ -7,6 +7,7 @@ export const userSchema = z.object({
     id: z.string()
         .uuid(),
 
+    
     auth_user_id: z.string().uuid(),
 
     account_status_id: z.string().uuid(),
