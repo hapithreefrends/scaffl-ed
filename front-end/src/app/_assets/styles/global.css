@@ -1,0 +1,8 @@
+/* DISABLED MONACO CARET */
+.monaco-editor .cursors-layer .cursor {
+    display: none !important;
+  }
+
+#webgazerVideoContainer {
+  z-index: -1;
+}
