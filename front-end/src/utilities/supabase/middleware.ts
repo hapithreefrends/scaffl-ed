@@ -39,29 +39,29 @@ export async function updateSession(request: NextRequest) {
 
     if (
         !user &&
-        (!request.nextUrl.pathname.startsWith('/login') &&
-            !request.nextUrl.pathname.startsWith('/signup') &&
-            !request.nextUrl.pathname.startsWith('/auth'))
+        (!request.nextUrl.pathname.startsWith("/login") &&
+            !request.nextUrl.pathname.startsWith("/signup") &&
+            !request.nextUrl.pathname.startsWith("/auth"))
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone()
-        url.pathname = '/login'
+        url.pathname = "/login"
         return NextResponse.redirect(url)
     } else if (
         user &&
-        (request.nextUrl.pathname.startsWith('/login') ||
-            request.nextUrl.pathname.startsWith('/signup') ||
-            request.nextUrl.pathname.startsWith('/auth'))
+        (request.nextUrl.pathname.startsWith("/login") ||
+            request.nextUrl.pathname.startsWith("/signup") ||
+            request.nextUrl.pathname.startsWith("/auth"))
     ) {
         // user is logged in, potentially respond by redirecting the user to the dashboard
         const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
+        url.pathname = "/dashboard"
         return NextResponse.redirect(url)
     }
 
 
     // IMPORTANT: You *must* return the supabaseResponse object as it is.
-    // If you're creating a new response object with NextResponse.next() make sure to:
+    // If you"re creating a new response object with NextResponse.next() make sure to:
     // 1. Pass the request in it, like so:
     //    const myNewResponse = NextResponse.next({ request })
     // 2. Copy over the cookies, like so:
@@ -71,7 +71,7 @@ export async function updateSession(request: NextRequest) {
     // 4. Finally:
     //    return myNewResponse
     // If this is not done, you may be causing the browser and server to go out
-    // of sync and terminate the user's session prematurely!
+    // of sync and terminate the user"s session prematurely!
 
     return supabaseResponse
 }

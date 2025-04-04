@@ -1,19 +1,19 @@
-// 'use client';
+// "use client";
 
-// import { useCallback, useState } from 'react';
+// import { useCallback, useState } from "react";
 
-// import { ActionIcon, Button, Center, Flex, Group, Image, MantineTheme, Text, TextInput, rem } from '@mantine/core';
-// import { closeAllModals, openModal } from '@mantine/modals';
-// import { showNotification } from '@mantine/notifications';
+// import { ActionIcon, Button, Center, Flex, Group, Image, MantineTheme, Text, TextInput, rem } from "@mantine/core";
+// import { closeAllModals, openModal } from "@mantine/modals";
+// import { showNotification } from "@mantine/notifications";
 
-// import { IconClick, IconEdit, IconMessage, IconTrash, IconTrashX } from '@tabler/icons-react';
-// import { useQuery } from '@tanstack/react-query';
+// import { IconClick, IconEdit, IconMessage, IconTrash, IconTrashX } from "@tabler/icons-react";
+// import { useQuery } from "@tanstack/react-query";
 
-// import { DataTable, DataTableColumn, DataTableProps, DataTableSortStatus } from 'mantine-datatable';
-// import { useContextMenu } from 'mantine-contextmenu';
-// import dayjs from 'dayjs';
+// import { DataTable, DataTableColumn, DataTableProps, DataTableSortStatus } from "mantine-datatable";
+// import { useContextMenu } from "mantine-contextmenu";
+// import dayjs from "dayjs";
 
-// import classes from './ComplexUsageExample.module.css';
+// import classes from "./ComplexUsageExample.module.css";
 
 // const PAGE_SIZE = 100;
 
@@ -46,39 +46,39 @@
 //   const editRecord = useCallback(({ firstName, lastName }: T) => {
 //     showNotification({
 //       withBorder: true,
-//       title: 'Editing record',
-//       message: `In a real application we could show a popup to edit ${firstName} ${lastName}, but this is just a demo, so we're not going to do that`,
+//       title: "Editing record",
+//       message: `In a real application we could show a popup to edit ${firstName} ${lastName}, but this is just a demo, so we"re not going to do that`,
 //     });
 //   }, []);
 
 //   const deleteRecord = useCallback(({ firstName, lastName }: T) => {
 //     showNotification({
 //       withBorder: true,
-//       color: 'red',
-//       title: 'Deleting record',
-//       message: `Should delete ${firstName} ${lastName}, but we're not going to, because this is just a demo`,
+//       color: "red",
+//       title: "Deleting record",
+//       message: `Should delete ${firstName} ${lastName}, but we"re not going to, because this is just a demo`,
 //     });
 //   }, []);
 
 //   const deleteSelectedRecords = useCallback(() => {
 //     showNotification({
 //       withBorder: true,
-//       color: 'red',
-//       title: 'Deleting multiple records',
-//       message: `Should delete ${selectedRecords.length} records, but we're not going to do that because deleting data is bad... and this is just a demo anyway`,
+//       color: "red",
+//       title: "Deleting multiple records",
+//       message: `Should delete ${selectedRecords.length} records, but we"re not going to do that because deleting data is bad... and this is just a demo anyway`,
 //     });
 //   }, [selectedRecords.length]);
 
 //   const sendMessage = useCallback(({ firstName, lastName }: T) => {
 //     showNotification({
 //       withBorder: true,
-//       title: 'Sending message',
-//       message: `A real application could send a message to ${firstName} ${lastName}, but this is just a demo and we're not going to do that because we don't have a backend`,
-//       color: 'green',
+//       title: "Sending message",
+//       message: `A real application could send a message to ${firstName} ${lastName}, but this is just a demo and we"re not going to do that because we don"t have a backend`,
+//       color: "green",
 //     });
 //   }, []);
 
-//   const renderActions: DataTableColumn<T>['render'] = (record) => (
+//   const renderActions: DataTableColumn<T>["render"] = (record) => (
 //     <Group gap={4} justify="right" wrap="nowrap">
 //       <ActionIcon
 //         size="sm"
@@ -126,7 +126,7 @@
 //     </Group>
 //   );
 
-//   const rowExpansion: DataTableProps<T>['rowExpansion'] = {
+//   const rowExpansion: DataTableProps<T>["rowExpansion"] = {
 //     allowMultiple: true,
 //     content: ({ record: { id, sex, firstName, lastName, birthDate, department } }) => (
 //       <Flex p="xs" pl={rem(50)} gap="md" align="center">
@@ -138,38 +138,38 @@
 //           src={`https://xsgames.co/randomusers/avatar.php?g=${sex}&q=${id}`}
 //         />
 //         <Text size="sm" fs="italic">
-//           {firstName} {lastName}, born on {dayjs(birthDate).format('MMM D YYYY')}, works in {department.name} department
+//           {firstName} {lastName}, born on {dayjs(birthDate).format("MMM D YYYY")}, works in {department.name} department
 //           at {department.company.name}.
 //           <br />
-//           His office address is {department.company.streetAddress}, {department.company.city},{' '}
+//           His office address is {department.company.streetAddress}, {department.company.city},{" "}
 //           {department.company.state}.
 //         </Text>
 //       </Flex>
 //     ),
 //   };
 
-//   const handleContextMenu: DataTableProps<T>['onRowContextMenu'] = ({ record, event }) =>
+//   const handleContextMenu: DataTableProps<T>["onRowContextMenu"] = ({ record, event }) =>
 //     showContextMenu([
 //       {
-//         key: 'edit',
+//         key: "edit",
 //         icon: <IconEdit size={14} />,
 //         title: `Edit ${record.firstName} ${record.lastName}`,
 //         onClick: () => editRecord(record),
 //       },
 //       {
-//         key: 'delete',
+//         key: "delete",
 //         title: `Delete ${record.firstName} ${record.lastName}`,
 //         icon: <IconTrashX size={14} />,
-//         color: 'red',
+//         color: "red",
 //         onClick: () => deleteRecord(record),
 //       },
-//       { key: 'divider' },
+//       { key: "divider" },
 //       {
-//         key: 'deleteMany',
+//         key: "deleteMany",
 //         hidden: selectedRecords.length <= 1 || !selectedRecords.map((r) => r.id).includes(record.id),
 //         title: `Delete ${selectedRecords.length} selected records`,
 //         icon: <IconTrash size={14} />,
-//         color: 'red',
+//         color: "red",
 //         onClick: deleteSelectedRecords,
 //       },
 //     ])(event);

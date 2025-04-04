@@ -19,7 +19,7 @@ export const CourseIdContext = createContext<string | null>(null);
 /* 
 * This component ensures that the top level component is enclosed in a Suspense component
 * otherwise, other Suspense components beneath will fail to work properly
-* and things like collapsible drawers won't work
+* and things like collapsible drawers won"t work
 */
 export default function CourseDetailTopLevel() {
   const { courseId } = useParams();

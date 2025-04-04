@@ -1,20 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/utilities/supabase/client";
 import {
-  ICourse,
-  ICourseCreateData,
-  ICourseFull,
-  ICourseUpdateData,
-} from "@/app/_models/course";
-import { IActivityLesson } from "@/app/_models/activity-lesson";
+  IUser,
+  IUserCreateData,
+  IUserFull,
+  IUserUpdateData,
+} from "@/app/_models/user";
 
 const supabase = createClient();
 
-export function useFindAllCourses() {
-  return useQuery<ICourseFull[]>({
-    queryKey: ["admin", "courses"],
+export function useFindAllUsers() {
+  return useQuery<IUserFull[]>({
+    queryKey: ["admin", "users"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("Course").select(`
+      const { data, error } = await supabase.from("User").select(`
           *,
           difficulty: Difficulty (*),
           programming_language: ProgrammingLanguage (*),
@@ -33,12 +32,12 @@ export function useFindAllCourses() {
   });
 }
 
-export function useFindCourseById(id: string) {
-  return useQuery<ICourseFull>({
-    queryKey: ["admin", "courses", id],
+export function useFindUserById(id: string) {
+  return useQuery<IUserFull>({
+    queryKey: ["admin", "users", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("Course")
+        .from("User")
         .select(
           `
         *,
@@ -51,7 +50,6 @@ export function useFindCourseById(id: string) {
       `
         )
         .eq("id", id)
-        .order("id")
         .limit(1)
         .single();
 
@@ -64,14 +62,14 @@ export function useFindCourseById(id: string) {
   });
 }
 
-export function useCreateCourse() {
+export function useCreateUser() {
   const queryClient = useQueryClient();
 
-  return useMutation<ICourse, Error, ICourseCreateData>({
-    mutationFn: async (createdCourseData: ICourseCreateData) => {
+  return useMutation<IUser, Error, IUserCreateData>({
+    mutationFn: async (createdUserData: IUserCreateData) => {
       const { data, error } = await supabase
-        .from("Course")
-        .insert([createdCourseData])
+        .from("User")
+        .insert([createdUserData])
         .select("*")
         .limit(1)
         .single();
@@ -83,46 +81,46 @@ export function useCreateCourse() {
       return data;
     },
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "courses"] }), // Refresh data
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] }), // Refresh data
   });
 }
 
-export function useUpdateCourseById() {
+export function useUpdateUserById() {
   const queryClient = useQueryClient();
 
-  return useMutation<ICourse, Error, ICourseUpdateData>({
-    mutationFn: async (updatedCourseData: ICourseUpdateData) => {
-      const { data: courseData, error: courseError } = await supabase
-        .from("Course")
+  return useMutation<IUser, Error, IUserUpdateData>({
+    mutationFn: async (updatedUserData: IUserUpdateData) => {
+      const { data: userData, error: userError } = await supabase
+        .from("User")
         .update({
-          name: updatedCourseData.name,
-          description: updatedCourseData.description,
-          difficulty_id: updatedCourseData.difficulty_id,
-          programming_language_id: updatedCourseData.programming_language_id,
+          name: updatedUserData.name,
+          description: updatedUserData.description,
+          difficulty_id: updatedUserData.difficulty_id,
+          programming_language_id: updatedUserData.programming_language_id,
         })
-        .eq("id", updatedCourseData.id)
+        .eq("id", updatedUserData.id)
         .select("*")
         .single();
 
-      const { data: courseChaptersDataFetched, error: courseChaptersError } =
+      const { data: userChaptersDataFetched, error: userChaptersError } =
         await supabase
           .from("Chapter")
           .select(
             `
             id,
-            course_id,
+            user_id,
             activity_lessons: ActivityLesson (*)
           `
           )
-          .eq("course_id", updatedCourseData.id);
+          .eq("user_id", updatedUserData.id);
 
-      const courseChaptersData = courseChaptersDataFetched as { 
+      const userChaptersData = userChaptersDataFetched as { 
         id: string;
-        course_id: string;
+        user_id: string;
         activity_lessons: IActivityLesson[] 
-      }[];  
+      }[];
 
-      for (const chapter of updatedCourseData.chapters) {
+      for (const chapter of updatedUserData.chapters) {
         if ("id" in chapter) {
           // update existing chapters
           const { error: chapterError } = await supabase
@@ -207,7 +205,7 @@ export function useUpdateCourseById() {
           const { data: chapterData, error: chapterError } = await supabase
             .from("Chapter")
             .insert({
-              course_id: updatedCourseData.id,
+              user_id: updatedUserData.id,
 
               name: chapter.name,
               description: chapter.description,
@@ -252,9 +250,9 @@ export function useUpdateCourseById() {
         }
 
         // TODO delete chapters and activity lessons that were actually deleted
-        if (courseChaptersData) {
-          for (const chapter of courseChaptersData) {
-            if (!updatedCourseData.chapters.some((c) => "id" in c && c.id === chapter.id)) {
+        if (userChaptersData) {
+          for (const chapter of userChaptersData) {
+            if (!updatedUserData.chapters.some((c) => "id" in c && c.id === chapter.id)) {
               const { error: deleteChapterError } = await supabase
                 .from("Chapter")
                 .delete()
@@ -270,34 +268,33 @@ export function useUpdateCourseById() {
           }
         }
 
-        if (courseChaptersError) {
-          throw courseChaptersError;
+        if (userChaptersError) {
+          throw userChaptersError;
         }
       }
 
-      if (courseError) {
-        throw courseError;
+      if (userError) {
+        throw userError;
       }
 
-      return courseData;
+      return userData;
     },
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "courses"] }), // Refresh data
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] }), // Refresh data
   });
 }
 
 // Delete an item
-export function useDeleteCourseById() {
+export function useDeleteUserById() {
   const queryClient = useQueryClient();
 
-  return useMutation<ICourse, Error, string>({
+  return useMutation<IUser, Error, string>({
     mutationFn: async (id: string) => {
       const { data, error } = await supabase
-        .from("Course")
+        .from("User")
         .delete()
         .eq("id", id)
         .select("*")
-        .order("id")
         .limit(1)
         .single();
 
@@ -308,6 +305,6 @@ export function useDeleteCourseById() {
       return data;
     },
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "courses"] }),
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] }),
   });
 }

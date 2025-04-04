@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { activityLessonCreateDataSchema, activityLessonSchema, activityLessonUpdateDataSchema } from './activity-lesson';
+import { z } from "zod";
+import { activityLessonCreateDataSchema, activityLessonSchema, activityLessonUpdateDataSchema } from "./activity-lesson";
 
 export const chapterSchema = z.object({
     id: z.string()

@@ -22,9 +22,12 @@ import {
   Input,
   InputBase,
   Divider,
+  Center
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { randomId, useDisclosure } from "@mantine/hooks";
+
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 import { zodResolver } from "mantine-form-zod-resolver";
 
@@ -41,7 +44,7 @@ import {
   UpdateCourseFormProvider,
   useUpdateCourseForm,
 } from "./_components/update-course-form-context";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconGripVertical } from "@tabler/icons-react";
 
 export default function Page() {
   // Get course_id from URL
@@ -121,24 +124,40 @@ export default function Page() {
 
   const chapters = form
     .getValues()
-    .chapters.map((chapter, index) => (
-      <Chapter
-        key={index}
-        index={index}
-        addLesson={(activityLessonIndex) => {
-          setSelectedChapterIndex(index);
-          setSelectedActivityLessonIndex(activityLessonIndex);
+    .chapters.map((chapter, index) => {
+      type DraggableChapter = { key: string } & typeof chapter;
 
-          openAddLessonModal();
-        }}
-        addActivity={(activityLessonIndex) => {
-          setSelectedChapterIndex(index);
-          setSelectedActivityLessonIndex(activityLessonIndex);
+      const draggableChapter = chapter as DraggableChapter;
 
-          openAddActivityModal();
-        }}
-      />
-    ));
+      return (
+        <Draggable key={draggableChapter.key} index={index} draggableId={draggableChapter.key}>
+          {(provided) => (
+            <Group ref={provided.innerRef} {...provided.draggableProps} w="100%">
+              <Center {...provided.dragHandleProps}>
+                <IconGripVertical size={18} />
+              </Center>
+
+              <Chapter
+                key={index}
+                index={index}
+                addLesson={(activityLessonIndex) => {
+                  setSelectedChapterIndex(index);
+                  setSelectedActivityLessonIndex(activityLessonIndex);
+
+                  openAddLessonModal();
+                }}
+                addActivity={(activityLessonIndex) => {
+                  setSelectedChapterIndex(index);
+                  setSelectedActivityLessonIndex(activityLessonIndex);
+
+                  openAddActivityModal();
+                }}
+              />
+            </Group>
+          )}
+        </Draggable>
+      )
+    });
 
   return (
     <UpdateCourseFormProvider form={form}>
@@ -216,8 +235,8 @@ export default function Page() {
                   {programmingLanguagesList?.find(
                     (pl) => pl.id == programmingLanguageProps.defaultValue
                   )?.name || (
-                    <Input.Placeholder>Pick a Language</Input.Placeholder>
-                  )}
+                      <Input.Placeholder>Pick a Language</Input.Placeholder>
+                    )}
                 </InputBase>
               </Combobox.Target>
 
@@ -231,7 +250,7 @@ export default function Page() {
                 />
                 <Combobox.Options>
                   {programmingLanguageOptions &&
-                  programmingLanguageOptions.length > 0 ? (
+                    programmingLanguageOptions.length > 0 ? (
                     programmingLanguageOptions
                   ) : (
                     <Combobox.Empty>Nothing found</Combobox.Empty>
@@ -264,8 +283,8 @@ export default function Page() {
                   {difficultiesList?.find(
                     (d) => d.id == difficultyProps.defaultValue
                   )?.name || (
-                    <Input.Placeholder>Pick difficulty</Input.Placeholder>
-                  )}
+                      <Input.Placeholder>Pick difficulty</Input.Placeholder>
+                    )}
                 </InputBase>
               </Combobox.Target>
               <Combobox.Dropdown>
@@ -289,7 +308,27 @@ export default function Page() {
             <Divider />
 
             <Stack gap="md">
-              {chapters}
+              <DragDropContext
+                onDragEnd={({ destination, source }) => {
+                  const value = destination?.index !== undefined && form.reorderListItem("chapters", { from: source.index, to: destination.index });
+
+                  form.getValues().chapters.forEach((_, index) => {
+                    form.setFieldValue(
+                      `chapters.${index}.chapter_number`, index + 1);
+                  });
+
+                  return value;
+                }}
+              >
+                <Droppable droppableId="dnd-list" direction="vertical">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {chapters}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
 
               <Button
                 leftSection={<IconPlus size={18} />}
@@ -343,7 +382,7 @@ export default function Page() {
         />
         <AddActivityModal
           chapterIndex={selectedChapterIndex}
-          activityLessonIndex={selectedActivityLessonIndex} 
+          activityLessonIndex={selectedActivityLessonIndex}
           isModalOpen={isAddActivityModalOpen}
           closeModal={closeAddActivityModal}
         />

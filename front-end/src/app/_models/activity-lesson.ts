@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { programmingLanguageSchema } from './_enums/programming-language';
-import { typeSchema } from './_enums/type';
+import { z } from "zod";
+import { programmingLanguageSchema } from "./_enums/programming-language";
+import { typeSchema } from "./_enums/type";
 
 export const activityLessonSchema = z.object({
     id: z.string()
@@ -16,6 +16,9 @@ export const activityLessonSchema = z.object({
     name: z.string(),
     description: z.string()
         .optional(),
+    
+    activity_lesson_number: z.number()
+        .int(),
 
     content: z.string()
         .optional(),

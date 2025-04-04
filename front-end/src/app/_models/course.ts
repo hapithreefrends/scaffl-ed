@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-import { difficultySchema } from './_enums/difficulty';
-import { programmingLanguageSchema } from './_enums/programming-language';
-import { chapterCreateDataSchema, chapterSchema, chapterUpdateDataSchema } from './chapter';
+import { difficultySchema } from "./_enums/difficulty";
+import { programmingLanguageSchema } from "./_enums/programming-language";
+import { chapterCreateDataSchema, chapterFullSchema, chapterUpdateDataSchema } from "./chapter";
 
 export const courseSchema = z.object({
     id: z.string()
@@ -24,7 +24,7 @@ export const courseFullSchema = courseSchema.extend({
     difficulty: difficultySchema,
     programming_language: programmingLanguageSchema,
 
-    chapters: z.array(chapterSchema),
+    chapters: z.array(chapterFullSchema),
 });
 
 export const courseCreateDataSchema = courseSchema.omit({

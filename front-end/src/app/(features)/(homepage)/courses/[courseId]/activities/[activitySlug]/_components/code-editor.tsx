@@ -68,7 +68,7 @@ const spaceMono = Space_Mono({
  * @returns {JSX.Element} The rendered CodeEditor component.
  *
  * @example
- * <CodeEditor code="console.log('Hello, world!');" language="javascript" aois={[]} />
+ * <CodeEditor code="console.log("Hello, world!");" language="javascript" aois={[]} />
  *
  * @remarks
  * This component uses the Monaco Editor to display code with syntax highlighting and read-only mode.
@@ -130,7 +130,7 @@ export default function CodeEditor({
       if (position) {
         // Loop through each decoration to check if the gaze position falls within it.
         decorations.forEach((decoration) => {
-          // Check if the current decoration's range contains the gaze-detected position.
+          // Check if the current decoration"s range contains the gaze-detected position.
           if (decoration.range.containsPosition(position)) {
             // If the gaze falls within the range, pass the range to the provided onGazeDetected callback.
             onGazeDetected({
@@ -154,7 +154,7 @@ export default function CodeEditor({
    * @param {monaco.editor.IStandaloneCodeEditor} editor - The Monaco Editor instance.
    * @returns {number | null} - The line number at the specified vertical coordinate, or null if not valid.
    *
-   * This function considers the editor's scroll position and adjusts the `y` coordinate relative to the editor.
+   * This function considers the editor"s scroll position and adjusts the `y` coordinate relative to the editor.
    */
   const getLineNumberFromOffset = (
     y: number,
@@ -165,7 +165,7 @@ export default function CodeEditor({
 
     if (!editorRect) return;
 
-    // Adjust y relative to the editor's top and current scroll position
+    // Adjust y relative to the editor"s top and current scroll position
     const adjustedY = y - editorRect.top + editorScrollTop;
 
     const model = editor.getModel();
@@ -193,7 +193,7 @@ export default function CodeEditor({
    * @param {monaco.editor.IStandaloneCodeEditor} editor - The Monaco Editor instance.
    * @returns {number | null} - The column number at the specified horizontal coordinate, or null if not valid.
    *
-   * This function adjusts the `x` coordinate relative to the editor's position and scroll state.
+   * This function adjusts the `x` coordinate relative to the editor"s position and scroll state.
    */
   const getColumnFromOffset = (
     x: number,
@@ -205,7 +205,7 @@ export default function CodeEditor({
 
     if (!editorRect) return;
 
-    // Adjust x relative to the editor's left and current scroll position
+    // Adjust x relative to the editor"s left and current scroll position
     const adjustedX = x - editorRect.left + editorScrollLeft;
 
     const model = editor.getModel();

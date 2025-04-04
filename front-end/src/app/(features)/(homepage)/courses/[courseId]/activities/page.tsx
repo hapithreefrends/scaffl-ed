@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { redirect, useParams } from "next/navigation";
 

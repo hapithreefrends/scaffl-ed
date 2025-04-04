@@ -30,7 +30,7 @@ import useActivity from "../_hooks/use-activity";
 import useAoi from "../_hooks/use-aoi";
 import useCourseHeader from "../../_hooks/use-course-header";
 
-// Ensure it's only loaded on the client
+// Ensure it"s only loaded on the client
 const MonacoEditor = dynamic(() => import("./_components/code-editor"), {
   ssr: false
 })

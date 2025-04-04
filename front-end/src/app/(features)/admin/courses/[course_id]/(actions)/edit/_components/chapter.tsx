@@ -9,9 +9,12 @@ import {
   TextInput,
   Textarea,
   ActionIcon,
+  Center,
 } from "@mantine/core";
 
-import { IconBook, IconEdit, IconPlus, IconTrash, IconPuzzle } from "@tabler/icons-react";
+import { IconBook, IconEdit, IconPlus, IconTrash, IconPuzzle, IconGripVertical } from "@tabler/icons-react";
+
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 import { useUpdateCourseFormContext } from "./update-course-form-context";
 import { randomId } from "@mantine/hooks";
@@ -33,7 +36,11 @@ export default function Chapter({
     ?.getValues()
     ?.chapters[index]?.activity_lessons?.map(
       (activityLesson, activityLessonIndex) => {
-        const type = activityLesson.type_id === 0 ? "Lesson" : "Activity";
+        type DraggableActivityLesson = { key: string } & typeof activityLesson;
+
+        const draggableActivityLesson = activityLesson as DraggableActivityLesson;
+
+        const type = draggableActivityLesson.type_id === 0 ? "Lesson" : "Activity";
 
         const icon =
           type === "Lesson" ? (
@@ -43,31 +50,41 @@ export default function Chapter({
           );
 
         return (
-          <Group justify="space-between" key={activityLessonIndex}>
-            <Group gap="md">
-              {icon}
+          <Draggable key={draggableActivityLesson.key} index={activityLessonIndex} draggableId={draggableActivityLesson.key}>
+            {(provided) => (
+              <Group ref={provided.innerRef} {...provided.draggableProps} w="100%">
+                <Center {...provided.dragHandleProps}>
+                  <IconGripVertical size={18} />
+                </Center>
 
-              <Text>{activityLesson.name}</Text>
-            </Group>
+                <Group justify="space-between" key={activityLessonIndex} flex="1">
+                  <Group flex="1" gap="md">
+                    {icon}
 
-            <Group>
-              <ActionIcon color="teal" onClick={() => type === "Lesson" ? addLesson(activityLessonIndex) : addActivity(activityLessonIndex)}>
-                <IconEdit size={16} />
-              </ActionIcon>
+                    <Text>{draggableActivityLesson.name}</Text>
+                  </Group>
 
-              <ActionIcon
-                color="red"
-                onClick={() =>
-                  form.removeListItem(
-                    `chapters.${index}.activity_lessons`,
-                    activityLessonIndex
-                  )
-                }
-              >
-                <IconTrash size={16} />
-              </ActionIcon>
-            </Group>
-          </Group>
+                  <Group>
+                    <ActionIcon color="teal" onClick={() => type === "Lesson" ? addLesson(activityLessonIndex) : addActivity(activityLessonIndex)}>
+                      <IconEdit size={16} />
+                    </ActionIcon>
+
+                    <ActionIcon
+                      color="red"
+                      onClick={() =>
+                        form.removeListItem(
+                          `chapters.${index}.activity_lessons`,
+                          activityLessonIndex
+                        )
+                      }
+                    >
+                      <IconTrash size={16} />
+                    </ActionIcon>
+                  </Group>
+                </Group>
+              </Group>
+            )}
+          </Draggable>
         );
       }
     );
@@ -82,6 +99,7 @@ export default function Chapter({
       p="md"
       mt="lg"
       key={index}
+      flex="1"
     >
       <Group justify="space-between">
         <Title order={4}>Chapter #{index + 1}</Title>
@@ -115,8 +133,27 @@ export default function Chapter({
 
         <Divider />
 
-        <Stack>
-          {activityLessons}
+        <Stack gap="md">
+          <DragDropContext
+            onDragEnd={({ destination, source }) => {
+              const value = destination?.index !== undefined && form.reorderListItem(`chapters.${index}.activity_lessons`, { from: source.index, to: destination.index });
+
+              form.getValues().chapters[index].activity_lessons.forEach((_, activityLessonIndex) => {
+                form.setFieldValue(`chapters.${index}.activity_lessons.${activityLessonIndex}.index`, activityLessonIndex);
+              });
+
+              return value;
+            }}
+          >
+            <Droppable droppableId="dnd-list" direction="vertical">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {activityLessons}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
           <Group style={{ flexDirection: "row" }} gap="md">
             <Button
@@ -127,6 +164,8 @@ export default function Chapter({
                   content: "",
                   code: "",
                   experience: 0,
+
+                  activity_lesson_number: form.getValues().chapters[index].activity_lessons.length + 1,
 
                   type_id: 0,
                   programming_language_id: 0,
@@ -151,6 +190,8 @@ export default function Chapter({
                   content: "",
                   code: "",
                   experience: 0,
+
+                  activity_lesson_number: form.getValues().chapters[index].activity_lessons.length + 1,
 
                   type_id: 1,
                   programming_language_id: 0,

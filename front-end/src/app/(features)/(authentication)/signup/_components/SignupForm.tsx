@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createClient } from '@/utilities/supabase/client';
+import { createClient } from "@/utilities/supabase/client";
 
 import {
   Button,
@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 
 
-import { notifications } from '@mantine/notifications';
+import { notifications } from "@mantine/notifications";
 
 import { useForm } from "@mantine/form";
 import { IconAt, IconEye, IconLock } from "@tabler/icons-react";
@@ -57,22 +57,22 @@ export default function SignupForm() {
 
           if (error) {
             notifications.show({
-              title: 'Error',
+              title: "Error",
               message: error.message,
-              color: 'red',
+              color: "red",
             });
 
             console.log(error);
           } else {
             notifications.show({
-              title: 'Success',
+              title: "Success",
               message: `Signed up successfully!`,
-              color: 'green',
+              color: "green",
             });
           }
         })}
       >
-        <Flex direction="column" style={{ flex: 1, marginRight: '50px',}}>
+        <Flex direction="column" style={{ flex: 1, marginRight: "50px",}}>
           <TextInput
             withAsterisk
             label="E-mail"

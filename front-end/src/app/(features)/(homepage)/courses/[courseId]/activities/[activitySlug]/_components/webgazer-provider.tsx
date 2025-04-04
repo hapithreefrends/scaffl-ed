@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import localforage from 'localforage';
+import localforage from "localforage";
 
 /**
  * @file WebGazerProvider.tsx

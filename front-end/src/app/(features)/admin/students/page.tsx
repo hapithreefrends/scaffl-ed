@@ -4,13 +4,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useState, useEffect, Suspense } from "react";
 
-import { Badge, Button, Center, Stack, Group, ActionIcon, Text } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
+import { Badge, Button, Center, Stack, Group, ActionIcon } from "@mantine/core";
+import { openModal } from "@mantine/modals";
 import { IconClick, IconPlus, IconEye, IconEdit, IconTrash } from "@tabler/icons-react";
 import { DataTable, DataTableColumn } from "mantine-datatable";
 
-import { ICourseFull } from "@/app/_models/course";
-import { useDeleteCourseById, useFindAllCourses } from "./_hooks/use-courses";
+import { IUserFull } from "@/app/_models/user";
+import { useDeleteUserById, useFindAllUsers } from "./_hooks/use-users";
 
 import classes from "./_styles/page.module.css";
 
@@ -20,13 +20,13 @@ export default function Page() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data, isLoading } = useFindAllCourses();
-  const deleteCourse = useDeleteCourseById();
+  const { data, isLoading } = useFindAllUsers();
+  const deleteUser = useDeleteUserById();
 
   const [page, setPage] = useState<number>(1);
-  const [records, setRecords] = useState<ICourseFull[] | undefined>(data?.slice(0, PAGE_SIZE));
+  const [records, setRecords] = useState<IUserFull[] | undefined>(data?.slice(0, PAGE_SIZE));
 
-  const [selectedRecords, setSelectedRecords] = useState<ICourseFull[]>([]);
+  const [selectedRecords, setSelectedRecords] = useState<IUserFull[]>([]);
 
   useEffect(() => {
     const from = (page - 1) * PAGE_SIZE;
@@ -34,7 +34,7 @@ export default function Page() {
     setRecords(data?.slice(from, to));
   }, [data, page]);
 
-  const columns: DataTableColumn<ICourseFull>[] = [
+  const columns: DataTableColumn<IUserFull>[] = [
     {
       accessor: "name",
       title: "Name"
@@ -89,33 +89,21 @@ export default function Page() {
             <ActionIcon
               size="sm"
               variant="transparent"
-              color="violet"
-              onClick={(e) => {
-                e.stopPropagation();
-                router.push(`${pathname}/${record.id}/edit`);
-              }}
-            >
-              <IconEdit size={32} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="sm"
-              variant="transparent"
               color="red"
               onClick={(e) => {
                 e.stopPropagation();
 
-                openConfirmModal({
+                openModal({
                   title: "Confirm Deletion",
                   centered: true,
                   children: (
-                    <Text>
-                      Are you sure you want to delete the course <strong>{record.name}</strong>?
-                    </Text>
+                    <>
+                      <p>Are you sure you want to delete this item?</p>
+                      <Button color="red" onClick={() => deleteUser.mutate(record.id)}>
+                        Delete
+                      </Button>
+                    </>
                   ),
-                  labels: { confirm: "Delete course", cancel: "No, don't delete it!" },
-                  confirmProps: { color: "red" },
-                  onConfirm: () => deleteCourse.mutate(record.id),
                 });
               }}
             >
@@ -130,14 +118,6 @@ export default function Page() {
 
   return (
     <Stack w="100%">
-      <Button
-        fullWidth
-        leftSection={<IconPlus size={16} />}
-        onClick={() => router.push(`${pathname}/new`)}
-      >
-        Create New Course
-      </Button>
-
       <Suspense fallback={<div>Loading...</div>}>
         <DataTable
           withTableBorder

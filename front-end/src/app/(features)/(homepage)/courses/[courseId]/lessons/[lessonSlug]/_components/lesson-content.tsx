@@ -1,5 +1,5 @@
-import { TypographyStylesProvider } from '@mantine/core';
-import LessonHeader from './lesson-header';
+import { TypographyStylesProvider } from "@mantine/core";
+import LessonHeader from "./lesson-header";
 
 interface LessonContentProps {
     name: string;
