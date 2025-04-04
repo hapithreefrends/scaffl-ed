@@ -47,7 +47,8 @@ export const userProfileCreateDataSchema = userProfileSchema.omit({
     last_active: true  
 })
 
-export const userProfileUpdateDataSchema = chapterSchema
+export const userProfileUpdateDataSchema = userProfileSchema.omit({
+})
 
 export type IUserProfile = z.infer<typeof userProfileSchema>;
 export type IUserProfileFull = z.infer<typeof userProfileFullSchema>;
