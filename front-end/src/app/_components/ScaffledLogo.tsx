@@ -1,4 +1,3 @@
-
 import { ReactSVG } from 'react-svg';
 import { rem } from '@mantine/core';
 
@@ -61,7 +60,7 @@ export default function ScaffledLogo({ size, variant, color, ...props }: Scaffle
 
   return (
     <ReactSVG
-      style={{ height: rem(size) }}
+      style={{ height: "auto", width: rem(size) }}
       className={styles.image}
       src={image.src}
       {...props}
