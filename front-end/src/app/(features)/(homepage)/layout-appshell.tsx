@@ -44,7 +44,7 @@ export default function HomePageLayout({
               {navbarProfileLoader}
             </Suspense>
             <Stack gap="0">{<NavbarLinks/>}</Stack>
-          </Stack>
+          </Stack> 
         </Stack>
       </AppShell.Navbar>
 

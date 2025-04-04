@@ -2,6 +2,8 @@
 
 import { createClient } from '@/utilities/supabase/client';
 
+import { useRouter } from "next/navigation";
+
 import {
   Button,
   Checkbox,
@@ -21,6 +23,7 @@ import { IconAt, IconEye, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function SignupForm() {
+  const router = useRouter();
   const supabase = createClient();
 
   async function signUpWithEmail(email: string, password: string) {
@@ -69,6 +72,8 @@ export default function SignupForm() {
               message: `Signed up successfully!`,
               color: 'green',
             });
+
+            router.push("/setup-profile")
           }
         })}
       >

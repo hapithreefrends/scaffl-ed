@@ -13,7 +13,7 @@ export default function Login() {
             component="span"
             color="blue"
             style={{ textDecoration: 'underline', cursor: 'pointer' }}
-            onClick={() => router.push('/signup')}
+            onClick={() => router.push('./signup')}
           >
             Sign Up
           </Text>
