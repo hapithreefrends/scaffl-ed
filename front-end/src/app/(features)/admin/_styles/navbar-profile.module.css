@@ -1,0 +1,9 @@
+.profileContainer {
+    text-decoration: none;
+    color: black;
+    /* Papalitan pa sa primary color */
+}
+
+.profileContainer:hover {
+    color: var(--mantine-color-teal-8);
+}
