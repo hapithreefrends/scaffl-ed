@@ -7,7 +7,7 @@ import { Stack, Flex } from "@mantine/core";
 
 export default function Profile() {
   return (
-    <Stack justify="left" mt={{ base: "80", sm: 0 }}>
+    <Stack w="100%" justify="left" mt={{ base: "80", sm: 0 }}>
       <Pictures />
       <Stack p={"xl"}>
         <Details />

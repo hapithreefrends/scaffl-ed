@@ -6,7 +6,7 @@ export default function Pictures() {
     return (
         <Flex
             p="lg"
-            w={{ base: "90.6vw", sm: "100%" }}
+            w={{ base: "100%", sm: "100%" }}
             align="center"
             justify={"space-between"}
             style={{ position: "relative" }} // Make the Flex container relative
