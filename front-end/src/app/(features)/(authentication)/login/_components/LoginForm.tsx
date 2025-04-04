@@ -18,7 +18,7 @@ import { IconAt, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function LoginForm() {
-  const router = useRouter();  
+  const router = useRouter();
   const supabase = createClient();
 
   async function signInWithEmail(email: string, password: string) {

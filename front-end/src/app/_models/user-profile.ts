@@ -15,7 +15,7 @@ export const userProfileSchema = z.object ({
     
     avatar: z.string(),
 
-    total_exprience_points: z.number()
+    total_experience_points: z.number()
         .int(),
 
     streak_counter: z.number()
@@ -42,7 +42,7 @@ export const userProfileFullSchema = userProfileSchema.extend( {
 
 export const userProfileCreateDataSchema = userProfileSchema.omit({
     id: true,
-    total_exprience_points: true,
+    total_experience_points: true,
     streak_counter: true,
     last_active: true  
 })
@@ -54,4 +54,5 @@ export type IUserProfile = z.infer<typeof userProfileSchema>;
 export type IUserProfileFull = z.infer<typeof userProfileFullSchema>;
 
 export type IUserProfileCreateData = z.infer<typeof userProfileCreateDataSchema>;
+export type IUserProfileUpdateData = z.infer<typeof userProfileUpdateDataSchema>;
 

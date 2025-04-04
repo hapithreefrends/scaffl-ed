@@ -15,11 +15,13 @@ export function useFindAllUsers() {
     queryFn: async () => {
       const { data, error } = await supabase.from("User").select(`
           *,
-          difficulty: Difficulty (*),
-          programming_language: ProgrammingLanguage (*),
-          chapters: Chapter (
-            *, 
-            activity_lessons: ActivityLesson (*)
+          account_status: AccountStatus (*),
+          user_role: UserRole (*),
+          profile: UserProfile (
+              *,
+              sex: Sex (*),
+              school: School (*),
+              college_program: CollegeProgram (*)
           )
         `);
 
@@ -40,13 +42,15 @@ export function useFindUserById(id: string) {
         .from("User")
         .select(
           `
-        *,
-        difficulty: Difficulty (*),
-        programming_language: ProgrammingLanguage (*),
-        chapters: Chapter (
-          *, 
-          activity_lessons: ActivityLesson (*)
-        )
+            *,
+            account_status: AccountStatus (*),
+            user_role: UserRole (*),
+            profile: UserProfile (
+                *,
+                sex: Sex (*),
+                school: School (*),
+                college_program: CollegeProgram (*)
+            )
       `
         )
         .eq("id", id)
@@ -93,191 +97,40 @@ export function useUpdateUserById() {
       const { data: userData, error: userError } = await supabase
         .from("User")
         .update({
-          name: updatedUserData.name,
-          description: updatedUserData.description,
-          difficulty_id: updatedUserData.difficulty_id,
-          programming_language_id: updatedUserData.programming_language_id,
+          account_status_id: updatedUserData.account_status_id,
+          user_role_id: updatedUserData.user_role_id,
         })
         .eq("id", updatedUserData.id)
         .select("*")
         .single();
 
-      const { data: userChaptersDataFetched, error: userChaptersError } =
-        await supabase
-          .from("Chapter")
-          .select(
-            `
-            id,
-            user_id,
-            activity_lessons: ActivityLesson (*)
-          `
-          )
-          .eq("user_id", updatedUserData.id);
-
-      const userChaptersData = userChaptersDataFetched as { 
-        id: string;
-        user_id: string;
-        activity_lessons: IActivityLesson[] 
-      }[];
-
-      for (const chapter of updatedUserData.chapters) {
-        if ("id" in chapter) {
-          // update existing chapters
-          const { error: chapterError } = await supabase
-            .from("Chapter")
-            .update({
-              name: chapter.name,
-              description: chapter.description,
-              chapter_number: chapter.chapter_number,
-            })
-            .eq("id", chapter.id)
-            .select("*")
-            .order("id")
-            .limit(1)
-            .single();
-
-          for (const activityLesson of chapter.activity_lessons) {
-            if ("id" in activityLesson) {
-              // update existing activity lessons
-              const { error: activityLessonError } = await supabase
-                .from("ActivityLesson")
-                .update({
-                  id: activityLesson.id,
-
-                  chapter_id: chapter.id,
-                  type_id: activityLesson.type_id,
-                  programming_language_id:
-                    activityLesson.programming_language_id,
-
-                  slug: activityLesson.slug,
-                  name: activityLesson.name,
-                  description: activityLesson.description,
-                  activity_lesson_number: activityLesson.activity_lesson_number,
-
-                  content: activityLesson.content,
-                  code: activityLesson.code,
-                  experience: activityLesson.experience,
-                })
-                .eq("id", activityLesson.id)
-                .select("*")
-                .order("id")
-                .limit(1)
-                .single();
-
-              if (activityLessonError) {
-                throw activityLessonError;
-              }
-            } else {
-              // insert new activity lessons
-              const { error: activityLessonError } = await supabase
-                .from("ActivityLesson")
-                .insert({
-                  chapter_id: chapter.id,
-                  type_id: activityLesson.type_id,
-                  programming_language_id:
-                    activityLesson.programming_language_id,
-
-                  slug: activityLesson.slug,
-                  name: activityLesson.name,
-                  description: activityLesson.description,
-                  activity_lesson_number: activityLesson.activity_lesson_number,
-
-                  content: activityLesson.content,
-                  code: activityLesson.code,
-                  experience: activityLesson.experience,
-                })
-                .select("*")
-                .order("id")
-                .limit(1)
-                .single();
-
-              if (activityLessonError) {
-                throw activityLessonError;
-              }
-            }
-          }
-
-          if (chapterError) {
-            throw chapterError;
-          }
-        } else {
-          // insert new chapters
-          const { data: chapterData, error: chapterError } = await supabase
-            .from("Chapter")
-            .insert({
-              user_id: updatedUserData.id,
-
-              name: chapter.name,
-              description: chapter.description,
-              chapter_number: chapter.chapter_number,
-            })
-            .select("*")
-            .order("id")
-            .limit(1)
-            .single();
-
-          for (const activityLesson of chapter.activity_lessons) {
-            // insert new activity lessons
-            const { error: activityLessonError } = await supabase
-              .from("ActivityLesson")
-              .insert({
-                chapter_id: chapterData.id,
-                type_id: activityLesson.type_id,
-                programming_language_id: activityLesson.programming_language_id,
-
-                slug: activityLesson.slug,
-                name: activityLesson.name,
-                description: activityLesson.description,
-                activity_lesson_number: activityLesson.activity_lesson_number,
-
-                content: activityLesson.content,
-                code: activityLesson.code,
-                experience: activityLesson.experience,
-              })
-              .select("*")
-              .order("id")
-              .limit(1)
-              .single();
-
-            if (activityLessonError) {
-              throw activityLessonError;
-            }
-          }
-
-          if (chapterError) {
-            throw chapterError;
-          }
-        }
-
-        // TODO delete chapters and activity lessons that were actually deleted
-        if (userChaptersData) {
-          for (const chapter of userChaptersData) {
-            if (!updatedUserData.chapters.some((c) => "id" in c && c.id === chapter.id)) {
-              const { error: deleteChapterError } = await supabase
-                .from("Chapter")
-                .delete()
-                .eq("id", chapter.id)
-                .select("*")
-                .limit(1)
-                .single();
-
-              if (deleteChapterError) {
-                throw deleteChapterError;
-              }
-            }
-          }
-        }
-
-        if (userChaptersError) {
-          throw userChaptersError;
-        }
-      }
+      const { data: profileData, error: profileError } = await supabase
+        .from("UserProfile")
+        .update({
+          first_name: updatedUserData.profile.first_name,
+          last_name: updatedUserData.profile.last_name,
+          birthday: updatedUserData.profile.birthday,
+          avatar: updatedUserData.profile.avatar,
+          total_experience_points:
+            updatedUserData.profile?.total_experience_points ?? 0,
+          streak_counter: updatedUserData.profile?.streak_counter ?? 0,
+          last_active:
+            updatedUserData.profile?.last_active ?? new Date().toISOString(),
+          sex_id: updatedUserData.profile,
+        })
+        .eq("id", updatedUserData.profile.id)
+        .select("*")
+        .single();
 
       if (userError) {
         throw userError;
       }
 
-      return userData;
+      if (profileError) {
+        throw profileError;
+      }
+
+      return {...userData, profile: profileData};
     },
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] }), // Refresh data

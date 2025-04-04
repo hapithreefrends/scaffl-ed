@@ -6,13 +6,11 @@ import { useState, useEffect, Suspense } from "react";
 
 import { Badge, Button, Center, Stack, Group, ActionIcon } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import { IconClick, IconPlus, IconEye, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconClick, IconEye, IconTrash } from "@tabler/icons-react";
 import { DataTable, DataTableColumn } from "mantine-datatable";
 
 import { IUserFull } from "@/app/_models/user";
 import { useDeleteUserById, useFindAllUsers } from "./_hooks/use-users";
-
-import classes from "./_styles/page.module.css";
 
 const PAGE_SIZE = 10;
 
@@ -36,32 +34,70 @@ export default function Page() {
 
   const columns: DataTableColumn<IUserFull>[] = [
     {
-      accessor: "name",
-      title: "Name"
-    },
-    {
-      accessor: "experience",
-      title: "Experience",
+      accessor: "full_name",
+      title: "Full Name",
       render: (record) => {
-        return <span className={classes.xp}>{record.experience} XP</span>
+        if (!(record.profile && record.profile.first_name && record.profile.last_name)) {
+          return <Badge color="gray">No Record</Badge>;
+        }
+
+        return <span>{record.profile?.first_name} {record.profile?.last_name}</span>;
       }
     },
     {
-      accessor: "difficulty.name",
-      title: "Difficulty",
+      accessor: "account_status.name",
+      title: "Account Status",
       render: (record) => {
         const color: Record<string, string> = {
-          "Easy": "green",
-          "Medium": "yellow",
-          "Hard": "red",
+          "Allowed": "green",
+          "Suspended": "yellow",
+          "Banned": "red",
         };
 
-        return <Badge color={color[record.difficulty.name] ?? "gray"}>{record.difficulty.name}</Badge>;
+        if (!(record.profile && record.account_status)) {
+          return <Badge color="gray">No Record</Badge>;
+        }
+
+        return <Badge color={color[record.account_status.name] ?? "gray"}>{record.account_status.name}</Badge>;
       }
     },
     {
-      accessor: "programming_language.name",
-      title: "Programming Language"
+      accessor: "sex.name",
+      title: "Sex",
+      render: (record) => {
+        const color: Record<string, string> = {
+          "Male": "blue",
+          "Female": "pink",
+        };
+        
+        if (!(record.profile && record.profile.sex)) {
+          return <Badge color="gray">No Record</Badge>;
+        }
+
+        return <Badge color={color[record.profile.sex.name] ?? "gray"}>{record.profile.sex.name}</Badge>;
+      }
+    },
+    {
+      accessor: "school.name",
+      title: "School",
+      render: (record) => {
+        if (!(record.profile && record.profile.school)) {
+          return <Badge color="gray">No Record</Badge>;
+        }
+
+        return <span>{record.profile?.school.name}</span>;
+      }
+    },
+    {
+      accessor: "degree_program.name",
+      title: "Degree Program",
+      render: (record) => {
+        if (!(record.profile && record.profile.college_program)) {
+          return <Badge color="gray">No Record</Badge>;
+        }
+
+        return <span>{record.profile?.college_program.name}</span>;
+      }
     },
     {
       accessor: "actions",
