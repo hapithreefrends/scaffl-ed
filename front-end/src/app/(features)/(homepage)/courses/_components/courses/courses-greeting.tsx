@@ -16,7 +16,7 @@ export default function CourseGreetings() {
         <h1 className={classes.greetingHeader}>Courses</h1>
         <p className={classes.greetingText}>
           It’s time to roll up your sleeves—Scaffl.ed believes we learn best by
-          doing. With Scaffl.ed, you'll dive right into hands-on coding
+          doing. With Scaffl.ed, you"ll dive right into hands-on coding
           challenges that adapt to your needs, helping you learn programming
           effectively and confidently.
         </p>

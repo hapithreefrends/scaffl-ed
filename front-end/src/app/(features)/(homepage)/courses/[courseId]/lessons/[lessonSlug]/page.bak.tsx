@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { Title, Menu, Divider, Text, List, Code, Container } from "@mantine/core";
 import { useParams, useRouter } from "next/navigation";
@@ -58,9 +58,9 @@ export default function Lesson() {
 
   return (
     <>
-      <div style={{ display: 'flex', width: '100%', height: '100vh' }}>
+      <div style={{ display: "flex", width: "100%", height: "100vh" }}>
         {/* Sidebar */}
-        <div style={{ width: 250, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ width: 250, display: "flex", flexDirection: "column" }}>
           <Title order={2}>Topics</Title>
           <Divider my="sm" />
           <Menu width={250} position="left" >
@@ -73,7 +73,7 @@ export default function Lesson() {
         </div>
 
         {/* Content Area */}
-        <div style={{ flex: 1, padding: '20px' }}>
+        <div style={{ flex: 1, padding: "20px" }}>
           <Container>
             <Title pt="xl">Variables and Data Types</Title>
             <Text size="lg">Course: {courseId}</Text>
@@ -153,7 +153,7 @@ export default function Lesson() {
             <section>
               <Title order={3}>Type Conversion</Title>
               <Text>
-                Type conversion refers to changing a variable's data type. You can convert between types explicitly or implicitly, depending on the language:
+                Type conversion refers to changing a variable"s data type. You can convert between types explicitly or implicitly, depending on the language:
               </Text>
               <Text>
                 <strong>Example of explicit type conversion:</strong>

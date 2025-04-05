@@ -4,8 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useState, useEffect, Suspense } from "react";
 
-import { Badge, Button, Center, Stack, Group, ActionIcon } from "@mantine/core";
-import { openModal } from "@mantine/modals";
+import { Badge, Button, Center, Stack, Group, ActionIcon, Text } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { IconClick, IconPlus, IconEye, IconEdit, IconTrash } from "@tabler/icons-react";
 import { DataTable, DataTableColumn } from "mantine-datatable";
 
@@ -35,18 +35,10 @@ export default function Page() {
   }, [data, page]);
 
   const columns: DataTableColumn<ICourseFull>[] = [
-    // {
-    //   accessor: "id",
-    //   title: "ID"
-    // },
     {
       accessor: "name",
       title: "Name"
     },
-    // {
-    //   accessor: "description",
-    //   title: "Description"
-    // },
     {
       accessor: "experience",
       title: "Experience",
@@ -113,17 +105,17 @@ export default function Page() {
               onClick={(e) => {
                 e.stopPropagation();
 
-                openModal({
+                openConfirmModal({
                   title: "Confirm Deletion",
                   centered: true,
                   children: (
-                    <>
-                      <p>Are you sure you want to delete this item?</p>
-                      <Button color="red" onClick={() => deleteCourse.mutate(record.id)}>
-                        Delete
-                      </Button>
-                    </>
+                    <Text>
+                      Are you sure you want to delete the course <strong>{record.name}</strong>?
+                    </Text>
                   ),
+                  labels: { confirm: "Delete course", cancel: "No, don't delete it!" },
+                  confirmProps: { color: "red" },
+                  onConfirm: () => deleteCourse.mutate(record.id),
                 });
               }}
             >

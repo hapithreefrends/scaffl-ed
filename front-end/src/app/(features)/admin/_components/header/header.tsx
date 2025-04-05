@@ -1,6 +1,6 @@
-import { Burger, Group } from '@mantine/core';
+import { Burger, Group } from "@mantine/core";
 
-import ScaffledLogo from '@/app/_components/ScaffledLogo';
+import ScaffledLogo from "@/app/_components/ScaffledLogo";
 
 
 interface headerProps {

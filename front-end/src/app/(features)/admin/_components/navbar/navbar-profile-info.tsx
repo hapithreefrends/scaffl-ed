@@ -1,5 +1,5 @@
 import { Flex, Stack, Image, Title, Text } from "@mantine/core";
-import classes from '../../_styles/navbar-profile.module.css'
+import classes from "../../_styles/navbar-profile.module.css"
 
 interface NavbarProfileProps {
   name: string;

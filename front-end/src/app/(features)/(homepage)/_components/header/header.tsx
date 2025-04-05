@@ -1,5 +1,5 @@
-import { Burger, Group } from '@mantine/core';
-import scaffyLogo from '../../_assets/scaffled-logo.svg';
+import { Burger, Group } from "@mantine/core";
+import scaffyLogo from "../../_assets/scaffled-logo.svg";
 
 
 interface headerProps {

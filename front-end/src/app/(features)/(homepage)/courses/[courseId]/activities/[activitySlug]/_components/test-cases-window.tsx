@@ -10,7 +10,7 @@ export default function TestCaseWindow() {
             <Code className={classes.headerText}>Test Cases</Code>
         </Center>
       </Flex>
-      <Flex className={classes.windowArea}>l;k;lkl;'k';js</Flex>
+      <Flex className={classes.windowArea}>l;k;lkl;"k";js</Flex>
     </Stack>
   );
 }

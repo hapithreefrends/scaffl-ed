@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import classes from "../../_styles/courses-card.module.css";
 import {
