@@ -6,6 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createClient } from "@/utilities/supabase/client";
 
 import CourseCard from "./course-card";
+import { IUserCourse, IUserCourseFull } from "@/app/_models/user-course";
 
 const mockData = [
   {
@@ -39,12 +40,13 @@ const mockData = [
 const fetchCourseListData = async () => {
   const supabase = createClient();
 
-  const { data, error } = await supabase.from("Course").select(
+  const { data, error } = await supabase.from("UserCourse").select(
     `
-      *
+      *, Course (*,
+          Difficulty (*), ProgrammingLanguage (*))
     `
   );
-
+  console.log("Supabase query result:", data);
   if (error) {
     throw new Error(error.message);
   }
@@ -62,7 +64,14 @@ export default function CoursesListLoader() {
   return (
     <Flex wrap="wrap" gap={32}>
       {data.map((course) => (
-        <CourseCard id={course.id} picture="https://logos-world.net/wp-content/uploads/2023/08/React-Symbol.png" title={course.name} description={course.description} level={course.difficulty} href={`courses/${course.id}`} key={course.id} />
+        <CourseCard 
+          id={course.id} 
+          picture={course.Course.ProgrammingLanguage.logo } 
+          title={course.Course.name} 
+          description={course.Course.description} 
+          level={course.Course.Difficulty.name} 
+          href={`courses/${course.Course.id}`} 
+          key={course.Course.id} />
       ))}
     </Flex>
   );
